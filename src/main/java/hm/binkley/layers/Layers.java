@@ -70,9 +70,9 @@ public final class Layers {
 
         @Override
         public Map<String, Object> changed(final Layer layer) {
-            final Map<String, Object> whatIf = new HashMap<>(cache);
-            merge(whatIf, layer.changed());
-            return unmodifiableMap(whatIf);
+            final Map<String, Object> changed = new HashMap<>(cache);
+            merge(changed, layer.changed());
+            return unmodifiableMap(changed);
         }
 
         private void merge(final Map<String, Object> accepted,
