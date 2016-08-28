@@ -1,7 +1,6 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.Layers.Layer;
-import hm.binkley.layers.Layers.StringField;
+import hm.binkley.layers.Field.StringField;
 
 /**
  * {@code Character} <b>needs documentation</b>.
@@ -19,9 +18,18 @@ public final class Character {
     }
 
     public Character(final String player, final String name) {
-        final Layer base = layers.new Layer();
-        base.put("player", player);
-        base.put("name", name);
-        current = base.commit();
+        current = layers.
+                newLayer(surface -> new Base(surface, player, name)).
+                commit(BlankLayer::new);
+    }
+
+    public static final class Base
+            extends BlankLayer {
+        public Base(final Surface surface, final String player,
+                final String name) {
+            super(surface);
+            put("player", player);
+            put("name", name);
+        }
     }
 }

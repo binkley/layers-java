@@ -1,7 +1,5 @@
 package hm.binkley.layers;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.util.Collections.unmodifiableMap;
@@ -21,61 +19,12 @@ import static java.util.Collections.unmodifiableMap;
  * @todo Needs documentation.
  */
 public final class Layers {
-    @RequiredArgsConstructor
-    public abstract static class Field<T> {
-        private static final Field<Object> LAST = new Field<Object>(
-                Object.class, (a, b) -> b) {};
-        public final Class<T> type;
-        public final BiFunction<T, T, T> rule;
-    }
-
-    public static final class StringField
-            extends Field<String> {
-        public StringField() {
-            super(String.class, (a, b) -> b);
-        }
-    }
-
-    public static final class IntField
-            extends Field<Integer> {
-        public IntField(final BiFunction<Integer, Integer, Integer> rule) {
-            super(Integer.class, rule);
-        }
-    }
-
-    public static final class DoubleField
-            extends Field<Double> {
-        public DoubleField(final BiFunction<Double, Double, Double> rule) {
-            super(Double.class, rule);
-        }
-    }
-
-    public static final class EnumField<E extends Enum<E>>
-            extends Field<E> {
-        public EnumField(final Class<E> type) {
-            super(type, (a, b) -> b);
-        }
-    }
-
-    public static final class CollectionField<T>
-            extends Field<Collection<T>> {
-        public CollectionField(final Class<Collection<T>> type,
-                final Supplier<? extends Collection<T>> ctor) {
-            super(type, (a, b) -> {
-                final Collection<T> all = ctor.get();
-                all.addAll(a);
-                all.addAll(b);
-                return all;
-            });
-        }
-    }
-
     private final Collection<Layer> layers = new ConcurrentLinkedQueue<>();
     private final Map<String, Field> fields = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, Object> cache
             = new ConcurrentHashMap<>();
 
-    public Map<String, Object> view() {
+    public Map<String, Object> committed() {
         return unmodifiableMap(cache);
     }
 
@@ -89,42 +38,35 @@ public final class Layers {
         return this;
     }
 
-    public final class Layer {
-        private final Map<String, Object> map = new ConcurrentHashMap<>();
+    public <L extends Layer> L newLayer(final Function<Surface, L> ctor) {
+        return ctor.apply(new Surface() {
+            @Override
+            public void commit(final Layer layer) {
+                layers.add(layer);
+                merge(cache, layer.changes());
+            }
 
-        public Map<String, Object> changes() {
-            return unmodifiableMap(map);
-        }
+            @Override
+            public Map<String, Object> changes(final Layer layer) {
+                final Map<String, Object> whatIf = new HashMap<>(cache);
+                merge(whatIf, layer.changes());
+                return unmodifiableMap(whatIf);
+            }
+        });
+    }
 
-        public Map<String, Object> whatIf() {
-            final Map<String, Object> whatIf = new HashMap<>(cache);
-            updateAll(whatIf);
-            return unmodifiableMap(whatIf);
-        }
+    private BiFunction<Object, Object, Object> ruleFor(final String key) {
+        return fields.getOrDefault(key, Field.LAST).rule;
+    }
 
-        public Layer put(final String key, final Object value) {
-            map.put(key, value);
-            return this;
-        }
+    private void merge(final Map<String, Object> that,
+            final Map<String, Object> map) {
+        map.entrySet().
+                forEach(e -> mergeOne(that, e.getKey(), e.getValue()));
+    }
 
-        public Layer commit() {
-            layers.add(this);
-            updateAll(cache);
-            return new Layer();
-        }
-
-        private void updateAll(final Map<String, Object> that) {
-            map.entrySet().
-                    forEach(e -> updateOne(that, e.getKey(), e.getValue()));
-        }
-
-        private BiFunction<Object, Object, Object> ruleFor(final String key) {
-            return fields.getOrDefault(key, Field.LAST).rule;
-        }
-
-        private void updateOne(final Map<String, Object> map,
-                final String key, final Object value) {
-            map.merge(key, value, ruleFor(key));
-        }
+    private void mergeOne(final Map<String, Object> map, final String key,
+            final Object value) {
+        map.merge(key, value, ruleFor(key));
     }
 }
