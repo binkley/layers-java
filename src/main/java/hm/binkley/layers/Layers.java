@@ -3,11 +3,13 @@ package hm.binkley.layers;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static java.util.Collections.unmodifiableMap;
@@ -20,11 +22,54 @@ import static java.util.Collections.unmodifiableMap;
  */
 public final class Layers {
     @RequiredArgsConstructor
-    public static final class Field<T> {
-        private static final Field<Object> LAST = new Field<>(Object.class,
-                (a, b) -> b);
+    public abstract static class Field<T> {
+        private static final Field<Object> LAST = new Field<Object>(
+                Object.class, (a, b) -> b) {};
         public final Class<T> type;
         public final BiFunction<T, T, T> rule;
+    }
+
+    public static final class StringField
+            extends Field<String> {
+        public StringField(final Class<String> type) {
+            super(type, (a, b) -> b);
+        }
+    }
+
+    public static final class IntField
+            extends Field<Integer> {
+        public IntField(final Class<Integer> type,
+                final BiFunction<Integer, Integer, Integer> rule) {
+            super(type, rule);
+        }
+    }
+
+    public static final class DoubleField
+            extends Field<Double> {
+        public DoubleField(final Class<Double> type,
+                final BiFunction<Double, Double, Double> rule) {
+            super(type, rule);
+        }
+    }
+
+    public static final class EnumField<E extends Enum<E>>
+            extends Field<E> {
+        public EnumField(final Class<E> type) {
+            super(type, (a, b) -> b);
+        }
+    }
+
+    public static final class CollectionField<T, A extends Collection<T>>
+            extends Field<Collection<T>> {
+        public CollectionField(final Class<Collection<T>> type,
+                final Supplier<A> ctor) {
+            super(type, (a, b) -> {
+                final A all = ctor.get();
+                all.addAll(a);
+                all.addAll(b);
+                return all;
+            });
+        }
     }
 
     private final Collection<Layer> layers = new ConcurrentLinkedQueue<>();
@@ -36,8 +81,9 @@ public final class Layers {
         return unmodifiableMap(cache);
     }
 
-    public Stream<Map<String, Object>> stream() {
-        return layers.stream().map(Layer::view);
+    public Stream<Map<String, Object>> history() {
+        return layers.stream().
+                map(Layer::changes);
     }
 
     public Layers add(final String key, final Field field) {
@@ -48,8 +94,14 @@ public final class Layers {
     public final class Layer {
         private final Map<String, Object> map = new ConcurrentHashMap<>();
 
-        public Map<String, Object> view() {
+        public Map<String, Object> changes() {
             return unmodifiableMap(map);
+        }
+
+        public Map<String, Object> whatIf() {
+            final Map<String, Object> whatIf = new HashMap<>(cache);
+            updateAll(whatIf);
+            return unmodifiableMap(whatIf);
         }
 
         public Layer put(final String key, final Object value) {
@@ -59,13 +111,26 @@ public final class Layers {
 
         public Layer commit() {
             layers.add(this);
-            map.entrySet().forEach(e -> cache.merge(e.getKey(), e.getValue(),
-                    fields.getOrDefault(e.getKey(), Field.LAST).rule));
+            updateAll(cache);
             return new Layer();
         }
 
         public Layer rollback() {
             return new Layer();
+        }
+
+        private void updateAll(final Map<String, Object> that) {
+            map.entrySet().
+                    forEach(e -> updateOne(that, e.getKey(), e.getValue()));
+        }
+
+        private BiFunction<Object, Object, Object> ruleFor(final String key) {
+            return fields.getOrDefault(key, Field.LAST).rule;
+        }
+
+        private void updateOne(final Map<String, Object> map,
+                final String key, final Object value) {
+            map.merge(key, value, ruleFor(key));
         }
     }
 }
