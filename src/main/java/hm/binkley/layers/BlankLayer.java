@@ -2,8 +2,8 @@ package hm.binkley.layers;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import static java.util.Collections.unmodifiableMap;
@@ -17,7 +17,7 @@ import static java.util.Collections.unmodifiableMap;
 @RequiredArgsConstructor
 public class BlankLayer
         implements Layer {
-    private final Map<String, Object> map = new ConcurrentHashMap<>();
+    private final Map<String, Object> map = new HashMap<>();
     private final Surface surface;
 
     @Override

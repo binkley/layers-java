@@ -2,12 +2,10 @@ package hm.binkley.layers;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -23,10 +21,9 @@ import static lombok.AccessLevel.PRIVATE;
  */
 @RequiredArgsConstructor(access = PRIVATE)
 public final class Layers {
-    private final Collection<Layer> layers = new ConcurrentLinkedQueue<>();
-    private final Map<String, Field> fields = new ConcurrentHashMap<>();
-    private final ConcurrentMap<String, Object> cache
-            = new ConcurrentHashMap<>();
+    private final Collection<Layer> layers = new ArrayList<>();
+    private final Map<String, Field> fields = new HashMap<>();
+    private final Map<String, Object> cache = new HashMap<>();
 
     public static <L extends Layer> Layers newLayers(
             final Function<Surface, L> next, final Consumer<L> firstLayer) {
