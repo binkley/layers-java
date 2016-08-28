@@ -1,7 +1,6 @@
 package hm.binkley.layers;
 
 import hm.binkley.layers.Field.StringField;
-import hm.binkley.layers.Layers.NewLayers;
 
 import static hm.binkley.layers.Layers.newLayers;
 
@@ -16,12 +15,11 @@ public final class Character {
     private Layer current;
 
     public Character(final String player, final String name) {
-        final NewLayers<BaseLayer> initial = newLayers(
-                surface -> new BaseLayer(surface, player, name));
-        layers = initial.layers;
+        layers = newLayers(surface -> new BaseLayer(surface, player, name),
+                l -> current = l);
         layers.addRule("player", new StringField());
         layers.addRule("name", new StringField());
-        current = initial.firstLayer.commit(BlankLayer::new);
+        current = current.accept(BlankLayer::new);
     }
 
     public static final class BaseLayer

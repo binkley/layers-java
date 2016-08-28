@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -27,16 +28,11 @@ public final class Layers {
     private final ConcurrentMap<String, Object> cache
             = new ConcurrentHashMap<>();
 
-    @RequiredArgsConstructor
-    public static final class NewLayers<L extends Layer> {
-        public final Layers layers;
-        public final L firstLayer;
-    }
-
-    public static <L extends Layer> NewLayers<L> newLayers(
-            final Function<Surface, L> ctor) {
+    public static <L extends Layer> Layers newLayers(
+            final Function<Surface, L> next, final Consumer<L> firstLayer) {
         final Layers layers = new Layers();
-        return new NewLayers<>(layers, layers.newLayer(ctor));
+        firstLayer.accept(layers.newLayer(next));
+        return layers;
     }
 
     public <T> Layers addRule(final String key, final Field<T> field) {
@@ -54,43 +50,44 @@ public final class Layers {
         return (T) cache.get(key);
     }
 
-    public Map<String, Object> committed() {
+    public Map<String, Object> accepted() {
         return unmodifiableMap(cache);
     }
 
     public Stream<Map<String, Object>> history() {
         return layers.stream().
-                map(Layer::changes);
+                map(Layer::changed);
     }
 
-    private <L extends Layer> L newLayer(final Function<Surface, L> ctor) {
-        return ctor.apply(new LayersSurface());
+    private <L extends Layer> L newLayer(final Function<Surface, L> next) {
+        return next.apply(new LayersSurface());
     }
 
     private final class LayersSurface
             implements Surface {
         @Override
-        public void commit(final Layer layer) {
+        public void accept(final Layer layer) {
             layers.add(layer);
-            merge(cache, layer.changes());
+            merge(cache, layer.changed());
         }
 
         @Override
-        public Map<String, Object> changes(final Layer layer) {
+        public Map<String, Object> changed(final Layer layer) {
             final Map<String, Object> whatIf = new HashMap<>(cache);
-            merge(whatIf, layer.changes());
+            merge(whatIf, layer.changed());
             return unmodifiableMap(whatIf);
         }
 
-        private void merge(final Map<String, Object> that,
-                final Map<String, Object> map) {
-            map.entrySet().
-                    forEach(e -> mergeOne(that, e.getKey(), e.getValue()));
+        private void merge(final Map<String, Object> accepted,
+                final Map<String, Object> changed) {
+            changed.entrySet().
+                    forEach(e -> mergeOne(accepted, e.getKey(),
+                            e.getValue()));
         }
 
         private void mergeOne(final Map<String, Object> map, final String key,
                 final Object value) {
-            map.merge(key, value, ruleFor(key).rule);
+            map.merge(key, value, ruleFor(key));
         }
     }
 }

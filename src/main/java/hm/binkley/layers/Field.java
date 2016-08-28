@@ -13,11 +13,17 @@ import java.util.function.Supplier;
  * @todo Needs documentation.
  */
 @RequiredArgsConstructor
-public abstract class Field<T> {
+public abstract class Field<T>
+        implements BiFunction<T, T, T> {
     public static final Field<Object> LAST = new Field<Object>(Object.class,
             (a, b) -> b) {};
     public final Class<T> type;
-    public final BiFunction<T, T, T> rule;
+    private final BiFunction<T, T, T> rule;
+
+    @Override
+    public final T apply(final T oldValue, final T newValue) {
+        return rule.apply(oldValue, newValue);
+    }
 
     public static final class StringField
             extends Field<String> {
@@ -26,9 +32,10 @@ public abstract class Field<T> {
         }
     }
 
-    public static final class IntField
+    public static final class IntegerField
             extends Field<Integer> {
-        public IntField(final BiFunction<Integer, Integer, Integer> rule) {
+        public IntegerField(
+                final BiFunction<Integer, Integer, Integer> rule) {
             super(Integer.class, rule);
         }
     }
@@ -50,9 +57,9 @@ public abstract class Field<T> {
     public static final class CollectionField<T>
             extends Field<Collection<T>> {
         public CollectionField(final Class<Collection<T>> type,
-                final Supplier<? extends Collection<T>> ctor) {
+                final Supplier<? extends Collection<T>> next) {
             super(type, (a, b) -> {
-                final Collection<T> all = ctor.get();
+                final Collection<T> all = next.get();
                 all.addAll(a);
                 all.addAll(b);
                 return all;
