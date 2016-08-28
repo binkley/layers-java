@@ -31,24 +31,22 @@ public final class Layers {
 
     public static final class StringField
             extends Field<String> {
-        public StringField(final Class<String> type) {
-            super(type, (a, b) -> b);
+        public StringField() {
+            super(String.class, (a, b) -> b);
         }
     }
 
     public static final class IntField
             extends Field<Integer> {
-        public IntField(final Class<Integer> type,
-                final BiFunction<Integer, Integer, Integer> rule) {
-            super(type, rule);
+        public IntField(final BiFunction<Integer, Integer, Integer> rule) {
+            super(Integer.class, rule);
         }
     }
 
     public static final class DoubleField
             extends Field<Double> {
-        public DoubleField(final Class<Double> type,
-                final BiFunction<Double, Double, Double> rule) {
-            super(type, rule);
+        public DoubleField(final BiFunction<Double, Double, Double> rule) {
+            super(Double.class, rule);
         }
     }
 
@@ -59,12 +57,12 @@ public final class Layers {
         }
     }
 
-    public static final class CollectionField<T, A extends Collection<T>>
+    public static final class CollectionField<T>
             extends Field<Collection<T>> {
         public CollectionField(final Class<Collection<T>> type,
-                final Supplier<A> ctor) {
+                final Supplier<? extends Collection<T>> ctor) {
             super(type, (a, b) -> {
-                final A all = ctor.get();
+                final Collection<T> all = ctor.get();
                 all.addAll(a);
                 all.addAll(b);
                 return all;
@@ -112,10 +110,6 @@ public final class Layers {
         public Layer commit() {
             layers.add(this);
             updateAll(cache);
-            return new Layer();
-        }
-
-        public Layer rollback() {
             return new Layer();
         }
 
