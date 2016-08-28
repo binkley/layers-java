@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -27,18 +28,25 @@ public final class Layers {
 
     public static <L extends Layer> Layers newLayers(
             final Function<Surface, L> next, final Consumer<L> firstLayer) {
+        return newLayers(next, firstLayer, Stream.empty());
+    }
+
+    public static <L extends Layer> Layers newLayers(
+            final Function<Surface, L> next, final Consumer<L> firstLayer,
+            final Stream<Entry<String, Field>> fields) {
         final Layers layers = new Layers();
+        fields.forEach(e -> layers.fields.put(e.getKey(), e.getValue()));
         firstLayer.accept(layers.newLayer(next));
         return layers;
     }
 
-    public <T> Layers addRule(final String key, final Field<T> field) {
+    public <T> Layers add(final String key, final Field<T> field) {
         fields.put(key, field);
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    public <T> Field<T> ruleFor(final String key) {
+    public <T> Field<T> fieldFor(final String key) {
         return fields.getOrDefault(key, Field.LAST);
     }
 
@@ -75,6 +83,12 @@ public final class Layers {
             return unmodifiableMap(changed);
         }
 
+        @Override
+        public Surface add(final String key, final Field field) {
+            fields.put(key, field);
+            return this;
+        }
+
         private void merge(final Map<String, Object> accepted,
                 final Map<String, Object> changed) {
             changed.entrySet().
@@ -84,7 +98,7 @@ public final class Layers {
 
         private void mergeOne(final Map<String, Object> map, final String key,
                 final Object value) {
-            map.merge(key, value, ruleFor(key));
+            map.merge(key, value, fieldFor(key));
         }
     }
 }

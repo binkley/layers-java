@@ -12,4 +12,6 @@ public interface Surface {
     void accept(final Layer layer);
 
     Map<String, Object> changed(final Layer layer);
+
+    Surface add(final String key, final Field field);
 }
