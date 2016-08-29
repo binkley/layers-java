@@ -10,6 +10,9 @@ import java.util.Map;
  */
 @SuppressWarnings("WeakerAccess")
 public interface Surface {
+    void check(final String key, final Object value)
+        throws ClassCastException;
+
     void accept(final Layer layer);
 
     Map<String, Object> changed(final Layer layer);

@@ -33,6 +33,7 @@ public class BlankLayer
 
     @Override
     public final Layer put(final String key, final Object value) {
+        surface.check(key, value);
         map.put(key, value);
         return this;
     }

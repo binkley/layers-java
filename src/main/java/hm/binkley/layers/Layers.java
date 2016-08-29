@@ -10,6 +10,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static hm.binkley.layers.Field.LAST;
+import static java.lang.String.format;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.unmodifiableMap;
 import static lombok.AccessLevel.PRIVATE;
@@ -61,7 +63,7 @@ public final class Layers {
 
     @SuppressWarnings("unchecked")
     public <T> Field<T> fieldFor(final String key) {
-        return fields.getOrDefault(key, Field.LAST);
+        return fields.getOrDefault(key, LAST);
     }
 
     public Map<String, Object> accepted() {
@@ -79,6 +81,17 @@ public final class Layers {
 
     private final class LayersSurface
             implements Surface {
+        @SuppressWarnings("unchecked")
+        @Override
+        public void check(final String key, final Object value)
+                throws ClassCastException {
+            final Class<Object> type = fieldFor(key).type;
+            if (!type.isAssignableFrom(value.getClass()))
+                throw new ClassCastException(
+                        format("Wrong type of value (%s vs %s) for '%s': %s",
+                                type, value.getClass(), key, value));
+        }
+
         @Override
         public void accept(final Layer layer) {
             layers.add(layer);

@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.expectThrows;
 
 /**
  * {@code LayersTest} tests {@link Layers}.
@@ -120,5 +121,21 @@ public class LayersTest {
                 put("Total", 2).
                 accept(BlankLayer::new);
         assertEquals((Integer) 3, layers.get("Total"));
+    }
+
+    @Test
+    void shouldComplainForWrongValue() {
+        layers.add("Total", new IntegerField((a, b) -> a + b));
+        final ClassCastException thrown = expectThrows(
+                ClassCastException.class, () -> first.put("Total", "Fred"));
+        final String message = thrown.getMessage();
+        // @formatter:off
+        assertAll(
+                () -> assertNotNull(message),
+                () -> assertTrue(message.contains("Total")),
+                () -> assertTrue(message.contains("Fred")),
+                () -> assertTrue(message.contains(Integer.class.getName())),
+                () -> assertTrue(message.contains(String.class.getName())));
+        // @formatter:on
     }
 }
