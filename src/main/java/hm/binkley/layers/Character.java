@@ -1,11 +1,11 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.Field.IntegerField;
 import hm.binkley.layers.Field.StringField;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static hm.binkley.layers.Field.IntegerField.additativeIntegerField;
 import static hm.binkley.layers.Layers.newLayers;
 import static java.lang.System.out;
 
@@ -85,12 +85,12 @@ public final class Character {
         private static final Map<String, Field> fields = new HashMap<>();
 
         static {
-            fields.put("STR", new IntegerField((a, b) -> a + b));
-            fields.put("DEX", new IntegerField((a, b) -> a + b));
-            fields.put("CON", new IntegerField((a, b) -> a + b));
-            fields.put("INT", new IntegerField((a, b) -> a + b));
-            fields.put("WIS", new IntegerField((a, b) -> a + b));
-            fields.put("CHA", new IntegerField((a, b) -> a + b));
+            fields.put("STR", additativeIntegerField());
+            fields.put("DEX", additativeIntegerField());
+            fields.put("CON", additativeIntegerField());
+            fields.put("INT", additativeIntegerField());
+            fields.put("WIS", additativeIntegerField());
+            fields.put("CHA", additativeIntegerField());
         }
 
         public StatsLayer(final Surface surface, final int STR, final int DEX,
@@ -111,12 +111,12 @@ public final class Character {
 
         static {
             fields.put("race:name", new StringField());
-            fields.put("race:STR-bonus", new StringField());
-            fields.put("race:DEX-bonus", new StringField());
-            fields.put("race:CON-bonus", new StringField());
-            fields.put("race:INT-bonus", new StringField());
-            fields.put("race:WIS-bonus", new StringField());
-            fields.put("race:CHA-bonus", new StringField());
+            fields.put("race:STR-bonus", additativeIntegerField());
+            fields.put("race:DEX-bonus", additativeIntegerField());
+            fields.put("race:CON-bonus", additativeIntegerField());
+            fields.put("race:INT-bonus", additativeIntegerField());
+            fields.put("race:WIS-bonus", additativeIntegerField());
+            fields.put("race:CHA-bonus", additativeIntegerField());
         }
 
         protected RaceLayer(final Surface surface, final String raceName) {
@@ -130,17 +130,17 @@ public final class Character {
         public HumanLayer(final Surface surface) {
             super(surface, "Human");
             put("STR", 1);
-            put("race:STR-bonus", "1");
+            put("race:STR-bonus", 1);
             put("DEX", 1);
-            put("race:DEX-bonus", "1");
+            put("race:DEX-bonus", 1);
             put("CON", 1);
-            put("race:CON-bonus", "1");
+            put("race:CON-bonus", 1);
             put("INT", 1);
-            put("race:INT-bonus", "1");
+            put("race:INT-bonus", 1);
             put("WIS", 1);
-            put("race:WIS-bonus", "1");
+            put("race:WIS-bonus", 1);
             put("CHA", 1);
-            put("race:CHA-bonus", "1");
+            put("race:CHA-bonus", 1);
         }
     }
 }

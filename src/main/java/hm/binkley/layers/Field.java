@@ -35,6 +35,13 @@ public class Field<T>
 
     public static final class IntegerField
             extends Field<Integer> {
+        private static final IntegerField ADDITATIVE = new IntegerField(
+                (a, b) -> a + b);
+
+        public static IntegerField additativeIntegerField() {
+            return ADDITATIVE;
+        }
+
         public IntegerField(
                 final BiFunction<Integer, Integer, Integer> rule) {
             super(Integer.class, rule);
