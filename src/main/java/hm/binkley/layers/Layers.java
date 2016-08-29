@@ -6,8 +6,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -74,6 +76,14 @@ public final class Layers {
 
     public Map<String, Object> accepted() {
         return unmodifiableMap(cache);
+    }
+
+    public Optional<Layer> layer(final String name) {
+        final List<Layer> layers = this.layers.get(name);
+        if (layers.isEmpty())
+            return Optional.empty();
+        else
+            return Optional.of(layers.get(layers.size() - 1));
     }
 
     public Stream<Entry<String, Map<String, Object>>> history() {

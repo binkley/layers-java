@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static hm.binkley.layers.Layers.newLayers;
+import static java.lang.System.identityHashCode;
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -173,6 +174,17 @@ public class LayersTest {
                                         new IntegerField((a, b) -> a + b))).
                         put("Bob", 3).
                         accept(s -> new BlankLayer(s, "last")));
+
         assertTrue(thrown.getMessage().contains("Bob"));
+    }
+
+    @Test
+    void shouldFindLayerByName() {
+        final BlankLayer second = first.
+                accept(s -> new BlankLayer(s, "first"));
+        second.accept(s -> new BlankLayer(s, "first"));
+
+        assertEquals(identityHashCode(layers.layer("first").get()),
+                identityHashCode(second));
     }
 }
