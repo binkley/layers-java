@@ -75,6 +75,11 @@ public final class Layers {
                 map(Layer::changed);
     }
 
+    @Override
+    public String toString() {
+        return cache.toString();
+    }
+
     private <L extends Layer> L newLayer(final Function<Surface, L> next) {
         return next.apply(new LayersSurface());
     }
