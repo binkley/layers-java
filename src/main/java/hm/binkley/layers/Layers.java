@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -39,28 +38,36 @@ public final class Layers {
         return newLayers(next, firstLayer, emptyMap());
     }
 
+    /**
+     * Creates a new {@code Layers} with a first layer of <var>L</var> type
+     * (saved in <var>layer</var>), adding any <var>fields</var>.
+     *
+     * @param first the constructor for the first layer, never missing
+     * @param layer the holder for the constructed first layer, never missing
+     * @param fields the map of fields, never missing
+     * @param <L> the type of the first layer
+     *
+     * @return the new layers object, never missing
+     *
+     * @see #add(String, Field) Adding field definitions
+     */
     public static <L extends Layer> Layers newLayers(
-            final Function<Surface, L> next, final Consumer<L> firstLayer,
+            final Function<Surface, L> first, final Consumer<L> layer,
             final Map<String, Field> fields) {
         final Layers layers = new Layers();
         fields.forEach(layers::add);
-        firstLayer.accept(layers.newLayer(next));
+        layer.accept(layers.newLayer(first));
         return layers;
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T get(final String key) {
-        return (T) cache.get(key);
-    }
-
-    public boolean isEmpty() {
-        return cache.isEmpty();
-    }
-
-    public int size() {
-        return cache.size();
-    }
-
+    /**
+     * Adds a new field definition for <var>key</var>.
+     *
+     * @param key the key, never missing
+     * @param field the field definition, never missing
+     *
+     * @return this object (for chaining)
+     */
     public Layers add(final String key, final Field field) {
         if (cache.containsKey(key))
             throw new IllegalStateException(
@@ -69,23 +76,66 @@ public final class Layers {
         return this;
     }
 
+    /**
+     * Gets the current, computed value for <var>key</var> based on all layers
+     * containing the key.
+     *
+     * @param key the key, never missing
+     * @param <T> the value type
+     *
+     * @return the value for <var>key</var>, or {@code null} if none
+     */
     @SuppressWarnings("unchecked")
-    public <T> Field<T> fieldFor(final String key) {
-        return fields.getOrDefault(key, LAST);
+    public <T> T get(final String key) {
+        return (T) cache.get(key);
     }
 
+    /**
+     * Checks if there are no entries.
+     *
+     * @return {@code true} if there are no key-value pairs
+     */
+    public boolean isEmpty() {
+        return cache.isEmpty();
+    }
+
+    /**
+     * Gets the number of entries.
+     *
+     * @return the number of computed key-value pairs
+     */
+    public int size() {
+        return cache.size();
+    }
+
+    /**
+     * Creates a map view of the computed entries.
+     *
+     * @return a map of the computed key-value pairs, never missing
+     */
     public Map<String, Object> accepted() {
         return unmodifiableMap(cache);
     }
 
-    public Optional<Layer> layer(final String name) {
+    /**
+     * Gets a map view of the last accepted layer with <var>name</var>.
+     *
+     * @param name the layer name, never missing
+     *
+     * @return the layer or {@code null} if none
+     */
+    public Map<String, Object> layer(final String name) {
         final List<Layer> layers = this.layers.get(name);
-        if (layers.isEmpty())
-            return Optional.empty();
-        else
-            return Optional.of(layers.get(layers.size() - 1));
+        return layers.isEmpty() ? null : last(layers).changed();
     }
 
+    /**
+     * Creates a stream of named-layer map views of entries in the same order
+     * as layers were accepted.
+     *
+     * @return the stream of named-layer computed key-value pairs, never
+     * missing
+     */
     public Stream<Entry<String, Map<String, Object>>> history() {
         return layers.entries().stream().
                 map(e -> new SimpleImmutableEntry<>(e.getKey(),
@@ -99,6 +149,15 @@ public final class Layers {
 
     private <L extends Layer> L newLayer(final Function<Surface, L> next) {
         return next.apply(new LayersSurface());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Field<T> fieldFor(final String key) {
+        return fields.getOrDefault(key, LAST);
+    }
+
+    private static <T> T last(final List<T> list) {
+        return list.get(list.size() - 1);
     }
 
     private final class LayersSurface

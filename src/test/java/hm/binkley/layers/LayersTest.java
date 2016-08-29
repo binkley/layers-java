@@ -4,14 +4,15 @@ import hm.binkley.layers.Field.IntegerField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static hm.binkley.layers.Layers.newLayers;
-import static java.lang.System.identityHashCode;
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.expectThrows;
@@ -180,11 +181,17 @@ public class LayersTest {
 
     @Test
     void shouldFindLayerByName() {
+        first.put("Tom", "Sawyer");
         final BlankLayer second = first.
                 accept(s -> new BlankLayer(s, "first"));
+        second.put("Huck", "Finn");
         second.accept(s -> new BlankLayer(s, "first"));
 
-        assertEquals(identityHashCode(layers.layer("first").get()),
-                identityHashCode(second));
+        final Map<String, Object> layer = layers.layer("first");
+        assertAll(
+                // @formatter:off
+                () -> assertFalse(layer.containsKey("Tom")),
+                () -> assertTrue(layer.containsKey("Huck")));
+                // @formatter:on
     }
 }
