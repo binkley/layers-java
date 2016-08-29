@@ -8,6 +8,7 @@ import java.util.Map;
 
 import static hm.binkley.layers.Layers.newLayers;
 import static java.lang.System.out;
+import static java.util.stream.Collectors.toList;
 
 /**
  * {@code Character} <b>needs documentation</b>.
@@ -20,17 +21,19 @@ public final class Character {
     private Layer current;
 
     public static void main(final String... args) {
-        out.println(new Character("Brian", "Bob"));
+        final Character bob = new Character("Brian", "Bob");
+        out.println(bob);
+        out.println(bob.layers.history().collect(toList()));
     }
 
     public Character(final String player, final String name) {
-        layers = newLayers(surface -> new BaseLayer(surface, player, name),
+        layers = newLayers(s -> new BaseLayer(s, player, name),
                 l -> current = l, BaseLayer.fields);
         current = current.
                 accept(s -> new StatsLayer(s, 15, 14, 13, 12, 10, 8),
                         StatsLayer.fields).
                 accept(HumanLayer::new, HumanLayer.fields).
-                accept(BlankLayer::new);
+                accept(s -> new BlankLayer(s, "Scratch"));
     }
 
     @Override
@@ -49,7 +52,7 @@ public final class Character {
 
         public BaseLayer(final Surface surface, final String player,
                 final String name) {
-            super(surface);
+            super(surface, "Base");
             put("player", player);
             put("name", name);
         }
@@ -70,7 +73,7 @@ public final class Character {
 
         public StatsLayer(final Surface surface, final int STR, final int DEX,
                 final int CON, final int INT, final int WIS, final int CHA) {
-            super(surface);
+            super(surface, "Stats");
             put("STR", STR);
             put("DEX", DEX);
             put("CON", CON);
@@ -95,7 +98,7 @@ public final class Character {
         }
 
         protected RaceLayer(final Surface surface, final String raceName) {
-            super(surface);
+            super(surface, "Race");
             put("race:name", raceName);
         }
     }
@@ -103,7 +106,7 @@ public final class Character {
     public static final class HumanLayer
             extends RaceLayer {
         public HumanLayer(final Surface surface) {
-            super(surface, "name:human");
+            super(surface, "Human");
             put("STR", 1);
             put("race:STR-bonus", "1");
             put("DEX", 1);

@@ -13,7 +13,7 @@ public interface Surface {
     void check(final String key, final Object value)
         throws ClassCastException;
 
-    void accept(final Layer layer);
+    void accept(final String name, final Layer layer);
 
     Map<String, Object> changed(final Layer layer);
 

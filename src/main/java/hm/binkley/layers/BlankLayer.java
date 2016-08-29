@@ -20,6 +20,12 @@ public class BlankLayer
         implements Layer {
     private final Map<String, Object> map = new HashMap<>();
     private final Surface surface;
+    private final String name;
+
+    @Override
+    public final String name() {
+        return name;
+    }
 
     @Override
     public final int size() {
@@ -51,7 +57,7 @@ public class BlankLayer
     @Override
     public final <L extends Layer> L accept(final Function<Surface, L> next,
             final Map<String, Field> fields) {
-        surface.accept(this);
+        surface.accept(name, this);
         return reject(next, fields);
     }
 

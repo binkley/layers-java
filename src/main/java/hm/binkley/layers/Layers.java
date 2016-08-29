@@ -2,10 +2,11 @@ package hm.binkley.layers;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -25,7 +26,7 @@ import static lombok.AccessLevel.PRIVATE;
 @RequiredArgsConstructor(access = PRIVATE)
 @SuppressWarnings("WeakerAccess")
 public final class Layers {
-    private final Collection<Layer> layers = new ArrayList<>();
+    private final Map<String, Layer> layers = new LinkedHashMap<>();
     private final Map<String, Field> fields = new HashMap<>();
     private final Map<String, Object> cache = new HashMap<>();
 
@@ -56,7 +57,7 @@ public final class Layers {
         return cache.size();
     }
 
-    public <T> Layers add(final String key, final Field<T> field) {
+    public Layers add(final String key, final Field field) {
         fields.put(key, field);
         return this;
     }
@@ -70,9 +71,10 @@ public final class Layers {
         return unmodifiableMap(cache);
     }
 
-    public Stream<Map<String, Object>> history() {
-        return layers.stream().
-                map(Layer::changed);
+    public Stream<Entry<String, Map<String, Object>>> history() {
+        return layers.entrySet().stream().
+                map(e -> new SimpleImmutableEntry<>(e.getKey(),
+                        e.getValue().changed()));
     }
 
     @Override
@@ -98,8 +100,8 @@ public final class Layers {
         }
 
         @Override
-        public void accept(final Layer layer) {
-            layers.add(layer);
+        public void accept(final String name, final Layer layer) {
+            layers.put(name, layer);
             layer.changed().forEach((k, v) -> cache.merge(k, v, fieldFor(k)));
         }
 

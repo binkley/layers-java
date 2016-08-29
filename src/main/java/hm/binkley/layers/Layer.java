@@ -13,6 +13,8 @@ import static java.util.Collections.emptyMap;
  */
 @SuppressWarnings("WeakerAccess")
 public interface Layer {
+    String name();
+
     int size();
 
     boolean isEmpty();

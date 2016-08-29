@@ -26,7 +26,7 @@ public class LayersTest {
     @BeforeEach
     void setUp() {
         final AtomicReference<Layer> holder = new AtomicReference<>();
-        layers = newLayers(BlankLayer::new, holder::set);
+        layers = newLayers(s -> new BlankLayer(s, "first"), holder::set);
         first = holder.get();
     }
 
@@ -47,7 +47,7 @@ public class LayersTest {
 
     @Test
     void shouldAccept() {
-        final BlankLayer next = first.accept(BlankLayer::new);
+        final BlankLayer next = first.accept(s -> new BlankLayer(s, "next"));
         // @formatter:off
         assertAll(
                 () -> assertTrue(layers.accepted().isEmpty()),
@@ -62,7 +62,7 @@ public class LayersTest {
 
     @Test
     void shouldReject() {
-        final BlankLayer next = first.reject(BlankLayer::new);
+        final BlankLayer next = first.reject(s -> new BlankLayer(s, "next"));
         // @formatter:off
         assertAll(
                 () -> assertTrue(layers.accepted().isEmpty()),
@@ -78,16 +78,21 @@ public class LayersTest {
     @Test
     void shouldHaveKeyForLayer() {
         first.put("Bob", "Builder");
-        final Layer next = first.accept(BlankLayer::new).
+        final Layer next = first.accept(s -> new BlankLayer(s, "next")).
                 put("Bob", "Nancy");
         // @formatter:off
         assertAll(
                 () -> assertEquals("Builder", layers.get("Bob")),
                 () -> assertEquals("Builder", layers.accepted().get("Bob")),
                 () -> assertEquals(1, layers.size()),
+                () -> assertEquals("first", layers.history().
+                        collect(toList()).
+                        get(0).
+                        getKey()),
                 () -> assertEquals("Builder", layers.history().
                         collect(toList()).
                         get(0).
+                        getValue().
                         get("Bob")),
                 () -> assertEquals("Nancy", next.changed().get("Bob")),
                 () -> assertEquals("Nancy", next.whatIf().get("Bob")));
@@ -97,18 +102,23 @@ public class LayersTest {
     @Test
     void shouldHaveLastKeyForLayer() {
         first.put("Bob", "Builder");
-        first.accept(BlankLayer::new).
+        first.accept(s -> new BlankLayer(s, "next")).
                 put("Bob", "Nancy").
-                accept(BlankLayer::new);
+                accept(s -> new BlankLayer(s, "last"));
         // @formatter:off
         assertAll(
                 () -> assertEquals("Nancy", layers.get("Bob")),
                 () -> assertEquals("Nancy", layers.get("Bob")),
                 () -> assertEquals(1, layers.size()),
                 () -> assertEquals("Nancy", layers.accepted().get("Bob")),
+                () -> assertEquals("next", layers.history().
+                        collect(toList()).
+                        get(1).
+                        getKey()),
                 () -> assertEquals("Nancy", layers.history().
                         collect(toList()).
                         get(1).
+                        getValue().
                         get("Bob")));
         // @formatter:on
     }
@@ -117,9 +127,9 @@ public class LayersTest {
     void shouldApplyFieldRule() {
         layers.add("Total", new IntegerField((a, b) -> a + b));
         first.put("Total", 1).
-                accept(BlankLayer::new).
+                accept(s -> new BlankLayer(s, "first")).
                 put("Total", 2).
-                accept(BlankLayer::new);
+                accept(s -> new BlankLayer(s, "next"));
         assertEquals((Integer) 3, layers.get("Total"));
     }
 
