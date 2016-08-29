@@ -139,7 +139,7 @@ public final class Character {
             put("race:INT-bonus", "1");
             put("WIS", 1);
             put("race:WIS-bonus", "1");
-            put("CAH", 1);
+            put("CHA", 1);
             put("race:CHA-bonus", "1");
         }
     }
