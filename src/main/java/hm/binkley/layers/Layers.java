@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.unmodifiableMap;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -29,14 +29,14 @@ public final class Layers {
 
     public static <L extends Layer> Layers newLayers(
             final Function<Surface, L> next, final Consumer<L> firstLayer) {
-        return newLayers(next, firstLayer, Stream.empty());
+        return newLayers(next, firstLayer, emptyMap());
     }
 
     public static <L extends Layer> Layers newLayers(
             final Function<Surface, L> next, final Consumer<L> firstLayer,
-            final Stream<Entry<String, Field>> fields) {
+            final Map<String, Field> fields) {
         final Layers layers = new Layers();
-        fields.forEach(e -> layers.fields.put(e.getKey(), e.getValue()));
+        layers.fields.putAll(fields);
         firstLayer.accept(layers.newLayer(next));
         return layers;
     }
@@ -82,32 +82,21 @@ public final class Layers {
         @Override
         public void accept(final Layer layer) {
             layers.add(layer);
-            merge(cache, layer.changed());
+            layer.changed().forEach((k, v) -> cache.merge(k, v, fieldFor(k)));
         }
 
         @Override
         public Map<String, Object> changed(final Layer layer) {
             final Map<String, Object> changed = new HashMap<>(cache);
-            merge(changed, layer.changed());
+            layer.changed().
+                    forEach((k, v) -> changed.merge(k, v, fieldFor(k)));
             return unmodifiableMap(changed);
         }
 
         @Override
-        public Surface add(final String key, final Field field) {
-            fields.put(key, field);
+        public Surface addAll(final Map<String, Field> fields) {
+            Layers.this.fields.putAll(fields);
             return this;
-        }
-
-        private void merge(final Map<String, Object> accepted,
-                final Map<String, Object> changed) {
-            changed.entrySet().
-                    forEach(e -> mergeOne(accepted, e.getKey(),
-                            e.getValue()));
-        }
-
-        private void mergeOne(final Map<String, Object> map, final String key,
-                final Object value) {
-            map.merge(key, value, fieldFor(key));
         }
     }
 }

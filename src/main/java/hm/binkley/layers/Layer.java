@@ -1,9 +1,9 @@
 package hm.binkley.layers;
 
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Function;
-import java.util.stream.Stream;
+
+import static java.util.Collections.emptyMap;
 
 /**
  * {@code Layer} <b>needs documentation</b>.
@@ -25,16 +25,16 @@ public interface Layer {
     Map<String, Object> whatIf();
 
     <L extends Layer> L accept(final Function<Surface, L> next,
-            final Stream<Entry<String, Field>> fields);
+            final Map<String, Field> fields);
 
     <L extends Layer> L reject(final Function<Surface, L> next,
-            final Stream<Entry<String, Field>> fields);
+            final Map<String, Field> fields);
 
     default <L extends Layer> L accept(final Function<Surface, L> next) {
-        return accept(next, Stream.empty());
+        return accept(next, emptyMap());
     }
 
     default <L extends Layer> L reject(final Function<Surface, L> next) {
-        return reject(next, Stream.empty());
+        return reject(next, emptyMap());
     }
 }

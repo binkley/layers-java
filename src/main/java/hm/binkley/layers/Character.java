@@ -20,9 +20,9 @@ public final class Character {
     public Character(final String player, final String name,
             final String raceName) {
         layers = newLayers(surface -> new BaseLayer(surface, player, name),
-                l -> current = l, BaseLayer.fields.entrySet().stream());
-        current = current.accept(s -> new RaceLayer(s, raceName),
-                RaceLayer.fields.entrySet().stream());
+                l -> current = l, BaseLayer.fields);
+        current = current
+                .accept(s -> new RaceLayer(s, raceName), RaceLayer.fields);
     }
 
     public static final class BaseLayer

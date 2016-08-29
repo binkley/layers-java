@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static java.util.Collections.unmodifiableMap;
 
@@ -51,15 +49,15 @@ public class BlankLayer
 
     @Override
     public final <L extends Layer> L accept(final Function<Surface, L> next,
-            final Stream<Entry<String, Field>> fields) {
+            final Map<String, Field> fields) {
         surface.accept(this);
         return reject(next, fields);
     }
 
     @Override
     public final <L extends Layer> L reject(final Function<Surface, L> next,
-            final Stream<Entry<String, Field>> fields) {
-        fields.forEach(e -> surface.add(e.getKey(), e.getValue()));
+            final Map<String, Field> fields) {
+        surface.addAll(fields);
         return next.apply(surface);
     }
 }

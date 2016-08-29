@@ -14,5 +14,5 @@ public interface Surface {
 
     Map<String, Object> changed(final Layer layer);
 
-    Surface add(final String key, final Field field);
+    Surface addAll(final Map<String, Field> fields);
 }
