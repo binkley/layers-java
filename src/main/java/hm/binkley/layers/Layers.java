@@ -40,6 +40,19 @@ public final class Layers {
         return layers;
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> T get(final String key) {
+        return (T) cache.get(key);
+    }
+
+    public boolean isEmpty() {
+        return cache.isEmpty();
+    }
+
+    public int size() {
+        return cache.size();
+    }
+
     public <T> Layers add(final String key, final Field<T> field) {
         fields.put(key, field);
         return this;
@@ -48,11 +61,6 @@ public final class Layers {
     @SuppressWarnings("unchecked")
     public <T> Field<T> fieldFor(final String key) {
         return fields.getOrDefault(key, Field.LAST);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T get(final String key) {
-        return (T) cache.get(key);
     }
 
     public Map<String, Object> accepted() {
