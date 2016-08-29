@@ -1,13 +1,16 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.Field.CollectionField;
 import hm.binkley.layers.Field.IntegerField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static hm.binkley.layers.Layers.newLayers;
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -193,5 +196,17 @@ public class LayersTest {
                 () -> assertFalse(layer.containsKey("Tom")),
                 () -> assertTrue(layer.containsKey("Huck")));
                 // @formatter:on
+    }
+
+    @Test
+    void shouldMergeCollectionField() {
+        layers.add("Free Stuff", new CollectionField(ArrayList::new));
+        first.put("Free Stuff", asList("Beer", "Chips")).
+                accept(s -> new BlankLayer(s, "next")).
+                put("Free Stuff", asList("Speech", "Air")).
+                accept(s -> new BlankLayer(s, "last"));
+
+        assertEquals(asList("Beer", "Chips", "Speech", "Air"),
+                layers.get("Free Stuff"));
     }
 }

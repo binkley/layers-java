@@ -55,19 +55,11 @@ public class Field<T>
         }
     }
 
-    public static final class EnumField<E extends Enum<E>>
-            extends Field<E> {
-        public EnumField(final Class<E> type) {
-            super(type, (a, b) -> b);
-        }
-    }
-
-    public static final class CollectionField<T>
-            extends Field<Collection<T>> {
-        public CollectionField(final Class<Collection<T>> type,
-                final Supplier<? extends Collection<T>> next) {
-            super(type, (a, b) -> {
-                final Collection<T> all = next.get();
+    public static final class CollectionField
+            extends Field<Collection> {
+        public CollectionField(final Supplier<Collection> merged) {
+            super(Collection.class, (a, b) -> {
+                final Collection all = merged.get();
                 all.addAll(a);
                 all.addAll(b);
                 return all;
