@@ -8,6 +8,7 @@ import java.util.Map;
  * @author <a href="mailto:binkley@alumni.rice.edu">B. K. Oxley (binkley)</a>
  * @todo Needs documentation.
  */
+@SuppressWarnings("WeakerAccess")
 public interface Surface {
     void accept(final Layer layer);
 

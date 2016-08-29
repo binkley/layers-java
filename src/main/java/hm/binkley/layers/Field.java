@@ -13,10 +13,11 @@ import java.util.function.Supplier;
  * @todo Needs documentation.
  */
 @RequiredArgsConstructor
-public abstract class Field<T>
+@SuppressWarnings("WeakerAccess")
+public class Field<T>
         implements BiFunction<T, T, T> {
-    public static final Field<Object> LAST = new Field<Object>(Object.class,
-            (a, b) -> b) {};
+    public static final Field<Object> LAST = new Field<>(Object.class,
+            (a, b) -> b);
     public final Class<T> type;
     private final BiFunction<T, T, T> rule;
 

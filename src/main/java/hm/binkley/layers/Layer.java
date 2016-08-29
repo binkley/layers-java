@@ -11,12 +11,18 @@ import java.util.stream.Stream;
  * @author <a href="mailto:binkley@alumni.rice.edu">B. K. Oxley (binkley)</a>
  * @todo Needs documentation.
  */
+@SuppressWarnings("WeakerAccess")
 public interface Layer {
+    int size();
+
+    boolean isEmpty();
+
+    /** @todo How to indicate covariant return to subtype? */
+    Layer put(final String key, final Object value);
+
     Map<String, Object> changed();
 
     Map<String, Object> whatIf();
-
-    Layer put(final String key, final Object value);
 
     <L extends Layer> L accept(final Function<Surface, L> next,
             final Stream<Entry<String, Field>> fields);

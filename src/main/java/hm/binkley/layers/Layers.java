@@ -21,6 +21,7 @@ import static lombok.AccessLevel.PRIVATE;
  * @todo Needs documentation.
  */
 @RequiredArgsConstructor(access = PRIVATE)
+@SuppressWarnings("WeakerAccess")
 public final class Layers {
     private final Collection<Layer> layers = new ArrayList<>();
     private final Map<String, Field> fields = new HashMap<>();
