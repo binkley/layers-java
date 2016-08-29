@@ -8,7 +8,6 @@ import java.util.Map;
 
 import static hm.binkley.layers.Layers.newLayers;
 import static java.lang.System.out;
-import static java.util.stream.Collectors.toList;
 
 /**
  * {@code Character} <b>needs documentation</b>.
@@ -23,7 +22,7 @@ public final class Character {
     public static void main(final String... args) {
         final Character bob = new Character("Brian", "Bob");
         out.println(bob);
-        out.println(bob.layers.history().collect(toList()));
+        bob.layers.history().forEach(out::println);
     }
 
     public Character(final String player, final String name) {
@@ -33,6 +32,7 @@ public final class Character {
                 accept(s -> new StatsLayer(s, 15, 14, 13, 12, 10, 8),
                         StatsLayer.fields).
                 accept(HumanLayer::new, HumanLayer.fields).
+                accept(s -> new RenameLayer(s, "Sally")).
                 accept(s -> new BlankLayer(s, "Scratch"));
     }
 
@@ -119,6 +119,14 @@ public final class Character {
             put("race:WIS-bonus", "1");
             put("CAH", 1);
             put("race:CHA-bonus", "1");
+        }
+    }
+
+    public static final class RenameLayer
+            extends BlankLayer {
+        public RenameLayer(final Surface surface, final String newName) {
+            super(surface, "Rename");
+            put("name", newName);
         }
     }
 }
