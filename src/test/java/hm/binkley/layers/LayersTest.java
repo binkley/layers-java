@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static hm.binkley.layers.Layers.newLayers;
+import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -160,5 +161,18 @@ public class LayersTest {
                 () -> assertEquals("Nancy", layers.get("Bob")),
                 () -> assertEquals(2, layers.history().count()));
         // @formatter:on
+    }
+
+    @Test
+    void shouldDisallowFieldForExistingKey() {
+        final IllegalStateException thrown = expectThrows(
+                IllegalStateException.class,
+                () -> first.put("Bob", "Builder").
+                        accept(s -> new BlankLayer(s, "next"),
+                                singletonMap("Bob",
+                                        new IntegerField((a, b) -> a + b))).
+                        put("Bob", 3).
+                        accept(s -> new BlankLayer(s, "last")));
+        assertTrue(thrown.getMessage().contains("Bob"));
     }
 }

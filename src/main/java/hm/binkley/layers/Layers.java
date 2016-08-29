@@ -41,7 +41,7 @@ public final class Layers {
             final Function<Surface, L> next, final Consumer<L> firstLayer,
             final Map<String, Field> fields) {
         final Layers layers = new Layers();
-        layers.fields.putAll(fields);
+        fields.forEach(layers::add);
         firstLayer.accept(layers.newLayer(next));
         return layers;
     }
@@ -60,6 +60,9 @@ public final class Layers {
     }
 
     public Layers add(final String key, final Field field) {
+        if (cache.containsKey(key))
+            throw new IllegalStateException(
+                    format("Cannot add field for pre-existing key: %s", key));
         fields.put(key, field);
         return this;
     }
@@ -117,7 +120,7 @@ public final class Layers {
 
         @Override
         public Surface addAll(final Map<String, Field> fields) {
-            Layers.this.fields.putAll(fields);
+            fields.forEach(Layers.this::add);
             return this;
         }
     }
