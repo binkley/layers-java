@@ -148,4 +148,17 @@ public class LayersTest {
                 () -> assertTrue(message.contains(String.class.getName())));
         // @formatter:on
     }
+
+    @Test
+    void shouldPreserveHistoryWhenAcceptingSameNamedLayer() {
+        first.put("Bob", "Builder").
+                accept(s -> new BlankLayer(s, "first")).
+                put("Bob", "Nancy").
+                accept(s -> new BlankLayer(s, "next"));
+        // @formatter:off
+        assertAll(
+                () -> assertEquals("Nancy", layers.get("Bob")),
+                () -> assertEquals(2, layers.history().count()));
+        // @formatter:on
+    }
 }

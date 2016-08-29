@@ -1,10 +1,11 @@
 package hm.binkley.layers;
 
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.ListMultimap;
 import lombok.RequiredArgsConstructor;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
@@ -26,7 +27,8 @@ import static lombok.AccessLevel.PRIVATE;
 @RequiredArgsConstructor(access = PRIVATE)
 @SuppressWarnings("WeakerAccess")
 public final class Layers {
-    private final Map<String, Layer> layers = new LinkedHashMap<>();
+    private final ListMultimap<String, Layer> layers = LinkedListMultimap
+            .create();
     private final Map<String, Field> fields = new HashMap<>();
     private final Map<String, Object> cache = new HashMap<>();
 
@@ -72,7 +74,7 @@ public final class Layers {
     }
 
     public Stream<Entry<String, Map<String, Object>>> history() {
-        return layers.entrySet().stream().
+        return layers.entries().stream().
                 map(e -> new SimpleImmutableEntry<>(e.getKey(),
                         e.getValue().changed()));
     }

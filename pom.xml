@@ -5,8 +5,8 @@
   ~ Please see https://github.com/binkley/resty/blob/master/LICENSE.md.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -38,6 +38,7 @@
 
     <properties>
         <!-- @formatter:off -->
+        <guava.version>19.0</guava.version>
         <java.version>8</java.version>
         <junit.jupiter.version>5.0.0-M2</junit.jupiter.version>
         <junit.platform.version>1.0.0-M2</junit.platform.version>
@@ -62,6 +63,11 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -107,7 +113,8 @@
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
-                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <artifactId>junit-platform-surefire-provider
+                        </artifactId>
                         <version>${junit.platform.version}</version>
                     </dependency>
                 </dependencies>
