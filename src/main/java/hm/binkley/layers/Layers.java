@@ -1,10 +1,9 @@
 package hm.binkley.layers;
 
-import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.ListMultimap;
 import lombok.RequiredArgsConstructor;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +27,8 @@ import static lombok.AccessLevel.PRIVATE;
 @RequiredArgsConstructor(access = PRIVATE)
 @SuppressWarnings("WeakerAccess")
 public final class Layers {
-    private final ListMultimap<String, Layer> layers = LinkedListMultimap
-            .create();
+    private final List<Layer> layers = new ArrayList<>();
+    private final Map<String, Layer> names = new HashMap<>();
     private final Map<String, Field> fields = new HashMap<>();
     private final Map<String, Object> cache = new HashMap<>();
 
@@ -125,21 +124,20 @@ public final class Layers {
      * @return the layer or {@code null} if none
      */
     public Map<String, Object> layer(final String name) {
-        final List<Layer> layers = this.layers.get(name);
-        return layers.isEmpty() ? null : last(layers).changed();
+        final Layer layer = names.get(name);
+        return null == layer ? null : layer.changed();
     }
 
     /**
-     * Creates a stream of blankLayer-layer map views of entries in the same order
-     * as layers were accepted.
+     * Creates a stream of blankLayer-layer map views of entries in the same
+     * order as layers were accepted.
      *
      * @return the stream of blankLayer-layer computed key-value pairs, never
      * missing
      */
     public Stream<Entry<String, Map<String, Object>>> history() {
-        return layers.entries().stream().
-                map(e -> new SimpleImmutableEntry<>(e.getKey(),
-                        e.getValue().changed()));
+        return layers.stream().
+                map(l -> new SimpleImmutableEntry<>(l.name(), l.changed()));
     }
 
     @Override
@@ -175,7 +173,8 @@ public final class Layers {
 
         @Override
         public void accept(final String name, final Layer layer) {
-            layers.put(name, layer);
+            layers.add(layer);
+            names.put(name, layer);
             layer.changed().forEach((k, v) -> cache.merge(k, v, fieldFor(k)));
         }
 
