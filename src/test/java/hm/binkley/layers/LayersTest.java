@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static hm.binkley.layers.BlankLayer.blankLayer;
 import static hm.binkley.layers.Field.IntegerField.additiveIntegerField;
@@ -33,9 +32,9 @@ public class LayersTest {
 
     @BeforeEach
     void setUp() {
-        final AtomicReference<Layer> holder = new AtomicReference<>();
-        layers = newLayers(blankLayer("first"), holder::set);
-        first = holder.get();
+        final Layer[] holder = new Layer[1];
+        layers = newLayers(blankLayer("first"), l -> holder[0] = l);
+        first = holder[0];
     }
 
     @Test
