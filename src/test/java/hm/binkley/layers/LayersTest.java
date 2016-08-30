@@ -184,8 +184,7 @@ public class LayersTest {
                 IllegalStateException.class,
                 () -> first.put("Bob", "Builder").
                         accept(blankLayer("next"),
-                                singletonMap("Bob", additiveIntegerField()))
-                        .
+                                singletonMap("Bob", additiveIntegerField())).
                                 put("Bob", 3).
                                 accept(blankLayer("last")));
 

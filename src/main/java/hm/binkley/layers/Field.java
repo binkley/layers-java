@@ -16,8 +16,12 @@ import java.util.function.Supplier;
 @SuppressWarnings("WeakerAccess")
 public class Field<T>
         implements BiFunction<T, T, T> {
+    public static <T> T last(final T a, final T b) {
+        return b;
+    }
+
     public static final Field<Object> LAST = new Field<>(Object.class,
-            (a, b) -> b);
+            Field::last);
     public final Class<T> type;
     private final BiFunction<T, T, T> rule;
 
@@ -29,7 +33,7 @@ public class Field<T>
     public static final class StringField
             extends Field<String> {
         public StringField() {
-            super(String.class, (a, b) -> b);
+            super(String.class, Field::last);
         }
     }
 
