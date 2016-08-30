@@ -28,13 +28,11 @@ import static org.junit.jupiter.api.Assertions.expectThrows;
  */
 public class LayersTest {
     private Layers layers;
-    private Layer first;
+    private Layer<?> first;
 
     @BeforeEach
     void setUp() {
-        final Layer[] holder = new Layer[1];
-        layers = newLayers(blankLayer("first"), l -> holder[0] = l);
-        first = holder[0];
+        layers = newLayers(blankLayer("first"), l -> first = l);
     }
 
     @Test
@@ -184,8 +182,8 @@ public class LayersTest {
                 () -> first.put("Bob", "Builder").
                         accept(blankLayer("next"),
                                 singletonMap("Bob", additiveIntegerField())).
-                                put("Bob", 3).
-                                accept(blankLayer("last")));
+                        put("Bob", 3).
+                        accept(blankLayer("last")));
 
         assertTrue(thrown.getMessage().contains("Bob"));
     }

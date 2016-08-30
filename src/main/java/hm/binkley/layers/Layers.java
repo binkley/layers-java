@@ -32,7 +32,7 @@ public final class Layers {
     private final Map<String, Field> fields = new HashMap<>();
     private final Map<String, Object> cache = new HashMap<>();
 
-    public static <L extends Layer> Layers newLayers(
+    public static <L extends Layer<L>> Layers newLayers(
             final Function<Surface, L> next, final Consumer<L> firstLayer) {
         return newLayers(next, firstLayer, emptyMap());
     }
@@ -50,7 +50,7 @@ public final class Layers {
      *
      * @see #add(String, Field) Adding field definitions
      */
-    public static <L extends Layer> Layers newLayers(
+    public static <L extends Layer<L>> Layers newLayers(
             final Function<Surface, L> first, final Consumer<L> layer,
             final Map<String, Field> fields) {
         final Layers layers = new Layers();
@@ -135,6 +135,7 @@ public final class Layers {
      * @return the stream of blankLayer-layer computed key-value pairs, never
      * missing
      */
+    @SuppressWarnings("unchecked")
     public Stream<Entry<String, Map<String, Object>>> history() {
         return layers.stream().
                 map(l -> new SimpleImmutableEntry<>(l.name(), l.changed()));
@@ -154,10 +155,6 @@ public final class Layers {
         return fields.getOrDefault(key, LAST);
     }
 
-    private static <T> T last(final List<T> list) {
-        return list.get(list.size() - 1);
-    }
-
     private final class LayersSurface
             implements Surface {
         @SuppressWarnings("unchecked")
@@ -172,14 +169,14 @@ public final class Layers {
         }
 
         @Override
-        public void accept(final String name, final Layer layer) {
+        public void accept(final String name, final Layer<?> layer) {
             layers.add(layer);
             names.put(name, layer);
             layer.changed().forEach((k, v) -> cache.merge(k, v, fieldFor(k)));
         }
 
         @Override
-        public Map<String, Object> changed(final Layer layer) {
+        public Map<String, Object> changed(final Layer<?> layer) {
             final Map<String, Object> changed = new HashMap<>(cache);
             layer.changed().
                     forEach((k, v) -> changed.merge(k, v, fieldFor(k)));

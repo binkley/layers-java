@@ -12,31 +12,30 @@ import static java.util.Collections.emptyMap;
  * @todo Needs documentation.
  */
 @SuppressWarnings("WeakerAccess")
-public interface Layer {
+public interface Layer<L extends Layer<L>> {
     String name();
 
     int size();
 
     boolean isEmpty();
 
-    /** @todo How to indicate covariant return to subtype? */
-    Layer put(final String key, final Object value);
+    L put(final String key, final Object value);
 
     Map<String, Object> changed();
 
     Map<String, Object> whatIf();
 
-    <L extends Layer> L accept(final Function<Surface, L> next,
+    <M extends Layer<M>> M accept(final Function<Surface, M> next,
             final Map<String, Field> fields);
 
-    <L extends Layer> L reject(final Function<Surface, L> next,
+    <M extends Layer<M>> M reject(final Function<Surface, M> next,
             final Map<String, Field> fields);
 
-    default <L extends Layer> L accept(final Function<Surface, L> next) {
+    default <M extends Layer<M>> M accept(final Function<Surface, M> next) {
         return accept(next, emptyMap());
     }
 
-    default <L extends Layer> L reject(final Function<Surface, L> next) {
+    default <M extends Layer<M>> M reject(final Function<Surface, M> next) {
         return reject(next, emptyMap());
     }
 }
