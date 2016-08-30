@@ -22,6 +22,11 @@ public class BlankLayer
     private final Surface surface;
     private final String name;
 
+    public static Function<Surface, BlankLayer> blankLayer(
+            final String name) {
+        return s -> new BlankLayer(s, name);
+    }
+
     @Override
     public final String name() {
         return name;

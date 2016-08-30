@@ -1,7 +1,6 @@
 package hm.binkley.layers;
 
 import hm.binkley.layers.Field.CollectionField;
-import hm.binkley.layers.Field.IntegerField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static hm.binkley.layers.BlankLayer.blankLayer;
+import static hm.binkley.layers.Field.IntegerField.additativeIntegerField;
 import static hm.binkley.layers.Layers.newLayers;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
@@ -32,7 +33,7 @@ public class LayersTest {
     @BeforeEach
     void setUp() {
         final AtomicReference<Layer> holder = new AtomicReference<>();
-        layers = newLayers(s -> new BlankLayer(s, "first"), holder::set);
+        layers = newLayers(blankLayer("first"), holder::set);
         first = holder.get();
     }
 
@@ -53,7 +54,7 @@ public class LayersTest {
 
     @Test
     void shouldAccept() {
-        final BlankLayer next = first.accept(s -> new BlankLayer(s, "next"));
+        final BlankLayer next = first.accept(blankLayer("next"));
         // @formatter:off
         assertAll(
                 () -> assertTrue(layers.accepted().isEmpty()),
@@ -68,7 +69,7 @@ public class LayersTest {
 
     @Test
     void shouldReject() {
-        final BlankLayer next = first.reject(s -> new BlankLayer(s, "next"));
+        final BlankLayer next = first.reject(blankLayer("next"));
         // @formatter:off
         assertAll(
                 () -> assertTrue(layers.accepted().isEmpty()),
@@ -84,7 +85,7 @@ public class LayersTest {
     @Test
     void shouldHaveKeyForLayer() {
         first.put("Bob", "Builder");
-        final Layer next = first.accept(s -> new BlankLayer(s, "next")).
+        final Layer next = first.accept(blankLayer("next")).
                 put("Bob", "Nancy");
         // @formatter:off
         assertAll(
@@ -108,9 +109,9 @@ public class LayersTest {
     @Test
     void shouldHaveLastKeyForLayer() {
         first.put("Bob", "Builder");
-        first.accept(s -> new BlankLayer(s, "next")).
+        first.accept(blankLayer("next")).
                 put("Bob", "Nancy").
-                accept(s -> new BlankLayer(s, "last"));
+                accept(blankLayer("last"));
         // @formatter:off
         assertAll(
                 () -> assertEquals("Nancy", layers.get("Bob")),
@@ -131,17 +132,17 @@ public class LayersTest {
 
     @Test
     void shouldApplyFieldRule() {
-        layers.add("Total", new IntegerField((a, b) -> a + b));
+        layers.add("Total", additativeIntegerField());
         first.put("Total", 1).
-                accept(s -> new BlankLayer(s, "first")).
+                accept(blankLayer("first")).
                 put("Total", 2).
-                accept(s -> new BlankLayer(s, "next"));
+                accept(blankLayer("next"));
         assertEquals((Integer) 3, layers.get("Total"));
     }
 
     @Test
     void shouldComplainForWrongValue() {
-        layers.add("Total", new IntegerField((a, b) -> a + b));
+        layers.add("Total", additativeIntegerField());
         final ClassCastException thrown = expectThrows(
                 ClassCastException.class, () -> first.put("Total", "Fred"));
         final String message = thrown.getMessage();
@@ -158,9 +159,9 @@ public class LayersTest {
     @Test
     void shouldPreserveHistoryWhenAcceptingSameNamedLayer() {
         first.put("Bob", "Builder").
-                accept(s -> new BlankLayer(s, "first")).
+                accept(blankLayer("first")).
                 put("Bob", "Nancy").
-                accept(s -> new BlankLayer(s, "next"));
+                accept(blankLayer("next"));
         // @formatter:off
         assertAll(
                 () -> assertEquals("Nancy", layers.get("Bob")),
@@ -173,11 +174,10 @@ public class LayersTest {
         final IllegalStateException thrown = expectThrows(
                 IllegalStateException.class,
                 () -> first.put("Bob", "Builder").
-                        accept(s -> new BlankLayer(s, "next"),
-                                singletonMap("Bob",
-                                        new IntegerField((a, b) -> a + b))).
-                        put("Bob", 3).
-                        accept(s -> new BlankLayer(s, "last")));
+                        accept(blankLayer("next"),
+                                singletonMap("Bob", additativeIntegerField())).
+                                put("Bob", 3).
+                                accept(blankLayer("last")));
 
         assertTrue(thrown.getMessage().contains("Bob"));
     }
@@ -186,9 +186,9 @@ public class LayersTest {
     void shouldFindLayerByName() {
         first.put("Tom", "Sawyer");
         final BlankLayer second = first.
-                accept(s -> new BlankLayer(s, "first"));
+                accept(blankLayer("first"));
         second.put("Huck", "Finn");
-        second.accept(s -> new BlankLayer(s, "first"));
+        second.accept(blankLayer("first"));
 
         final Map<String, Object> layer = layers.layer("first");
         assertAll(
@@ -202,9 +202,9 @@ public class LayersTest {
     void shouldMergeCollectionField() {
         layers.add("Free Stuff", new CollectionField(ArrayList::new));
         first.put("Free Stuff", asList("Beer", "Chips")).
-                accept(s -> new BlankLayer(s, "next")).
+                accept(blankLayer("next")).
                 put("Free Stuff", asList("Speech", "Air")).
-                accept(s -> new BlankLayer(s, "last"));
+                accept(blankLayer("last"));
 
         assertEquals(asList("Beer", "Chips", "Speech", "Air"),
                 layers.get("Free Stuff"));

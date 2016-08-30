@@ -130,10 +130,10 @@ public final class Layers {
     }
 
     /**
-     * Creates a stream of named-layer map views of entries in the same order
+     * Creates a stream of blankLayer-layer map views of entries in the same order
      * as layers were accepted.
      *
-     * @return the stream of named-layer computed key-value pairs, never
+     * @return the stream of blankLayer-layer computed key-value pairs, never
      * missing
      */
     public Stream<Entry<String, Map<String, Object>>> history() {
