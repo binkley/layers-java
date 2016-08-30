@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static hm.binkley.layers.BlankLayer.blankLayer;
-import static hm.binkley.layers.Field.IntegerField.additativeIntegerField;
+import static hm.binkley.layers.Field.IntegerField.additiveIntegerField;
 import static hm.binkley.layers.Layers.newLayers;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
@@ -133,7 +133,7 @@ public class LayersTest {
 
     @Test
     void shouldApplyFieldRule() {
-        layers.add("Total", additativeIntegerField());
+        layers.add("Total", additiveIntegerField());
         first.put("Total", 1).
                 accept(blankLayer("next")).
                 put("Total", 2).
@@ -151,7 +151,7 @@ public class LayersTest {
 
     @Test
     void shouldComplainForWrongValue() {
-        layers.add("Total", additativeIntegerField());
+        layers.add("Total", additiveIntegerField());
         final ClassCastException thrown = expectThrows(
                 ClassCastException.class, () -> first.put("Total", "Fred"));
         final String message = thrown.getMessage();
@@ -184,7 +184,7 @@ public class LayersTest {
                 IllegalStateException.class,
                 () -> first.put("Bob", "Builder").
                         accept(blankLayer("next"),
-                                singletonMap("Bob", additativeIntegerField()))
+                                singletonMap("Bob", additiveIntegerField()))
                         .
                                 put("Bob", 3).
                                 accept(blankLayer("last")));

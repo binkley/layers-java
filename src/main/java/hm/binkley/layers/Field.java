@@ -38,7 +38,7 @@ public class Field<T>
         private static final IntegerField ADDITATIVE = new IntegerField(
                 (a, b) -> a + b);
 
-        public static IntegerField additativeIntegerField() {
+        public static IntegerField additiveIntegerField() {
             return ADDITATIVE;
         }
 
