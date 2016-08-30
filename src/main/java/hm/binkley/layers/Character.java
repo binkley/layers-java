@@ -82,26 +82,33 @@ public final class Character {
 
     public static final class StatsLayer
             extends BlankLayer {
+        public static final String STATS_STR = "stats:STR";
+        public static final String STATS_DEX = "stats:DEX";
+        public static final String STATS_CON = "stats:CON";
+        public static final String STATS_INT = "stats:INT";
+        public static final String STATS_WIS = "stats:WIS";
+        public static final String STATS_CHA = "stats:CHA";
+
         private static final Map<String, Field> fields = new HashMap<>();
 
         static {
-            fields.put("STR", additiveIntegerField());
-            fields.put("DEX", additiveIntegerField());
-            fields.put("CON", additiveIntegerField());
-            fields.put("INT", additiveIntegerField());
-            fields.put("WIS", additiveIntegerField());
-            fields.put("CHA", additiveIntegerField());
+            fields.put(STATS_STR, additiveIntegerField());
+            fields.put(STATS_DEX, additiveIntegerField());
+            fields.put(STATS_CON, additiveIntegerField());
+            fields.put(STATS_INT, additiveIntegerField());
+            fields.put(STATS_WIS, additiveIntegerField());
+            fields.put(STATS_CHA, additiveIntegerField());
         }
 
         public StatsLayer(final Surface surface, final int STR, final int DEX,
                 final int CON, final int INT, final int WIS, final int CHA) {
             super(surface, "Stats");
-            put("STR", STR);
-            put("DEX", DEX);
-            put("CON", CON);
-            put("INT", INT);
-            put("WIS", WIS);
-            put("CHA", CHA);
+            put(STATS_STR, STR);
+            put(STATS_DEX, DEX);
+            put(STATS_CON, CON);
+            put(STATS_INT, INT);
+            put(STATS_WIS, WIS);
+            put(STATS_CHA, CHA);
         }
     }
 
@@ -129,17 +136,17 @@ public final class Character {
             extends RaceLayer {
         public HumanLayer(final Surface surface) {
             super(surface, "Human");
-            put("STR", 1);
+            put("stats:STR", 1);
             put("race:STR-bonus", 1);
-            put("DEX", 1);
+            put("stats:DEX", 1);
             put("race:DEX-bonus", 1);
-            put("CON", 1);
+            put("stats:CON", 1);
             put("race:CON-bonus", 1);
-            put("INT", 1);
+            put("stats:INT", 1);
             put("race:INT-bonus", 1);
-            put("WIS", 1);
+            put("stats:WIS", 1);
             put("race:WIS-bonus", 1);
-            put("CHA", 1);
+            put("stats:CHA", 1);
             put("race:CHA-bonus", 1);
         }
     }
