@@ -40,7 +40,7 @@ public class Field<T>
 
     public static final class IntegerField
             extends Field<Integer> {
-        private static final IntegerField ADDITATIVE = new IntegerField(a -> {
+        private static final IntegerField ADDITIVE = new IntegerField(a -> {
             // Could use stream here, this is better behaved
             int sum = 0;
             for (final Integer i : a)
@@ -49,7 +49,7 @@ public class Field<T>
         });
 
         public static IntegerField additiveIntegerField() {
-            return ADDITATIVE;
+            return ADDITIVE;
         }
 
         public IntegerField(final Function<List<Integer>, Integer> rule) {
