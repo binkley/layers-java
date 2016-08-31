@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.expectThrows;
  */
 public class LayersTest {
     private Layers layers;
-    private Layer<?> first;
+    private BlankLayer<?> first;
 
     @BeforeEach
     void setUp() {
@@ -102,7 +102,7 @@ public class LayersTest {
     @Test
     void shouldHaveKeyForLayer() {
         first.put("Bob", "Builder");
-        final Layer next = first.accept(blankLayer("next")).
+        final BlankLayer<?> next = first.accept(blankLayer("next")).
                 put("Bob", "Nancy");
         // @formatter:off
         assertAll(
