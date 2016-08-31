@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.expectThrows;
 
@@ -78,6 +79,24 @@ public class LayersTest {
                 () -> assertEquals(0, next.size()),
                 () -> assertTrue(next.changed().isEmpty()));
         // @formatter:on
+    }
+
+    @Test
+    void shouldComplainIfAlreadyAccepted() {
+        first.accept(blankLayer("next"));
+
+        assertThrows(IllegalStateException.class, () -> first.put("a", 3));
+        assertThrows(IllegalStateException.class, () -> first.accept(null));
+        assertThrows(IllegalStateException.class, () -> first.reject(null));
+    }
+
+    @Test
+    void shouldComplainIfAlreadyRejected() {
+        first.accept(blankLayer("next"));
+
+        assertThrows(IllegalStateException.class, () -> first.put("a", 3));
+        assertThrows(IllegalStateException.class, () -> first.accept(null));
+        assertThrows(IllegalStateException.class, () -> first.reject(null));
     }
 
     @Test

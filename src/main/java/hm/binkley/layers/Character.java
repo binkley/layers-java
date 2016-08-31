@@ -63,10 +63,8 @@ public final class Character {
         }
 
         @Override
-        public <M extends Layer<M>> M accept(final Function<Surface, M> next,
-                final Map<String, Field> fields) {
+        protected void beforeAccept() {
             accepted = ZonedDateTime.now();
-            return super.accept(next, fields);
         }
 
         @Override

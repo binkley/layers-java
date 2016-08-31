@@ -28,14 +28,9 @@ public interface Layer<L extends Layer<L>> {
     <M extends Layer<M>> M accept(final Function<Surface, M> next,
             final Map<String, Field> fields);
 
-    <M extends Layer<M>> M reject(final Function<Surface, M> next,
-            final Map<String, Field> fields);
-
     default <M extends Layer<M>> M accept(final Function<Surface, M> next) {
         return accept(next, emptyMap());
     }
 
-    default <M extends Layer<M>> M reject(final Function<Surface, M> next) {
-        return reject(next, emptyMap());
-    }
+    <M extends Layer<M>> M reject(final Function<Surface, M> next);
 }
