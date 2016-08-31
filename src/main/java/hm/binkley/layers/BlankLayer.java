@@ -79,11 +79,11 @@ public class BlankLayer<L extends BlankLayer<L>>
 
     @Override
     public final <M extends Layer<M>> M reject(
-            final Function<Surface, M> next) {
+            final Function<Surface, M> replacement) {
         checkAccepted();
         final Surface surface = this.surface;
         this.surface = null;
-        return next.apply(surface);
+        return replacement.apply(surface);
     }
 
     private void checkAccepted() {
