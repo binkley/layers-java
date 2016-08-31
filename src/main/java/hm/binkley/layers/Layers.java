@@ -16,6 +16,7 @@ import static hm.binkley.layers.Field.LAST;
 import static java.lang.String.format;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.unmodifiableMap;
+import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 
 /**
@@ -87,6 +88,22 @@ public final class Layers {
     @SuppressWarnings("unchecked")
     public <T> T get(final String key) {
         return (T) cache.get(key);
+    }
+
+    /**
+     * Gets all values for <var>key</var> in accept order.
+     *
+     * @param key the key, never missing
+     * @param <T> the value type
+     *
+     * @return the list of values for <var>key</var>, or empty list if none
+     */
+    public <T> List<T> getAll(final String key) {
+        return layers.stream().
+                map(Layer::changed).
+                filter(m -> m.containsKey(key)).
+                map(m -> (T) m.get(key)).
+                collect(toList());
     }
 
     /**
@@ -172,14 +189,18 @@ public final class Layers {
         public void accept(final String name, final Layer<?> layer) {
             layers.add(layer);
             names.put(name, layer);
-            layer.changed().forEach((k, v) -> cache.merge(k, v, fieldFor(k)));
+            layer.changed().forEach(
+                    (k, v) -> cache.put(k, fieldFor(k).apply(getAll(k))));
         }
 
         @Override
         public Map<String, Object> changed(final Layer<?> layer) {
             final Map<String, Object> changed = new HashMap<>(cache);
-            layer.changed().
-                    forEach((k, v) -> changed.merge(k, v, fieldFor(k)));
+            layer.changed().forEach((k, v) -> {
+                final List<Object> values = getAll(k);
+                values.add(v);
+                changed.put(k, fieldFor(k).apply(values));
+            });
             return unmodifiableMap(changed);
         }
 

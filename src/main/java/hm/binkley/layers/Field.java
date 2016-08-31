@@ -3,7 +3,8 @@ package hm.binkley.layers;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
-import java.util.function.BiFunction;
+import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -15,19 +16,19 @@ import java.util.function.Supplier;
 @RequiredArgsConstructor
 @SuppressWarnings("WeakerAccess")
 public class Field<T>
-        implements BiFunction<T, T, T> {
-    public static <T> T last(final T a, final T b) {
-        return b;
+        implements Function<List<T>, T> {
+    public static <T> T last(final List<T> a) {
+        return a.get(a.size() - 1);
     }
 
     public static final Field<Object> LAST = new Field<>(Object.class,
             Field::last);
     public final Class<T> type;
-    private final BiFunction<T, T, T> rule;
+    private final Function<List<T>, T> rule;
 
     @Override
-    public final T apply(final T oldValue, final T newValue) {
-        return rule.apply(oldValue, newValue);
+    public final T apply(final List<T> values) {
+        return rule.apply(values);
     }
 
     public static final class StringField
@@ -39,22 +40,26 @@ public class Field<T>
 
     public static final class IntegerField
             extends Field<Integer> {
-        private static final IntegerField ADDITATIVE = new IntegerField(
-                (a, b) -> a + b);
+        private static final IntegerField ADDITATIVE = new IntegerField(a -> {
+            // Could use stream here, this is better behaved
+            int sum = 0;
+            for (final Integer i : a)
+                sum += i;
+            return sum;
+        });
 
         public static IntegerField additiveIntegerField() {
             return ADDITATIVE;
         }
 
-        public IntegerField(
-                final BiFunction<Integer, Integer, Integer> rule) {
+        public IntegerField(final Function<List<Integer>, Integer> rule) {
             super(Integer.class, rule);
         }
     }
 
     public static final class DoubleField
             extends Field<Double> {
-        public DoubleField(final BiFunction<Double, Double, Double> rule) {
+        public DoubleField(final Function<List<Double>, Double> rule) {
             super(Double.class, rule);
         }
     }
@@ -62,10 +67,9 @@ public class Field<T>
     public static final class CollectionField
             extends Field<Collection> {
         public CollectionField(final Supplier<Collection> merged) {
-            super(Collection.class, (a, b) -> {
+            super(Collection.class, a -> {
                 final Collection all = merged.get();
-                all.addAll(a);
-                all.addAll(b);
+                a.forEach(l -> all.addAll(l));
                 return all;
             });
         }

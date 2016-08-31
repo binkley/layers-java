@@ -1,7 +1,7 @@
 package hm.binkley.layers;
 
 import hm.binkley.layers.Field.CollectionField;
-import hm.binkley.layers.Field.DoubleField;
+import hm.binkley.layers.Field.IntegerField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -158,14 +158,6 @@ public class LayersTest {
     }
 
     @Test
-    void shouldApplyFieldRuleForFirstLayerAlone() {
-        layers.add("Proportion", new DoubleField((a, b) -> a + b * 1.1));
-        first.put("Proportion", 1.1d).
-                accept(blankLayer("next"));
-        assertEquals((Double) 1.1, layers.get("Proportion"));
-    }
-
-    @Test
     void shouldComplainForWrongValue() {
         layers.add("Total", additiveIntegerField());
         final ClassCastException thrown = expectThrows(
@@ -233,5 +225,25 @@ public class LayersTest {
 
         assertEquals(asList("Beer", "Chips", "Speech", "Air"),
                 layers.get("Free Stuff"));
+    }
+
+    @Test
+    void shouldUseHistoryInComputingWhatIfValues() {
+        layers.add("Fibonacci", new IntegerField(a -> {
+            switch (a.size()) {
+            case 0:
+                return 0;
+            case 1:
+                return a.get(0);
+            default:
+                return a.get(a.size() - 2) + a.get(a.size() - 1);
+            }
+        }));
+        assertEquals(3, first.put("Fibonacci", 1).
+                accept(blankLayer("next")).
+                put("Fibonacci", 1).
+                accept(blankLayer("last")).
+                put("Fibonacci", 2).
+                whatIf().get("Fibonacci"));
     }
 }
