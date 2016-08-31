@@ -14,6 +14,7 @@ import static hm.binkley.layers.Character.PlayerLayer.playerLayer;
 import static hm.binkley.layers.Character.StatsLayer.statsLayer;
 import static hm.binkley.layers.Field.IntegerField.additiveIntegerField;
 import static hm.binkley.layers.Layers.newLayers;
+import static java.lang.String.format;
 import static java.lang.System.out;
 
 /**
@@ -24,11 +25,13 @@ import static java.lang.System.out;
  */
 public final class Character {
     private final Layers layers;
+    private ZonedDateTime started;
     private AnnotatedLayer<?> current;
 
     public static void main(final String... args) {
         final Character bob = new Character();
         out.println(bob);
+        out.println(bob.started);
         out.println(bob.current);
         bob.layers.history().forEach(out::println);
     }
@@ -36,9 +39,11 @@ public final class Character {
     public Character() {
         layers = newLayers(playerLayer("Starting a new game", "Brian",
                 "The Empire of Texas"), l -> current = l, PlayerLayer.fields);
-        current = current.
+        final CharacterLayer bob = current.
                 accept(characterLayer("Note #2", "Bob"),
-                        CharacterLayer.fields).
+                        CharacterLayer.fields);
+        started = current.accepted();
+        current = bob.
                 accept(statsLayer("Note #3", 15, 14, 13, 12, 10, 8),
                         StatsLayer.fields).
                 accept(humanLayer("Note #4"), HumanLayer.fields).
@@ -69,8 +74,8 @@ public final class Character {
 
         @Override
         public String toString() {
-            return "{notes=" + notes + ", accepted=" + accepted + ", "
-                    + changed();
+            return format("{notes=%s,accepted=%s,%s}", notes, accepted,
+                    changed());
         }
 
         public final String notes() {
