@@ -1,19 +1,23 @@
-package hm.binkley.layers;
+package hm.binkley.layers.dnd;
 
+import hm.binkley.layers.BlankLayer;
+import hm.binkley.layers.Field;
 import hm.binkley.layers.Field.StringField;
+import hm.binkley.layers.Layers;
+import hm.binkley.layers.Surface;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static hm.binkley.layers.Character.CharacterLayer.characterLayer;
-import static hm.binkley.layers.Character.FreeFormLayer.freeFormLayer;
-import static hm.binkley.layers.Character.HumanLayer.humanLayer;
-import static hm.binkley.layers.Character.PlayerLayer.playerLayer;
-import static hm.binkley.layers.Character.StatsLayer.statsLayer;
 import static hm.binkley.layers.Field.IntegerField.additiveIntegerField;
 import static hm.binkley.layers.Layers.newLayers;
+import static hm.binkley.layers.dnd.Character.CharacterLayer.characterLayer;
+import static hm.binkley.layers.dnd.Character.FreeFormLayer.freeFormLayer;
+import static hm.binkley.layers.dnd.Character.HumanLayer.humanLayer;
+import static hm.binkley.layers.dnd.Character.PlayerLayer.playerLayer;
+import static hm.binkley.layers.dnd.Character.StatsLayer.statsLayer;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
