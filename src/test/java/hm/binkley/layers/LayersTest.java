@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static hm.binkley.layers.BlankLayer.blankLayer;
 import static hm.binkley.layers.Field.IntegerField.additiveIntegerField;
@@ -34,6 +34,12 @@ public class LayersTest {
     @BeforeEach
     void setUp() {
         layers = newLayers(blankLayer("first"), l -> first = l);
+    }
+
+    @Test
+    void shouldCompileWithHolderOfSuperclass() {
+        final AtomicReference<Object> holder = new AtomicReference<>();
+        newLayers(blankLayer("dummy"), holder::set);
     }
 
     @Test

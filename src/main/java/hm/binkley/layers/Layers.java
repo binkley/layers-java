@@ -43,7 +43,8 @@ public final class Layers {
      * @see #newLayers(Function, Consumer, Map)
      */
     public static <L extends Layer<L>> Layers newLayers(
-            final Function<Surface, L> next, final Consumer<L> layer) {
+            final Function<Surface, L> next,
+            final Consumer<? super L> layer) {
         return newLayers(next, layer, emptyMap());
     }
 
@@ -61,7 +62,7 @@ public final class Layers {
      * @see #add(String, Field) Adding field definitions
      */
     public static <L extends Layer<L>> Layers newLayers(
-            final Function<Surface, L> first, final Consumer<L> layer,
+            final Function<Surface, L> first, final Consumer<? super L> layer,
             final Map<String, Field> fields) {
         final Layers layers = new Layers();
         fields.forEach(layers::add);
