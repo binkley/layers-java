@@ -60,9 +60,15 @@ public interface View<K, V> {
                 return stream(map.entrySet().spliterator(), false);
             }
 
+            @Override
             public void forEach(
                     final BiConsumer<? super K, ? super V> action) {
                 map.forEach(action);
+            }
+
+            @Override
+            public String toString() {
+                return map.toString();
             }
         };
     }

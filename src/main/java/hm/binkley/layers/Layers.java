@@ -161,6 +161,9 @@ public final class Layers {
      * @param <L> the specialized type of layer
      *
      * @return the stream of layers, never missing
+     *
+     * @todo This is the wrong place to specialize type!  Layers is a
+     * container, so &lt;L&rt; should be typed, not the accessor
      */
     public <L extends Layer<L>> Stream<L> history() {
         return layers.stream().
