@@ -59,7 +59,10 @@ public interface Layer<L extends Layer<L>> {
      *
      * @return a map of all entries, never missing
      *
-     * @todo Does this belong on {@code Layers} rather than {@code Layer}?
+     * @todo Does this belong on {@code Layers} rather than {@code Layer}? The
+     * thinking is for code to be handed a {@code Layer} without reference to
+     * {@code Layers}, and to use {@code whatIf()} to show speculative
+     * changes
      */
     Map<String, Object> whatIf();
 

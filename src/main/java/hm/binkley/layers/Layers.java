@@ -2,12 +2,10 @@ package hm.binkley.layers;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -33,17 +31,29 @@ public final class Layers {
     private final Map<String, Field> fields = new HashMap<>();
     private final Map<String, Object> cache = new HashMap<>();
 
+    /**
+     * Creates a new {@code Layers} with a first layer of <var>L</var> type
+     * (waved in <var>layer</var>).
+     *
+     * @param next the provider for the first layer, never missing
+     * @param layer the holder for the first layer, never missing
+     * @param <L> the type of the first layer
+     *
+     * @return the new layers object, never missing
+     *
+     * @see #newLayers(Function, Consumer, Map)
+     */
     public static <L extends Layer<L>> Layers newLayers(
-            final Function<Surface, L> next, final Consumer<L> firstLayer) {
-        return newLayers(next, firstLayer, emptyMap());
+            final Function<Surface, L> next, final Consumer<L> layer) {
+        return newLayers(next, layer, emptyMap());
     }
 
     /**
      * Creates a new {@code Layers} with a first layer of <var>L</var> type
      * (saved in <var>layer</var>), adding any <var>fields</var>.
      *
-     * @param first the constructor for the first layer, never missing
-     * @param layer the holder for the constructed first layer, never missing
+     * @param first the provider for the first layer, never missing
+     * @param layer the holder for the first layer, never missing
      * @param fields the map of fields, never missing
      * @param <L> the type of the first layer
      *
@@ -146,16 +156,15 @@ public final class Layers {
     }
 
     /**
-     * Creates a stream of blankLayer-layer map views of entries in the same
-     * order as layers were accepted.
+     * Creates a stream of layers in the same order as accepted.
      *
-     * @return the stream of blankLayer-layer computed key-value pairs, never
-     * missing
+     * @param <L> the specialized type of layer
+     *
+     * @return the stream of layers, never missing
      */
-    @SuppressWarnings("unchecked")
-    public Stream<Entry<String, Map<String, Object>>> history() {
+    public <L extends Layer<L>> Stream<L> history() {
         return layers.stream().
-                map(l -> new SimpleImmutableEntry<>(l.name(), l.changed()));
+                map(l -> (L) l);
     }
 
     @Override

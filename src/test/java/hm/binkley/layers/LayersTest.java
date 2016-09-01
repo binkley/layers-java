@@ -110,14 +110,14 @@ public class LayersTest {
                 () -> assertEquals("Builder", layers.accepted().get("Bob")),
                 () -> assertEquals(1, layers.size()),
                 () -> assertEquals("first", layers.history().
-                        collect(toList()).
-                        get(0).
-                        getKey()),
+                        findFirst().
+                        map(Layer::name).
+                        get()),
                 () -> assertEquals("Builder", layers.history().
-                        collect(toList()).
-                        get(0).
-                        getValue().
-                        get("Bob")),
+                        findFirst().
+                        map(Layer::changed).
+                        map(m -> m.get("Bob")).
+                        get()),
                 () -> assertEquals("Nancy", next.changed().get("Bob")),
                 () -> assertEquals("Nancy", next.whatIf().get("Bob")));
         // @formatter:on
@@ -136,14 +136,14 @@ public class LayersTest {
                 () -> assertEquals(1, layers.size()),
                 () -> assertEquals("Nancy", layers.accepted().get("Bob")),
                 () -> assertEquals("next", layers.history().
+                        map(Layer::name).
                         collect(toList()).
-                        get(1).
-                        getKey()),
+                        get(1)),
                 () -> assertEquals("Nancy", layers.history().
+                        map(Layer::changed).
+                        map(m -> m.get("Bob")).
                         collect(toList()).
-                        get(1).
-                        getValue().
-                        get("Bob")));
+                        get(1)));
         // @formatter:on
     }
 

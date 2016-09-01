@@ -33,7 +33,8 @@ public final class Character {
         out.println(bob);
         out.println(bob.started);
         out.println(bob.current);
-        bob.layers.history().forEach(out::println);
+        bob.layers.<AnnotatedLayer>history().
+                forEach(out::println);
     }
 
     public Character() {
