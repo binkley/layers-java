@@ -1,5 +1,7 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.Layers.Surface;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;

@@ -4,7 +4,7 @@ import hm.binkley.layers.BlankLayer;
 import hm.binkley.layers.Field;
 import hm.binkley.layers.Field.StringField;
 import hm.binkley.layers.Layers;
-import hm.binkley.layers.Surface;
+import hm.binkley.layers.Layers.Surface;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;

@@ -175,7 +175,7 @@ public final class Layers {
     }
 
     private <L extends Layer> L newLayer(final Function<Surface, L> next) {
-        return next.apply(new LayersSurface());
+        return next.apply(new Surface());
     }
 
     @SuppressWarnings("unchecked")
@@ -183,10 +183,8 @@ public final class Layers {
         return fields.getOrDefault(key, LAST);
     }
 
-    private final class LayersSurface
-            implements Surface {
+    public final class Surface {
         @SuppressWarnings("unchecked")
-        @Override
         public void check(final String key, final Object value)
                 throws ClassCastException {
             final Class<Object> type = fieldFor(key).type;
@@ -196,7 +194,6 @@ public final class Layers {
                                 type, value.getClass(), key, value));
         }
 
-        @Override
         public void accept(final String name, final Layer<?> layer) {
             layers.add(layer);
             names.put(name, layer);
@@ -204,7 +201,6 @@ public final class Layers {
                     (k, v) -> cache.put(k, fieldFor(k).apply(getAll(k))));
         }
 
-        @Override
         public View<String, Object> changed(final Layer<?> layer) {
             final Map<String, Object> changed = new HashMap<>(cache);
             layer.changed().forEach((k, v) -> {
@@ -215,7 +211,6 @@ public final class Layers {
             return View.of(changed);
         }
 
-        @Override
         public Surface addAll(final Map<String, Field> fields) {
             fields.forEach(Layers.this::add);
             return this;
