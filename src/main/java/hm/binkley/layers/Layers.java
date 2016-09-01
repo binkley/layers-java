@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 import static hm.binkley.layers.Field.LAST;
 import static java.lang.String.format;
 import static java.util.Collections.emptyMap;
-import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -139,8 +138,8 @@ public final class Layers {
      *
      * @return a map of the computed key-value pairs, never missing
      */
-    public Map<String, Object> accepted() {
-        return unmodifiableMap(cache);
+    public View<String, Object> accepted() {
+        return View.of(cache);
     }
 
     /**
