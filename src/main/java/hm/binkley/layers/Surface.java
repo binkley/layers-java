@@ -15,7 +15,7 @@ public interface Surface {
 
     void accept(final String name, final Layer<?> layer);
 
-    Map<String, Object> changed(final Layer<?> layer);
+    View<String, Object> changed(final Layer<?> layer);
 
     Surface addAll(final Map<String, Field> fields);
 }

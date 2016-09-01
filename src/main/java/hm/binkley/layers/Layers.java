@@ -150,7 +150,7 @@ public final class Layers {
      *
      * @return the layer or {@code null} if none
      */
-    public Map<String, Object> layer(final String name) {
+    public View<String, Object> layer(final String name) {
         final Layer layer = names.get(name);
         return null == layer ? null : layer.changed();
     }
@@ -203,14 +203,14 @@ public final class Layers {
         }
 
         @Override
-        public Map<String, Object> changed(final Layer<?> layer) {
+        public View<String, Object> changed(final Layer<?> layer) {
             final Map<String, Object> changed = new HashMap<>(cache);
             layer.changed().forEach((k, v) -> {
                 final List<Object> values = getAll(k);
                 values.add(v);
                 changed.put(k, fieldFor(k).apply(values));
             });
-            return unmodifiableMap(changed);
+            return View.of(changed);
         }
 
         @Override

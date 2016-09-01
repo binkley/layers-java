@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static java.util.Collections.unmodifiableMap;
-
 /**
  * {@code BlankLayer} <b>needs documentation</b>.
  *
@@ -53,12 +51,12 @@ public class BlankLayer<L extends BlankLayer<L>>
     }
 
     @Override
-    public final Map<String, Object> changed() {
-        return unmodifiableMap(map);
+    public final View<String, Object> changed() {
+        return View.of(map);
     }
 
     @Override
-    public final Map<String, Object> whatIf() {
+    public final View<String, Object> whatIf() {
         return surface.changed(this);
     }
 
