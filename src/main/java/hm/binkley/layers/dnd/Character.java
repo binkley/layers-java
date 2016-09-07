@@ -164,8 +164,6 @@ public final class Character {
 
         private static final Map<String, Field> fields = new HashMap<>();
 
-        // I am a change.  Sigh, comments are lame.  :-)
-
         static {
             fields.put(STATS_STR, additiveIntegerField());
             fields.put(STATS_DEX, additiveIntegerField());
