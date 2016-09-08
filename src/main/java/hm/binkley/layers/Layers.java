@@ -139,8 +139,8 @@ public final class Layers {
      *
      * @return a map of the computed key-value pairs, never missing
      */
-    public View<String, Object> accepted() {
-        return View.of(cache);
+    public MapView<String, Object> accepted() {
+        return MapView.of(cache);
     }
 
     /**
@@ -150,7 +150,7 @@ public final class Layers {
      *
      * @return the layer or {@code null} if none
      */
-    public View<String, Object> layer(final String name) {
+    public MapView<String, Object> layer(final String name) {
         final Layer layer = names.get(name);
         return null == layer ? null : layer.changed();
     }
@@ -202,14 +202,14 @@ public final class Layers {
                     (k, v) -> cache.put(k, fieldFor(k).apply(getAll(k))));
         }
 
-        public View<String, Object> changed(final Layer<?> layer) {
+        public MapView<String, Object> changed(final Layer<?> layer) {
             final Map<String, Object> changed = new HashMap<>(cache);
             layer.changed().forEach((k, v) -> {
                 final List<Object> values = getAll(k);
                 values.add(v);
                 changed.put(k, fieldFor(k).apply(values));
             });
-            return View.of(changed);
+            return MapView.of(changed);
         }
 
         public Surface addAll(final Map<String, Field> fields) {

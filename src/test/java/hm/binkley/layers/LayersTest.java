@@ -213,7 +213,7 @@ public class LayersTest {
         second.put("Huck", "Finn");
         second.accept(blankLayer("first"));
 
-        final View<String, Object> layer = layers.layer("first");
+        final MapView<String, Object> layer = layers.layer("first");
         assertAll(
                 // @formatter:off
                 () -> assertFalse(layer.containsKey("Tom")),

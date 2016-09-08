@@ -53,7 +53,7 @@ public interface Layer<L extends Layer<L>> {
      *
      * @return a map of entries, never missing
      */
-    View<String, Object> changed();
+    MapView<String, Object> changed();
 
     /**
      * Creates an unmodifiable view of {@code Layers} as if this layer were
@@ -66,7 +66,7 @@ public interface Layer<L extends Layer<L>> {
      * {@code Layers}, and to use {@code whatIf()} to show speculative
      * changes
      */
-    View<String, Object> whatIf();
+    MapView<String, Object> whatIf();
 
     /**
      * Accepts this layer and adds the <var>next</var> one, and adds

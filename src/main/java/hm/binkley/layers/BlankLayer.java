@@ -53,12 +53,12 @@ public class BlankLayer<L extends BlankLayer<L>>
     }
 
     @Override
-    public final View<String, Object> changed() {
-        return View.of(map);
+    public final MapView<String, Object> changed() {
+        return MapView.of(map);
     }
 
     @Override
-    public final View<String, Object> whatIf() {
+    public final MapView<String, Object> whatIf() {
         return surface.changed(this);
     }
 
