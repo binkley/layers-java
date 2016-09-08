@@ -1,24 +1,15 @@
 package hm.binkley.layers.dnd;
 
-import hm.binkley.layers.BlankLayer;
-import hm.binkley.layers.Field;
-import hm.binkley.layers.Field.StringField;
 import hm.binkley.layers.Layers;
-import hm.binkley.layers.Layers.Surface;
 
 import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
 
-import static hm.binkley.layers.Field.IntegerField.additiveIntegerField;
 import static hm.binkley.layers.Layers.newLayers;
-import static hm.binkley.layers.dnd.Character.CharacterLayer.characterLayer;
-import static hm.binkley.layers.dnd.Character.FreeFormLayer.freeFormLayer;
-import static hm.binkley.layers.dnd.Character.HumanLayer.humanLayer;
-import static hm.binkley.layers.dnd.Character.PlayerLayer.playerLayer;
-import static hm.binkley.layers.dnd.Character.StatsLayer.statsLayer;
-import static java.lang.String.format;
+import static hm.binkley.layers.dnd.CharacterLayer.characterLayer;
+import static hm.binkley.layers.dnd.FreeFormLayer.freeFormLayer;
+import static hm.binkley.layers.dnd.HumanLayer.humanLayer;
+import static hm.binkley.layers.dnd.PlayerLayer.playerLayer;
+import static hm.binkley.layers.dnd.StatsLayer.statsLayer;
 import static java.lang.System.out;
 
 /**
@@ -29,7 +20,7 @@ import static java.lang.System.out;
  */
 public final class Character {
     private final Layers layers;
-    private ZonedDateTime started;
+    private final ZonedDateTime started;
     private AnnotatedLayer<?> current;
 
     public static void main(final String... args) {
@@ -37,11 +28,11 @@ public final class Character {
         out.println(bob);
         out.println(bob.started);
         out.println(bob.current);
-        bob.layers.<AnnotatedLayer>history().
+        bob.layers.history().
                 forEach(out::println);
     }
 
-    public Character() {
+    private Character() {
         layers = newLayers(playerLayer("Starting a new game", "Brian",
                 "The Empire of Texas"), l -> current = l, PlayerLayer.fields);
         final CharacterLayer bob = current.
@@ -59,182 +50,5 @@ public final class Character {
     @Override
     public String toString() {
         return layers.toString();
-    }
-
-    public static class AnnotatedLayer<L extends AnnotatedLayer<L>>
-            extends BlankLayer<L> {
-        private final String notes;
-        private ZonedDateTime accepted;
-
-        protected AnnotatedLayer(final Surface surface, final String name,
-                final String notes) {
-            super(surface, name);
-            this.notes = notes;
-        }
-
-        @Override
-        protected void beforeAccept() {
-            accepted = ZonedDateTime.now();
-        }
-
-        @Override
-        public String toString() {
-            return format("{notes=%s,accepted=%s,%s}", notes, accepted,
-                    changed());
-        }
-
-        public final String notes() {
-            return notes;
-        }
-
-        public final ZonedDateTime accepted() {
-            return accepted;
-        }
-    }
-
-    public static final class FreeFormLayer
-            extends AnnotatedLayer<FreeFormLayer> {
-        public static Function<Surface, FreeFormLayer> freeFormLayer(
-                final String name, final String notes) {
-            return s -> new FreeFormLayer(s, name, notes);
-        }
-
-        private FreeFormLayer(final Surface surface, final String name,
-                final String notes) {
-            super(surface, name, notes);
-        }
-    }
-
-    public static final class PlayerLayer
-            extends AnnotatedLayer<PlayerLayer> {
-        public static final String PLAYER_NAME = "player:name";
-        public static final String PLAYER_CAMPAIGN = "player:campaign";
-
-        private static final Map<String, Field> fields = new HashMap<>();
-
-        static {
-            fields.put(PLAYER_NAME, new StringField());
-            fields.put(PLAYER_CAMPAIGN, new StringField());
-        }
-
-        public static Function<Surface, PlayerLayer> playerLayer(
-                final String notes, final String name,
-                final String campaign) {
-            return s -> new PlayerLayer(s, notes, name, campaign);
-        }
-
-        private PlayerLayer(final Surface surface, final String notes,
-                final String name, final String campaign) {
-            super(surface, "Player", notes);
-            put(PLAYER_NAME, name);
-            put(PLAYER_CAMPAIGN, campaign);
-        }
-    }
-
-    public static final class CharacterLayer
-            extends AnnotatedLayer<CharacterLayer> {
-        private static final Map<String, Field> fields = new HashMap<>();
-
-        public static final String CHARACTER_NAME = "character:name";
-
-        static {
-            fields.put(CHARACTER_NAME, new StringField());
-        }
-
-        public static Function<Surface, CharacterLayer> characterLayer(
-                final String notes, final String name) {
-            return s -> new CharacterLayer(s, notes, name);
-        }
-
-        private CharacterLayer(final Surface surface, final String notes,
-                final String name) {
-            super(surface, "Character", notes);
-            put(CHARACTER_NAME, name);
-        }
-    }
-
-    public static final class StatsLayer
-            extends AnnotatedLayer<StatsLayer> {
-        public static final String STATS_STR = "stats:STR";
-        public static final String STATS_DEX = "stats:DEX";
-        public static final String STATS_CON = "stats:CON";
-        public static final String STATS_INT = "stats:INT";
-        public static final String STATS_WIS = "stats:WIS";
-        public static final String STATS_CHA = "stats:CHA";
-
-        private static final Map<String, Field> fields = new HashMap<>();
-
-        static {
-            fields.put(STATS_STR, additiveIntegerField());
-            fields.put(STATS_DEX, additiveIntegerField());
-            fields.put(STATS_CON, additiveIntegerField());
-            fields.put(STATS_INT, additiveIntegerField());
-            fields.put(STATS_WIS, additiveIntegerField());
-            fields.put(STATS_CHA, additiveIntegerField());
-        }
-
-        public static Function<Surface, StatsLayer> statsLayer(
-                final String notes, final int STR, final int DEX,
-                final int CON, final int INT, final int WIS, final int CHA) {
-            return s -> new StatsLayer(s, notes, STR, DEX, CON, INT, WIS,
-                    CHA);
-        }
-
-        private StatsLayer(final Surface surface, final String notes,
-                final int STR, final int DEX, final int CON, final int INT,
-                final int WIS, final int CHA) {
-            super(surface, "Stats", notes);
-            put(STATS_STR, STR);
-            put(STATS_DEX, DEX);
-            put(STATS_CON, CON);
-            put(STATS_INT, INT);
-            put(STATS_WIS, WIS);
-            put(STATS_CHA, CHA);
-        }
-    }
-
-    private abstract static class RaceLayer<L extends RaceLayer<L>>
-            extends AnnotatedLayer<L> {
-        protected static final Map<String, Field> fields = new HashMap<>();
-
-        static {
-            fields.put("race:name", new StringField());
-            fields.put("race:STR-bonus", additiveIntegerField());
-            fields.put("race:DEX-bonus", additiveIntegerField());
-            fields.put("race:CON-bonus", additiveIntegerField());
-            fields.put("race:INT-bonus", additiveIntegerField());
-            fields.put("race:WIS-bonus", additiveIntegerField());
-            fields.put("race:CHA-bonus", additiveIntegerField());
-        }
-
-        protected RaceLayer(final Surface surface, final String notes,
-                final String name) {
-            super(surface, "Race", notes);
-            put("race:name", name);
-        }
-    }
-
-    public static final class HumanLayer
-            extends RaceLayer<HumanLayer> {
-        public static Function<Surface, HumanLayer> humanLayer(
-                final String notes) {
-            return s -> new HumanLayer(s, notes);
-        }
-
-        private HumanLayer(final Surface surface, final String notes) {
-            super(surface, notes, "Human");
-            put("stats:STR", 1);
-            put("race:STR-bonus", 1);
-            put("stats:DEX", 1);
-            put("race:DEX-bonus", 1);
-            put("stats:CON", 1);
-            put("race:CON-bonus", 1);
-            put("stats:INT", 1);
-            put("race:INT-bonus", 1);
-            put("stats:WIS", 1);
-            put("race:WIS-bonus", 1);
-            put("stats:CHA", 1);
-            put("race:CHA-bonus", 1);
-        }
     }
 }

@@ -12,7 +12,7 @@ import static java.util.stream.StreamSupport.stream;
  * would otherwise need to throw {@code UnsupportedOperationException}, and
  * using fully utilizing generics rather than legacy {@code Object}.
  *
- * @author <a href="mailto:boxley@thoughtworks.com">Brian Oxley</a>
+ * @author <a href="mailto:binkley@alumni.rice.edu">B. K. Oxley (binkley)</a>
  * @todo Needs documentation
  * @todo Better name
  */
