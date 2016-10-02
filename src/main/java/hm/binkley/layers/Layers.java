@@ -6,9 +6,7 @@ import hm.binkley.layers.dnd.ProficiencyBonus;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
 
@@ -30,9 +28,9 @@ import static lombok.AccessLevel.PRIVATE;
 @RequiredArgsConstructor(access = PRIVATE)
 @SuppressWarnings("WeakerAccess")
 public final class Layers {
-    private final List<Map<Key, Object>> layers = new ArrayList<>();
+    private final List<Layer> layers = new ArrayList<>();
 
-    public void add(final Map<Key, Object> layer) {
+    public void add(final Layer layer) {
         layers.add(0, layer);
     }
 
@@ -44,8 +42,8 @@ public final class Layers {
                 get();
     }
 
-    public static Map<Key, Object> plainHuman() {
-        final Map<Key, Object> layer = new HashMap<>();
+    public static Layer plainHuman() {
+        final Layer layer = new Layer();
         layer.put(new SumAllKey(STR), 1);
         layer.put(new SumAllKey(DEX), 1);
         layer.put(new SumAllKey(CON), 1);
@@ -55,8 +53,8 @@ public final class Layers {
         return layer;
     }
 
-    public static Map<Key, Object> beltOfGiantStrength(final int _str) {
-        final Map<Key, Object> layer = new HashMap<>();
+    public static Layer beltOfGiantStrength(final int _str) {
+        final Layer layer = new Layer();
         layer.put(new FixedValueKey<>(STR), _str);
         return layer;
     }
