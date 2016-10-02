@@ -16,6 +16,7 @@ public final class FixedValueKey<T>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Function<Layers, T> value() {
         return layers -> (T) layers.findEntries(key).
                 map(Entry::getValue).

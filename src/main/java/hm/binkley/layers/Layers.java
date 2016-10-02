@@ -36,6 +36,7 @@ public final class Layers {
         layers.add(0, layer);
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T get(final Object key) {
         return (T) findEntries(key).
                 map(pair -> pair.getKey().value().apply(this)).
