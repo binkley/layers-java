@@ -2,6 +2,7 @@ package hm.binkley.layers;
 
 import java.util.function.BiFunction;
 
+@FunctionalInterface
 public interface Rule<T>
         extends BiFunction<Layers, T, T> {
     static <T> Rule<T> mostRecent(final Object key) {
