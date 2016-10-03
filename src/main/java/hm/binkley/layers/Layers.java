@@ -1,52 +1,49 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.dnd.AbilityScore;
-import hm.binkley.layers.dnd.CharacterDescription;
-import hm.binkley.layers.dnd.ProficiencyBonus;
+import hm.binkley.layers.dnd.Abilities;
+import hm.binkley.layers.dnd.Characters;
+import hm.binkley.layers.dnd.Proficiencies;
+import hm.binkley.layers.dnd.Races;
+import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static hm.binkley.layers.Value.ofValue;
-import static hm.binkley.layers.dnd.AbilityScore.CHA;
-import static hm.binkley.layers.dnd.AbilityScore.CON;
-import static hm.binkley.layers.dnd.AbilityScore.DEX;
-import static hm.binkley.layers.dnd.AbilityScore.INT;
-import static hm.binkley.layers.dnd.AbilityScore.STR;
-import static hm.binkley.layers.dnd.AbilityScore.WIS;
-import static hm.binkley.layers.dnd.AbilityScore.abilityScores;
-import static hm.binkley.layers.dnd.AbilityScore.defaultRuleAbilityScores;
-import static hm.binkley.layers.dnd.CharacterDescription.characterDescription;
-import static hm.binkley.layers.dnd.ProficiencyBonus.ACROBATICS;
-import static hm.binkley.layers.dnd.ProficiencyBonus.ATHLETICS;
-import static hm.binkley.layers.dnd.ProficiencyBonus.defaultRuleProficiencyBonuses;
-import static hm.binkley.layers.dnd.ProficiencyBonus.doubleProficiency;
-import static hm.binkley.layers.dnd.ProficiencyBonus.proficiencyBonus;
+import static hm.binkley.layers.dnd.Abilities.STR;
+import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
+import static hm.binkley.layers.dnd.Abilities.abilityScores;
+import static hm.binkley.layers.dnd.Characters.characterDescription;
+import static hm.binkley.layers.dnd.MagicItems.beltOfGiantStrength;
+import static hm.binkley.layers.dnd.Proficiencies.ACROBATICS;
+import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
+import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
+import static hm.binkley.layers.dnd.Proficiencies.proficiencyBonus;
 import static java.lang.System.out;
+import static java.util.stream.Collectors.joining;
+import static lombok.AccessLevel.PRIVATE;
 
 @SuppressWarnings("WeakerAccess")
+@RequiredArgsConstructor(access = PRIVATE)
 public final class Layers {
-    private final Deque<Layer> layers = new ArrayDeque<>();
+    private final List<Layer> layers = new ArrayList<>();
 
-    public void add(final Layer layer) {
-        layers.push(layer);
-    }
-
-    public void remove(final Layer layer) {
-        layers.remove(layer);
+    public static Layer firstLayer(final Function<Surface, Layer> ctor,
+            final Consumer<Layers> layersHolder) {
+        final Layers layers = new Layers();
+        layersHolder.accept(layers);
+        return ctor.apply(layers.new Surface());
     }
 
     public <T> T get(final Object key) {
-        return this.<T>mostRecentRuleValue(key).apply(this);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> Stream<Value<T>> streamFor(final Object key) {
-        return layers.stream().
-                filter(layer -> layer.containsKey(key)).
-                map(layer -> (Value<T>) layer.get(key));
+        return this.<T>ruleValuesFor(key).
+                findFirst().
+                orElse(Value.mostRecent(key)).
+                apply(this);
     }
 
     public <T> Stream<T> valuesFor(final Object key) {
@@ -61,52 +58,61 @@ public final class Layers {
                 filter(value -> value.rule().isPresent());
     }
 
-    public <T> Value<T> mostRecentRuleValue(final Object key) {
-        return this.<T>ruleValuesFor(key).
-                findFirst().
-                orElse(Value.mostRecent(key));
+    public final class Surface {
+        public Layer saveAndNext(final Layer layer,
+                final Function<Surface, Layer> next) {
+            layers.add(0, layer);
+            return next.apply(this);
+        }
+
+        public void forget(final Layer discard) {
+            layers.remove(discard);
+        }
     }
 
-    public static Layer plainHuman() {
-        final Layer layer = new Layer();
-        layer.put(STR, ofValue(1));
-        layer.put(DEX, ofValue(1));
-        layer.put(CON, ofValue(1));
-        layer.put(INT, ofValue(1));
-        layer.put(WIS, ofValue(1));
-        layer.put(CHA, ofValue(1));
-        return layer;
+    @Override
+    public String toString() {
+        final int size = layers.size();
+        return IntStream.range(0, size).
+                mapToObj(i -> (size - i) + ": " + layers.get(i)).
+                collect(joining("\n"));
     }
 
-    public static Layer beltOfGiantStrength(final int _str) {
-        final Layer layer = new Layer();
-        layer.put(STR, Value.ofBoth(20, Rule.exactly()));
-        return layer;
+    @SuppressWarnings("unchecked")
+    private <T> Stream<Value<T>> streamFor(final Object key) {
+        return layers.stream().
+                filter(layer -> layer.containsKey(key)).
+                map(layer -> (Value<T>) layer.<T>get(key));
     }
 
     public static void main(final String... args) {
-        final Layers layers = new Layers();
+        final Layers[] layersHolder = new Layers[1];
+        final Layer firstLayer = firstLayer(Abilities::baseRuleAbilityScores,
+                layers -> layersHolder[0] = layers);
+        final Layers layers = layersHolder[0];
 
-        layers.add(defaultRuleAbilityScores());
-        layers.add(defaultRuleProficiencyBonuses());
+        firstLayer.
+                saveAndNext(Proficiencies::baseRuleProficiencyBonuses).
+                saveAndNext(characterDescription("Bob")).
+                saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
+                saveAndNext(Races::plainHuman).
+                saveAndNext(proficiencyBonus(ACROBATICS, 1)).
+                saveAndNext(proficiencyBonus(ATHLETICS, 1)).
+                saveAndNext(doubleProficiency(ACROBATICS)).
+                saveAndNext(beltOfGiantStrength(20)).
+                saveAndNext(abilityScoreIncrease(STR, 2)).
+                saveAndNext(ScratchLayer::new);
 
-        layers.add(characterDescription("Bob"));
-        layers.add(abilityScores(8, 15, 14, 10, 13, 12));
-        layers.add(plainHuman());
-        layers.add(proficiencyBonus(ACROBATICS, 1));
-        layers.add(proficiencyBonus(ATHLETICS, 1));
-        layers.add(doubleProficiency(ACROBATICS));
-        layers.add(beltOfGiantStrength(20));
-        layers.add(abilityScores(1, 0, 0, 0, 0, 0));
+        out.println("layers =");
+        out.println(layers);
 
-        for (final CharacterDescription description : CharacterDescription
-                .values())
+        for (final Characters description : Characters.values())
             out.println(description + " = " + layers.get(description));
 
-        for (final AbilityScore score : AbilityScore.values())
+        for (final Abilities score : Abilities.values())
             out.println(score + " = " + layers.get(score));
 
-        for (final ProficiencyBonus bonus : ProficiencyBonus.values())
+        for (final Proficiencies bonus : Proficiencies.values())
             out.println(bonus + " = " + layers.get(bonus));
     }
 }

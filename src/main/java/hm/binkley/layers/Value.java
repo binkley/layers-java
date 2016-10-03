@@ -1,20 +1,28 @@
 package hm.binkley.layers;
 
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 import java.util.function.Function;
 
-/** @todo Replace with specialized types based on ctor; make this interface */
+@EqualsAndHashCode
 @RequiredArgsConstructor
 public final class Value<T>
         implements Function<Layers, T> {
     private final T value;
     private final Rule<T> rule;
 
-    @Override
-    public T apply(final Layers layers) {
-        return rule.apply(layers, value);
+    public static <T> Value<T> ofValue(final T value) {
+        return new Value<>(value, null);
+    }
+
+    public static <T> Value<T> ofRule(final Rule<T> rule) {
+        return new Value<>(null, rule);
+    }
+
+    public static <T> Value<T> ofBoth(final T value, final Rule<T> rule) {
+        return new Value<>(value, rule);
     }
 
     public static Value<Integer> sumAll(final Object key) {
@@ -29,6 +37,11 @@ public final class Value<T>
         return new Value<>(null, Rule.mostRecent(key));
     }
 
+    @Override
+    public T apply(final Layers layers) {
+        return rule.apply(layers, value);
+    }
+
     public Optional<T> value() {
         return Optional.ofNullable(value);
     }
@@ -37,15 +50,13 @@ public final class Value<T>
         return Optional.ofNullable(rule);
     }
 
-    public static <T> Value<T> ofValue(final T value) {
-        return new Value<>(value, null);
-    }
-
-    public static <T> Value<T> ofRule(final Rule<T> rule) {
-        return new Value<>(null, rule);
-    }
-
-    public static <T> Value<T> ofBoth(final T value, final Rule<T> rule) {
-        return new Value<>(value, rule);
+    @Override
+    public String toString() {
+        if (null == rule)
+            return value.toString();
+        else if (null == value)
+            return "{" + rule + "}";
+        else
+            return "{" + value + ", " + rule + "}";
     }
 }
