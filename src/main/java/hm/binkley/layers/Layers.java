@@ -34,6 +34,10 @@ public final class Layers {
         layers.push(layer);
     }
 
+    public void remove(final Layer layer) {
+        layers.remove(layer);
+    }
+
     public <T> T get(final Object key) {
         return this.<T>mostRecentRuleValue(key).apply(this);
     }
