@@ -12,7 +12,7 @@ public enum Characters {
     public static Function<Surface, Layer> characterDescription(
             final String name) {
         return layers -> {
-            final Layer layer = new Layer(layers);
+            final Layer layer = new Layer(layers, "Character description");
             layer.put(NAME, Value.ofValue(name));
             return layer;
         };

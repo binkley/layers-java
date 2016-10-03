@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.STR;
+import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
 import static hm.binkley.layers.dnd.Characters.NAME;
 import static hm.binkley.layers.dnd.Characters.characterDescription;
@@ -28,7 +29,7 @@ class LayersTest {
 
     @Test
     void shouldHaveNoStrengthBeforeAddingScores() {
-        firstLayer.saveAndNext(Layer::new);
+        firstLayer.saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 0, layers.get(STR));
     }
@@ -38,7 +39,7 @@ class LayersTest {
         firstLayer.
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(Layer::new);
+                saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 9, layers.get(STR));
     }
@@ -49,7 +50,7 @@ class LayersTest {
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(beltOfGiantStrength(20)).
-                saveAndNext(Layer::new);
+                saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 20, layers.get(STR));
     }
@@ -60,8 +61,8 @@ class LayersTest {
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(beltOfGiantStrength(20)).
-                saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(Layer::new);
+                saveAndNext(abilityScoreIncrease(STR, 2)).
+                saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 20, layers.get(STR));
     }
@@ -72,11 +73,11 @@ class LayersTest {
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(beltOfGiantStrength(20));
-        girdle.saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(Layer::new);
+        girdle.saveAndNext(abilityScoreIncrease(STR, 2)).
+                saveAndNext(ScratchLayer::new);
         girdle.forget();
 
-        assertEquals((Integer) 10, layers.get(STR));
+        assertEquals((Integer) 11, layers.get(STR));
     }
 
     @Test
@@ -84,7 +85,7 @@ class LayersTest {
         firstLayer.
                 saveAndNext(characterDescription("Bob")).
                 saveAndNext(characterDescription("Nancy")).
-                saveAndNext(Layer::new);
+                saveAndNext(ScratchLayer::new);
 
         assertEquals("Nancy", layers.get(NAME));
     }
@@ -95,7 +96,7 @@ class LayersTest {
                 saveAndNext(proficiencyBonus(ACROBATICS, 1)).
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
                 saveAndNext(doubleProficiency(ACROBATICS)).
-                saveAndNext(Layer::new);
+                saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 2, layers.get(ACROBATICS));
     }

@@ -13,7 +13,7 @@ import static hm.binkley.layers.dnd.Abilities.WIS;
 
 public class Races {
     public static Layer plainHuman(final Surface layers) {
-        final Layer layer = new Layer(layers);
+        final Layer layer = new Layer(layers, "Human");
         layer.put(STR, ofValue(1));
         layer.put(DEX, ofValue(1));
         layer.put(CON, ofValue(1));

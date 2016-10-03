@@ -13,7 +13,7 @@ public class MagicItems {
     public static Function<Surface, Layer> beltOfGiantStrength(
             final int strength) {
         return layers -> {
-            final Layer layer = new Layer(layers);
+            final Layer layer = new Layer(layers, "Belt of Giant Strength");
             layer.put(STR, Value.ofBoth(strength, Rule.exactly()));
             return layer;
         };

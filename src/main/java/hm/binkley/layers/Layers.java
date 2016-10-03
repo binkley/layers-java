@@ -14,6 +14,8 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static hm.binkley.layers.dnd.Abilities.STR;
+import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
 import static hm.binkley.layers.dnd.Characters.characterDescription;
 import static hm.binkley.layers.dnd.MagicItems.beltOfGiantStrength;
@@ -72,7 +74,7 @@ public final class Layers {
     public String toString() {
         final int size = layers.size();
         return IntStream.range(0, size).
-                mapToObj(i -> i + ": " + layers.get(size - i - 1)).
+                mapToObj(i -> (size - i) + ": " + layers.get(i)).
                 collect(joining("\n"));
     }
 
@@ -98,8 +100,8 @@ public final class Layers {
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
                 saveAndNext(doubleProficiency(ACROBATICS)).
                 saveAndNext(beltOfGiantStrength(20)).
-                saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(Layer::new);
+                saveAndNext(abilityScoreIncrease(STR, 2)).
+                saveAndNext(ScratchLayer::new);
 
         out.println("layers =");
         out.println(layers);
