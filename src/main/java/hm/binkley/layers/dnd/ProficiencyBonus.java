@@ -1,8 +1,9 @@
 package hm.binkley.layers.dnd;
 
-import hm.binkley.layers.DoubleSumKey;
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.SumAllKey;
+import hm.binkley.layers.Value;
+
+import static hm.binkley.layers.Value.ofValue;
 
 public enum ProficiencyBonus {
     ACROBATICS("Acrobatics"), ATHLETICS("Athletics");
@@ -21,14 +22,21 @@ public enum ProficiencyBonus {
     public static Layer proficiencyBonus(final ProficiencyBonus proficiency,
             final int bonus) {
         final Layer layer = new Layer();
-        layer.put(new SumAllKey(proficiency), bonus);
+        layer.put(proficiency, ofValue(bonus));
         return layer;
     }
 
     public static Layer doubleProficiency(
             final ProficiencyBonus proficiency) {
         final Layer layer = new Layer();
-        layer.put(new DoubleSumKey(proficiency), 0);
+        layer.put(proficiency, Value.doubling(proficiency));
+        return layer;
+    }
+
+    public static Layer defaultRuleProficiencyBonuses() {
+        final Layer layer = new Layer();
+        for (final ProficiencyBonus proficiency : ProficiencyBonus.values())
+            layer.put(proficiency, Value.sumAll(proficiency));
         return layer;
     }
 }

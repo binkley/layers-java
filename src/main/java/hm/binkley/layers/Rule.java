@@ -1,11 +1,26 @@
 package hm.binkley.layers;
 
-import lombok.RequiredArgsConstructor;
+import java.util.function.BiFunction;
 
-import java.util.function.Function;
+public interface Rule<T>
+        extends BiFunction<Layers, T, T> {
+    static <T> Rule<T> mostRecent(final Object key) {
+        return (layers, value) -> layers.<T>valuesFor(key).
+                findFirst().
+                get();
+    }
 
-@RequiredArgsConstructor
-public final class Rule<T> {
-    public final Function<Layers, T> fn;
-    public final Layer layer;
+    static Rule<Integer> sumAll(final Object key) {
+        return (layers, value) -> layers.<Integer>valuesFor(key).
+                mapToInt(Integer::intValue).
+                sum();
+    }
+
+    static Rule<Integer> doubling(final Object key) {
+        return (layers, value) -> 2 * sumAll(key).apply(layers, value);
+    }
+
+    static <T> Rule<T> exactly() {
+        return (layers, value) -> value;
+    }
 }
