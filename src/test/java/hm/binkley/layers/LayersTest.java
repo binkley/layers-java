@@ -6,9 +6,19 @@ import static hm.binkley.layers.Layers.beltOfGiantStrength;
 import static hm.binkley.layers.dnd.AbilityScore.STR;
 import static hm.binkley.layers.dnd.AbilityScore.abilityScores;
 import static hm.binkley.layers.dnd.AbilityScore.defaultRuleAbilityScores;
+import static hm.binkley.layers.dnd.CharacterDescription.NAME;
+import static hm.binkley.layers.dnd.CharacterDescription.characterDescription;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LayersTest {
+    @Test
+    void shouldHaveNoStrengthBeforeAddingScores() {
+        final Layers layers = new Layers();
+        layers.add(defaultRuleAbilityScores());
+
+        assertEquals((Integer) 0, layers.get(STR));
+    }
+
     @Test
     void shouldHaveNetStrengthAfterGainingAbility() {
         final Layers layers = new Layers();
@@ -51,5 +61,14 @@ class LayersTest {
         layers.remove(girdle);
 
         assertEquals((Integer) 9, layers.get(STR));
+    }
+
+    @Test
+    void shouldHaveMostRecentName() {
+        final Layers layers = new Layers();
+        layers.add(characterDescription("Bob"));
+        layers.add(characterDescription("Nancy"));
+
+        assertEquals("Nancy", layers.get(NAME));
     }
 }
