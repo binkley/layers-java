@@ -4,7 +4,7 @@ import hm.binkley.layers.dnd.Abilities;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static hm.binkley.layers.Layers.newLayers;
+import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
 import static hm.binkley.layers.dnd.Characters.NAME;
@@ -22,8 +22,8 @@ class LayersTest {
 
     @BeforeEach
     void setUpLayers() {
-        layers = newLayers(Abilities::baseRuleAbilityScores,
-                layer -> firstLayer = layer);
+        firstLayer = firstLayer(Abilities::baseRuleAbilityScores,
+                layers -> this.layers = layers);
     }
 
     @Test

@@ -28,11 +28,11 @@ import static lombok.AccessLevel.PRIVATE;
 public final class Layers {
     private final Deque<Layer> layers = new ArrayDeque<>();
 
-    public static Layers newLayers(final Function<Surface, Layer> ctor,
-            final Consumer<Layer> holder) {
+    public static Layer firstLayer(final Function<Surface, Layer> ctor,
+            final Consumer<Layers> layersHolder) {
         final Layers layers = new Layers();
-        holder.accept(ctor.apply(layers.new Surface()));
-        return layers;
+        layersHolder.accept(layers);
+        return ctor.apply(layers.new Surface());
     }
 
     public <T> T get(final Object key) {
@@ -74,11 +74,12 @@ public final class Layers {
     }
 
     public static void main(final String... args) {
-        final Layer[] firstLayer = new Layer[1];
-        final Layers layers = newLayers(Abilities::baseRuleAbilityScores,
-                layer -> firstLayer[0] = layer);
+        final Layers[] layersHolder = new Layers[1];
+        final Layer firstLayer = firstLayer(Abilities::baseRuleAbilityScores,
+                layers -> layersHolder[0] = layers);
+        final Layers layers = layersHolder[0];
 
-        firstLayer[0].
+        firstLayer.
                 saveAndNext(Proficiencies::baseRuleProficiencyBonuses).
                 saveAndNext(characterDescription("Bob")).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
