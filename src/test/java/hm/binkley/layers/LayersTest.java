@@ -74,7 +74,7 @@ class LayersTest {
                 saveAndNext(beltOfGiantStrength(20));
         girdle.saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(Layer::new);
-        girdle.rollback();
+        girdle.forget();
 
         assertEquals((Integer) 10, layers.get(STR));
     }

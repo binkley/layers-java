@@ -18,7 +18,7 @@ public class Layer
         return layers.saveAndNext(this, ctor);
     }
 
-    public void rollback() {
+    public void forget() {
         layers.forget(this);
     }
 }
