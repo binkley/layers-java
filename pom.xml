@@ -38,7 +38,6 @@
 
     <properties>
         <!-- @formatter:off -->
-        <derive4j.version>0.9.1</derive4j.version>
         <generateBackupPoms>false</generateBackupPoms>
         <java.version>8</java.version>
         <junit.jupiter.version>5.0.0-M2</junit.jupiter.version>
@@ -64,12 +63,6 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.derive4j</groupId>
-            <artifactId>derive4j</artifactId>
-            <version>${derive4j.version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
