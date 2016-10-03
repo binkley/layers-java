@@ -6,11 +6,12 @@ import hm.binkley.layers.dnd.Proficiencies;
 import hm.binkley.layers.dnd.Races;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
@@ -21,12 +22,13 @@ import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
 import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
 import static hm.binkley.layers.dnd.Proficiencies.proficiencyBonus;
 import static java.lang.System.out;
+import static java.util.stream.Collectors.joining;
 import static lombok.AccessLevel.PRIVATE;
 
 @SuppressWarnings("WeakerAccess")
 @RequiredArgsConstructor(access = PRIVATE)
 public final class Layers {
-    private final Deque<Layer> layers = new ArrayDeque<>();
+    private final List<Layer> layers = new ArrayList<>();
 
     public static Layer firstLayer(final Function<Surface, Layer> ctor,
             final Consumer<Layers> layersHolder) {
@@ -57,13 +59,21 @@ public final class Layers {
     public final class Surface {
         public Layer saveAndNext(final Layer layer,
                 final Function<Surface, Layer> next) {
-            layers.push(layer);
+            layers.add(0, layer);
             return next.apply(this);
         }
 
         public void forget(final Layer discard) {
             layers.remove(discard);
         }
+    }
+
+    @Override
+    public String toString() {
+        final int size = layers.size();
+        return IntStream.range(0, size).
+                mapToObj(i -> i + ": " + layers.get(size - i - 1)).
+                collect(joining("\n"));
     }
 
     @SuppressWarnings("unchecked")
@@ -90,6 +100,9 @@ public final class Layers {
                 saveAndNext(beltOfGiantStrength(20)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(Layer::new);
+
+        out.println("layers =");
+        out.println(layers);
 
         for (final Characters description : Characters.values())
             out.println(description + " = " + layers.get(description));

@@ -1,10 +1,12 @@
 package hm.binkley.layers;
 
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 import java.util.function.Function;
 
+@EqualsAndHashCode
 @RequiredArgsConstructor
 public final class Value<T>
         implements Function<Layers, T> {
@@ -46,5 +48,15 @@ public final class Value<T>
 
     public Optional<Rule<T>> rule() {
         return Optional.ofNullable(rule);
+    }
+
+    @Override
+    public String toString() {
+        if (null == rule)
+            return value.toString();
+        else if (null == value)
+            return "{" + rule + "}";
+        else
+            return "{" + value + ", " + rule + "}";
     }
 }
