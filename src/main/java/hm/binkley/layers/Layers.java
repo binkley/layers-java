@@ -3,10 +3,12 @@ package hm.binkley.layers;
 import hm.binkley.layers.dnd.AbilityScore;
 import hm.binkley.layers.dnd.CharacterDescription;
 import hm.binkley.layers.dnd.ProficiencyBonus;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -18,19 +20,28 @@ import static hm.binkley.layers.dnd.AbilityScore.INT;
 import static hm.binkley.layers.dnd.AbilityScore.STR;
 import static hm.binkley.layers.dnd.AbilityScore.WIS;
 import static hm.binkley.layers.dnd.AbilityScore.abilityScores;
-import static hm.binkley.layers.dnd.AbilityScore.defaultRuleAbilityScores;
+import static hm.binkley.layers.dnd.AbilityScore.baseRuleAbilityScores;
 import static hm.binkley.layers.dnd.CharacterDescription.characterDescription;
 import static hm.binkley.layers.dnd.ProficiencyBonus.ACROBATICS;
 import static hm.binkley.layers.dnd.ProficiencyBonus.ATHLETICS;
 import static hm.binkley.layers.dnd.ProficiencyBonus
-        .defaultRuleProficiencyBonuses;
+        .baseRuleProficiencyBonuses;
 import static hm.binkley.layers.dnd.ProficiencyBonus.doubleProficiency;
 import static hm.binkley.layers.dnd.ProficiencyBonus.proficiencyBonus;
 import static java.lang.System.out;
+import static lombok.AccessLevel.PRIVATE;
 
 @SuppressWarnings("WeakerAccess")
+@RequiredArgsConstructor(access = PRIVATE)
 public final class Layers {
     private final Deque<Layer> layers = new ArrayDeque<>();
+
+    public static Layers newLayers(final Function<Layers, Layer> ctor,
+            final Consumer<Layer> holder) {
+        final Layers layers = new Layers();
+        holder.accept(layers.newLayer(ctor));
+        return layers;
+    }
 
     public Layer newLayer(final Function<Layers, Layer> ctor) {
         return ctor.apply(this);
@@ -81,27 +92,28 @@ public final class Layers {
         return layer;
     }
 
-    public static Layer beltOfGiantStrength(final Layers layers,
-            final int _str) {
-        final Layer layer = layers.newLayer(Layer::new);
-        layer.put(STR, Value.ofBoth(_str, Rule.exactly()));
-        return layer;
+    public static Function<Layers, Layer> beltOfGiantStrength(final int _str) {
+        return layers -> {
+            final Layer layer = new Layer(layers);
+            layer.put(STR, Value.ofBoth(_str, Rule.exactly()));
+            return layer;
+        };
     }
 
     public static void main(final String... args) {
         final Layers layers = new Layers();
 
-        layers.add(defaultRuleAbilityScores(layers));
-        layers.add(defaultRuleProficiencyBonuses(layers));
+        layers.add(baseRuleAbilityScores(layers));
+        layers.add(baseRuleProficiencyBonuses(layers));
 
-        layers.add(characterDescription(layers, "Bob"));
-        layers.add(abilityScores(layers, 8, 15, 14, 10, 13, 12));
+        layers.add(characterDescription("Bob").apply(layers));
+        layers.add(abilityScores(8, 15, 14, 10, 13, 12).apply(layers));
         layers.add(plainHuman(layers));
-        layers.add(proficiencyBonus(layers, ACROBATICS, 1));
-        layers.add(proficiencyBonus(layers, ATHLETICS, 1));
-        layers.add(doubleProficiency(layers, ACROBATICS));
-        layers.add(beltOfGiantStrength(layers, 20));
-        layers.add(abilityScores(layers, 1, 0, 0, 0, 0, 0));
+        layers.add(proficiencyBonus(ACROBATICS, 1).apply(layers));
+        layers.add(proficiencyBonus(ATHLETICS, 1).apply(layers));
+        layers.add(doubleProficiency(ACROBATICS).apply(layers));
+        layers.add(beltOfGiantStrength(20).apply(layers));
+        layers.add(abilityScores(1, 0, 0, 0, 0, 0).apply(layers));
 
         for (final CharacterDescription description : CharacterDescription
                 .values())

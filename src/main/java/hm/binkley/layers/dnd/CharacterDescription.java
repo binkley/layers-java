@@ -4,13 +4,17 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.Value;
 
+import java.util.function.Function;
+
 public enum CharacterDescription {
     NAME;
 
-    public static Layer characterDescription(final Layers layers,
+    public static Function<Layers, Layer> characterDescription(
             final String name) {
-        final Layer layer = layers.newLayer(Layer::new);
-        layer.put(NAME, Value.ofValue(name));
-        return layer;
+        return layers -> {
+            final Layer layer = new Layer(layers);
+            layer.put(NAME, Value.ofValue(name));
+            return layer;
+        };
     }
 }

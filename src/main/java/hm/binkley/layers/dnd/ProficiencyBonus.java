@@ -4,6 +4,8 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.Value;
 
+import java.util.function.Function;
+
 import static hm.binkley.layers.Value.ofValue;
 
 public enum ProficiencyBonus {
@@ -21,21 +23,25 @@ public enum ProficiencyBonus {
         return display;
     }
 
-    public static Layer proficiencyBonus(final Layers layers,
+    public static Function<Layers, Layer> proficiencyBonus(
             final ProficiencyBonus proficiency, final int bonus) {
-        final Layer layer = layers.newLayer(Layer::new);
-        layer.put(proficiency, ofValue(bonus));
-        return layer;
+        return layers -> {
+            final Layer layer = new Layer(layers);
+            layer.put(proficiency, ofValue(bonus));
+            return layer;
+        };
     }
 
-    public static Layer doubleProficiency(final Layers layers,
+    public static Function<Layers, Layer> doubleProficiency(
             final ProficiencyBonus proficiency) {
-        final Layer layer = layers.newLayer(Layer::new);
-        layer.put(proficiency, Value.doubling(proficiency));
-        return layer;
+        return layers -> {
+            final Layer layer = new Layer(layers);
+            layer.put(proficiency, Value.doubling(proficiency));
+            return layer;
+        };
     }
 
-    public static Layer defaultRuleProficiencyBonuses(final Layers layers) {
+    public static Layer baseRuleProficiencyBonuses(final Layers layers) {
         final Layer layer = layers.newLayer(Layer::new);
         for (final ProficiencyBonus proficiency : ProficiencyBonus.values())
             layer.put(proficiency, Value.sumAll(proficiency));
