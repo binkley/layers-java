@@ -14,7 +14,7 @@ public class Layer
         extends LinkedHashMap<Object, Value> {
     private Surface layers;
 
-    public Layer commit(final Function<Surface, Layer> ctor) {
+    public Layer saveAndNext(final Function<Surface, Layer> ctor) {
         return layers.saveAndNext(this, ctor);
     }
 

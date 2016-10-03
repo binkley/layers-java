@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 import static hm.binkley.layers.Value.ofValue;
 
-public enum AbilityScore {
+public enum Abilities {
     STR,
     DEX,
     CON,
@@ -33,7 +33,7 @@ public enum AbilityScore {
 
     public static Layer baseRuleAbilityScores(final Surface layers) {
         final Layer layer = new Layer(layers);
-        for (final AbilityScore ability : AbilityScore.values())
+        for (final Abilities ability : Abilities.values())
             layer.put(ability, Value.sumAll(ability));
         return layer;
     }

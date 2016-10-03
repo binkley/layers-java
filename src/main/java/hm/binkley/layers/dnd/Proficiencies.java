@@ -8,13 +8,13 @@ import java.util.function.Function;
 
 import static hm.binkley.layers.Value.ofValue;
 
-public enum ProficiencyBonus {
+public enum Proficiencies {
     ACROBATICS("Acrobatics"),
     ATHLETICS("Athletics");
 
     private final String display;
 
-    ProficiencyBonus(final String display) {
+    Proficiencies(final String display) {
         this.display = display;
     }
 
@@ -24,7 +24,7 @@ public enum ProficiencyBonus {
     }
 
     public static Function<Surface, Layer> proficiencyBonus(
-            final ProficiencyBonus proficiency, final int bonus) {
+            final Proficiencies proficiency, final int bonus) {
         return layers -> {
             final Layer layer = new Layer(layers);
             layer.put(proficiency, ofValue(bonus));
@@ -33,7 +33,7 @@ public enum ProficiencyBonus {
     }
 
     public static Function<Surface, Layer> doubleProficiency(
-            final ProficiencyBonus proficiency) {
+            final Proficiencies proficiency) {
         return layers -> {
             final Layer layer = new Layer(layers);
             layer.put(proficiency, Value.doubling(proficiency));
@@ -43,7 +43,7 @@ public enum ProficiencyBonus {
 
     public static Layer baseRuleProficiencyBonuses(final Surface layers) {
         final Layer layer = new Layer(layers);
-        for (final ProficiencyBonus proficiency : ProficiencyBonus.values())
+        for (final Proficiencies proficiency : Proficiencies.values())
             layer.put(proficiency, Value.sumAll(proficiency));
         return layer;
     }

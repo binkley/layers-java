@@ -1,15 +1,19 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.dnd.AbilityScore;
+import hm.binkley.layers.dnd.Abilities;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static hm.binkley.layers.Layers.beltOfGiantStrength;
 import static hm.binkley.layers.Layers.newLayers;
-import static hm.binkley.layers.dnd.AbilityScore.STR;
-import static hm.binkley.layers.dnd.AbilityScore.abilityScores;
-import static hm.binkley.layers.dnd.CharacterDescription.NAME;
-import static hm.binkley.layers.dnd.CharacterDescription.characterDescription;
+import static hm.binkley.layers.dnd.Abilities.STR;
+import static hm.binkley.layers.dnd.Abilities.abilityScores;
+import static hm.binkley.layers.dnd.Characters.NAME;
+import static hm.binkley.layers.dnd.Characters.characterDescription;
+import static hm.binkley.layers.dnd.MagicItems.beltOfGiantStrength;
+import static hm.binkley.layers.dnd.Proficiencies.ACROBATICS;
+import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
+import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
+import static hm.binkley.layers.dnd.Proficiencies.proficiencyBonus;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LayersTest {
@@ -18,13 +22,13 @@ class LayersTest {
 
     @BeforeEach
     void setUpLayers() {
-        layers = newLayers(AbilityScore::baseRuleAbilityScores,
+        layers = newLayers(Abilities::baseRuleAbilityScores,
                 layer -> firstLayer = layer);
     }
 
     @Test
     void shouldHaveNoStrengthBeforeAddingScores() {
-        firstLayer.commit(Layer::new);
+        firstLayer.saveAndNext(Layer::new);
 
         assertEquals((Integer) 0, layers.get(STR));
     }
@@ -32,9 +36,9 @@ class LayersTest {
     @Test
     void shouldHaveNetStrengthAfterGainingAbility() {
         firstLayer.
-                commit(abilityScores(8, 15, 14, 10, 13, 12)).
-                commit(abilityScores(1, 0, 0, 0, 0, 0)).
-                commit(Layer::new);
+                saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
+                saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
+                saveAndNext(Layer::new);
 
         assertEquals((Integer) 9, layers.get(STR));
     }
@@ -42,10 +46,10 @@ class LayersTest {
     @Test
     void shouldHaveStrengthOfBelt() {
         firstLayer.
-                commit(abilityScores(8, 15, 14, 10, 13, 12)).
-                commit(abilityScores(1, 0, 0, 0, 0, 0)).
-                commit(beltOfGiantStrength(20)).
-                commit(Layer::new);
+                saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
+                saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
+                saveAndNext(beltOfGiantStrength(20)).
+                saveAndNext(Layer::new);
 
         assertEquals((Integer) 20, layers.get(STR));
     }
@@ -53,11 +57,11 @@ class LayersTest {
     @Test
     void shouldHaveStrengthOfBeltAfterGainingAbility() {
         firstLayer.
-                commit(abilityScores(8, 15, 14, 10, 13, 12)).
-                commit(abilityScores(1, 0, 0, 0, 0, 0)).
-                commit(beltOfGiantStrength(20)).
-                commit(abilityScores(1, 0, 0, 0, 0, 0)).
-                commit(Layer::new);
+                saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
+                saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
+                saveAndNext(beltOfGiantStrength(20)).
+                saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
+                saveAndNext(Layer::new);
 
         assertEquals((Integer) 20, layers.get(STR));
     }
@@ -65,11 +69,11 @@ class LayersTest {
     @Test
     void shouldHaveNetStrengthAfterRemovingBelt() {
         final Layer girdle = firstLayer.
-                commit(abilityScores(8, 15, 14, 10, 13, 12)).
-                commit(abilityScores(1, 0, 0, 0, 0, 0)).
-                commit(beltOfGiantStrength(20));
-        girdle.commit(abilityScores(1, 0, 0, 0, 0, 0)).
-                commit(Layer::new);
+                saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
+                saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
+                saveAndNext(beltOfGiantStrength(20));
+        girdle.saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
+                saveAndNext(Layer::new);
         girdle.rollback();
 
         assertEquals((Integer) 10, layers.get(STR));
@@ -78,10 +82,21 @@ class LayersTest {
     @Test
     void shouldHaveMostRecentName() {
         firstLayer.
-                commit(characterDescription("Bob")).
-                commit(characterDescription("Nancy")).
-                commit(Layer::new);
+                saveAndNext(characterDescription("Bob")).
+                saveAndNext(characterDescription("Nancy")).
+                saveAndNext(Layer::new);
 
         assertEquals("Nancy", layers.get(NAME));
+    }
+
+    @Test
+    void shouldDoubleProficiencies() {
+        firstLayer.
+                saveAndNext(proficiencyBonus(ACROBATICS, 1)).
+                saveAndNext(proficiencyBonus(ATHLETICS, 1)).
+                saveAndNext(doubleProficiency(ACROBATICS)).
+                saveAndNext(Layer::new);
+
+        assertEquals((Integer) 2, layers.get(ACROBATICS));
     }
 }

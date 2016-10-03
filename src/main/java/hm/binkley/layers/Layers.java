@@ -1,8 +1,9 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.dnd.AbilityScore;
-import hm.binkley.layers.dnd.CharacterDescription;
-import hm.binkley.layers.dnd.ProficiencyBonus;
+import hm.binkley.layers.dnd.Abilities;
+import hm.binkley.layers.dnd.Characters;
+import hm.binkley.layers.dnd.Proficiencies;
+import hm.binkley.layers.dnd.Races;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayDeque;
@@ -12,22 +13,13 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static hm.binkley.layers.Value.ofValue;
-import static hm.binkley.layers.dnd.AbilityScore.CHA;
-import static hm.binkley.layers.dnd.AbilityScore.CON;
-import static hm.binkley.layers.dnd.AbilityScore.DEX;
-import static hm.binkley.layers.dnd.AbilityScore.INT;
-import static hm.binkley.layers.dnd.AbilityScore.STR;
-import static hm.binkley.layers.dnd.AbilityScore.WIS;
-import static hm.binkley.layers.dnd.AbilityScore.abilityScores;
-import static hm.binkley.layers.dnd.AbilityScore.baseRuleAbilityScores;
-import static hm.binkley.layers.dnd.CharacterDescription.characterDescription;
-import static hm.binkley.layers.dnd.ProficiencyBonus.ACROBATICS;
-import static hm.binkley.layers.dnd.ProficiencyBonus.ATHLETICS;
-import static hm.binkley.layers.dnd.ProficiencyBonus
-        .baseRuleProficiencyBonuses;
-import static hm.binkley.layers.dnd.ProficiencyBonus.doubleProficiency;
-import static hm.binkley.layers.dnd.ProficiencyBonus.proficiencyBonus;
+import static hm.binkley.layers.dnd.Abilities.abilityScores;
+import static hm.binkley.layers.dnd.Characters.characterDescription;
+import static hm.binkley.layers.dnd.MagicItems.beltOfGiantStrength;
+import static hm.binkley.layers.dnd.Proficiencies.ACROBATICS;
+import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
+import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
+import static hm.binkley.layers.dnd.Proficiencies.proficiencyBonus;
 import static java.lang.System.out;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -81,51 +73,30 @@ public final class Layers {
                 map(layer -> (Value<T>) layer.<T>get(key));
     }
 
-    public static Layer plainHuman(final Surface layers) {
-        final Layer layer = new Layer(layers);
-        layer.put(STR, ofValue(1));
-        layer.put(DEX, ofValue(1));
-        layer.put(CON, ofValue(1));
-        layer.put(INT, ofValue(1));
-        layer.put(WIS, ofValue(1));
-        layer.put(CHA, ofValue(1));
-        return layer;
-    }
-
-    public static Function<Surface, Layer> beltOfGiantStrength(
-            final int _str) {
-        return layers -> {
-            final Layer layer = new Layer(layers);
-            layer.put(STR, Value.ofBoth(_str, Rule.exactly()));
-            return layer;
-        };
-    }
-
     public static void main(final String... args) {
-        final Layers layers = new Layers();
-        final Surface surface = layers.new Surface();
+        final Layer[] firstLayer = new Layer[1];
+        final Layers layers = newLayers(Abilities::baseRuleAbilityScores,
+                layer -> firstLayer[0] = layer);
 
-        layers.layers.add(baseRuleAbilityScores(surface));
-        layers.layers.add(baseRuleProficiencyBonuses(surface));
+        firstLayer[0].
+                saveAndNext(Proficiencies::baseRuleProficiencyBonuses).
+                saveAndNext(characterDescription("Bob")).
+                saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
+                saveAndNext(Races::plainHuman).
+                saveAndNext(proficiencyBonus(ACROBATICS, 1)).
+                saveAndNext(proficiencyBonus(ATHLETICS, 1)).
+                saveAndNext(doubleProficiency(ACROBATICS)).
+                saveAndNext(beltOfGiantStrength(20)).
+                saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
+                saveAndNext(Layer::new);
 
-        layers.layers.add(characterDescription("Bob").apply(surface));
-        layers.layers
-                .add(abilityScores(8, 15, 14, 10, 13, 12).apply(surface));
-        layers.layers.add(plainHuman(surface));
-        layers.layers.add(proficiencyBonus(ACROBATICS, 1).apply(surface));
-        layers.layers.add(proficiencyBonus(ATHLETICS, 1).apply(surface));
-        layers.layers.add(doubleProficiency(ACROBATICS).apply(surface));
-        layers.layers.add(beltOfGiantStrength(20).apply(surface));
-        layers.layers.add(abilityScores(1, 0, 0, 0, 0, 0).apply(surface));
-
-        for (final CharacterDescription description : CharacterDescription
-                .values())
+        for (final Characters description : Characters.values())
             out.println(description + " = " + layers.get(description));
 
-        for (final AbilityScore score : AbilityScore.values())
+        for (final Abilities score : Abilities.values())
             out.println(score + " = " + layers.get(score));
 
-        for (final ProficiencyBonus bonus : ProficiencyBonus.values())
+        for (final Proficiencies bonus : Proficiencies.values())
             out.println(bonus + " = " + layers.get(bonus));
     }
 }

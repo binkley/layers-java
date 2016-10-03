@@ -6,7 +6,7 @@ import hm.binkley.layers.Value;
 
 import java.util.function.Function;
 
-public enum CharacterDescription {
+public enum Characters {
     NAME;
 
     public static Function<Surface, Layer> characterDescription(
