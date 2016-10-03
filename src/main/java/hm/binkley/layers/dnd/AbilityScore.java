@@ -1,7 +1,7 @@
 package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.Layers;
+import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.Value;
 
 import java.util.function.Function;
@@ -16,7 +16,7 @@ public enum AbilityScore {
     WIS,
     CHA;
 
-    public static Function<Layers, Layer> abilityScores(final int _str,
+    public static Function<Surface, Layer> abilityScores(final int _str,
             final int _dex, final int _con, final int _int, final int _wis,
             final int _cha) {
         return layers -> {
@@ -31,8 +31,8 @@ public enum AbilityScore {
         };
     }
 
-    public static Layer baseRuleAbilityScores(final Layers layers) {
-        final Layer layer = layers.newLayer(Layer::new);
+    public static Layer baseRuleAbilityScores(final Surface layers) {
+        final Layer layer = new Layer(layers);
         for (final AbilityScore ability : AbilityScore.values())
             layer.put(ability, Value.sumAll(ability));
         return layer;

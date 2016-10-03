@@ -1,5 +1,6 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.Layers.Surface;
 import lombok.AllArgsConstructor;
 
 import java.util.LinkedHashMap;
@@ -11,17 +12,13 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class Layer
         extends LinkedHashMap<Object, Value> {
-    private Layers layers;
+    private Surface layers;
 
-    public Layer commit(final Function<Layers, Layer> ctor) {
-        layers.add(this);
-        final Layer next = layers.newLayer(ctor);
-//        layers = null;
-        return next;
+    public Layer commit(final Function<Surface, Layer> ctor) {
+        return layers.saveAndNext(this, ctor);
     }
 
     public void rollback() {
-        layers.remove(this); // TODO: Make sense?  Rename method?
-//        layers = null;
+        layers.forget(this);
     }
 }

@@ -36,23 +36,11 @@ import static lombok.AccessLevel.PRIVATE;
 public final class Layers {
     private final Deque<Layer> layers = new ArrayDeque<>();
 
-    public static Layers newLayers(final Function<Layers, Layer> ctor,
+    public static Layers newLayers(final Function<Surface, Layer> ctor,
             final Consumer<Layer> holder) {
         final Layers layers = new Layers();
-        holder.accept(layers.newLayer(ctor));
+        holder.accept(ctor.apply(layers.new Surface()));
         return layers;
-    }
-
-    public Layer newLayer(final Function<Layers, Layer> ctor) {
-        return ctor.apply(this);
-    }
-
-    public void add(final Layer layer) {
-        layers.push(layer);
-    }
-
-    public void remove(final Layer layer) {
-        layers.remove(layer);
     }
 
     public <T> T get(final Object key) {
@@ -74,6 +62,18 @@ public final class Layers {
                 filter(value -> value.rule().isPresent());
     }
 
+    public final class Surface {
+        public Layer saveAndNext(final Layer layer,
+                final Function<Surface, Layer> next) {
+            layers.push(layer);
+            return next.apply(this);
+        }
+
+        public void forget(final Layer discard) {
+            layers.remove(discard);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private <T> Stream<Value<T>> streamFor(final Object key) {
         return layers.stream().
@@ -81,8 +81,8 @@ public final class Layers {
                 map(layer -> (Value<T>) layer.<T>get(key));
     }
 
-    public static Layer plainHuman(final Layers layers) {
-        final Layer layer = layers.newLayer(Layer::new);
+    public static Layer plainHuman(final Surface layers) {
+        final Layer layer = new Layer(layers);
         layer.put(STR, ofValue(1));
         layer.put(DEX, ofValue(1));
         layer.put(CON, ofValue(1));
@@ -92,7 +92,8 @@ public final class Layers {
         return layer;
     }
 
-    public static Function<Layers, Layer> beltOfGiantStrength(final int _str) {
+    public static Function<Surface, Layer> beltOfGiantStrength(
+            final int _str) {
         return layers -> {
             final Layer layer = new Layer(layers);
             layer.put(STR, Value.ofBoth(_str, Rule.exactly()));
@@ -102,18 +103,20 @@ public final class Layers {
 
     public static void main(final String... args) {
         final Layers layers = new Layers();
+        final Surface surface = layers.new Surface();
 
-        layers.add(baseRuleAbilityScores(layers));
-        layers.add(baseRuleProficiencyBonuses(layers));
+        layers.layers.add(baseRuleAbilityScores(surface));
+        layers.layers.add(baseRuleProficiencyBonuses(surface));
 
-        layers.add(characterDescription("Bob").apply(layers));
-        layers.add(abilityScores(8, 15, 14, 10, 13, 12).apply(layers));
-        layers.add(plainHuman(layers));
-        layers.add(proficiencyBonus(ACROBATICS, 1).apply(layers));
-        layers.add(proficiencyBonus(ATHLETICS, 1).apply(layers));
-        layers.add(doubleProficiency(ACROBATICS).apply(layers));
-        layers.add(beltOfGiantStrength(20).apply(layers));
-        layers.add(abilityScores(1, 0, 0, 0, 0, 0).apply(layers));
+        layers.layers.add(characterDescription("Bob").apply(surface));
+        layers.layers
+                .add(abilityScores(8, 15, 14, 10, 13, 12).apply(surface));
+        layers.layers.add(plainHuman(surface));
+        layers.layers.add(proficiencyBonus(ACROBATICS, 1).apply(surface));
+        layers.layers.add(proficiencyBonus(ATHLETICS, 1).apply(surface));
+        layers.layers.add(doubleProficiency(ACROBATICS).apply(surface));
+        layers.layers.add(beltOfGiantStrength(20).apply(surface));
+        layers.layers.add(abilityScores(1, 0, 0, 0, 0, 0).apply(surface));
 
         for (final CharacterDescription description : CharacterDescription
                 .values())

@@ -1,7 +1,7 @@
 package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.Layers;
+import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.Value;
 
 import java.util.function.Function;
@@ -23,7 +23,7 @@ public enum ProficiencyBonus {
         return display;
     }
 
-    public static Function<Layers, Layer> proficiencyBonus(
+    public static Function<Surface, Layer> proficiencyBonus(
             final ProficiencyBonus proficiency, final int bonus) {
         return layers -> {
             final Layer layer = new Layer(layers);
@@ -32,7 +32,7 @@ public enum ProficiencyBonus {
         };
     }
 
-    public static Function<Layers, Layer> doubleProficiency(
+    public static Function<Surface, Layer> doubleProficiency(
             final ProficiencyBonus proficiency) {
         return layers -> {
             final Layer layer = new Layer(layers);
@@ -41,8 +41,8 @@ public enum ProficiencyBonus {
         };
     }
 
-    public static Layer baseRuleProficiencyBonuses(final Layers layers) {
-        final Layer layer = layers.newLayer(Layer::new);
+    public static Layer baseRuleProficiencyBonuses(final Surface layers) {
+        final Layer layer = new Layer(layers);
         for (final ProficiencyBonus proficiency : ProficiencyBonus.values())
             layer.put(proficiency, Value.sumAll(proficiency));
         return layer;
