@@ -109,10 +109,12 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
+                    <!--
                     <compilerArgs>
                         <arg>-Xlint:all</arg>
                         <arg>-Werror</arg>
                     </compilerArgs>
+-->
                     <debug>true</debug>
                     <source>1.${java.version}</source>
                     <target>1.${java.version}</target>
