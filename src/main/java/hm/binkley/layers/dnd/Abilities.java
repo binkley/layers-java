@@ -17,12 +17,12 @@ public class Abilities
         extends XEnum<Abilities> {
     private static final AtomicInteger ordinal = new AtomicInteger();
     private static final List<Abilities> values = new ArrayList<>();
-    public static final Abilities STR = new Abilities("STR") {};
-    public static final Abilities DEX = new Abilities("DEX") {};
-    public static final Abilities CON = new Abilities("CON") {};
-    public static final Abilities INT = new Abilities("INT") {};
-    public static final Abilities WIS = new Abilities("WIS") {};
-    public static final Abilities CHA = new Abilities("CHA") {};
+    public static final Abilities STR = new Abilities("STR");
+    public static final Abilities DEX = new Abilities("DEX");
+    public static final Abilities CON = new Abilities("CON");
+    public static final Abilities INT = new Abilities("INT");
+    public static final Abilities WIS = new Abilities("WIS");
+    public static final Abilities CHA = new Abilities("CHA");
 
     public static List<Abilities> values() {
         return unmodifiableList(values);

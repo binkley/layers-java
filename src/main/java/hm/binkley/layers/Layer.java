@@ -57,7 +57,7 @@ public class Layer {
 
     @Override
     public final String toString() {
-        return name + ": " + super.toString();
+        return name + ": " + values;
     }
 
     public class LayerView {

@@ -1,6 +1,7 @@
 package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
+import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.Surface;
 
 import static hm.binkley.layers.Value.ofValue;
@@ -21,5 +22,28 @@ public final class Races {
         layer.put(WIS, ofValue(1));
         layer.put(CHA, ofValue(1));
         return layer;
+    }
+
+    public static HumanVariant humanVariant() {
+        return new HumanVariant();
+    }
+
+    public static final class HumanVariant {
+        public WithSTR withSTR() {
+            return new WithSTR();
+        }
+
+        public static class WithSTR {
+            public LayerMaker withDEX() {
+                return layers -> {
+                    final Layer layer = new Layer(layers, "Variant Human");
+                    layer.put(STR, ofValue(1));
+                    layer.put(DEX, ofValue(1));
+                    return layer;
+                };
+            }
+        }
+
+        private HumanVariant() {}
     }
 }

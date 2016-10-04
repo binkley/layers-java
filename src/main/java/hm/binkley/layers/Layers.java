@@ -4,7 +4,6 @@ import hm.binkley.layers.Layer.LayerView;
 import hm.binkley.layers.dnd.Abilities;
 import hm.binkley.layers.dnd.Characters;
 import hm.binkley.layers.dnd.Proficiencies;
-import hm.binkley.layers.dnd.Races;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ import static hm.binkley.layers.dnd.Proficiencies.ACROBATICS;
 import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
 import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
 import static hm.binkley.layers.dnd.Proficiencies.proficiencyBonus;
+import static hm.binkley.layers.dnd.Races.humanVariant;
 import static java.lang.System.out;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.joining;
@@ -131,7 +131,7 @@ public final class Layers {
                 saveAndNext(Proficiencies::baseRuleProficiencyBonuses).
                 saveAndNext(characterDescription("Bob")).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
-                saveAndNext(Races::plainHuman).
+                saveAndNext(humanVariant().withSTR().withDEX()).
                 saveAndNext(proficiencyBonus(ACROBATICS, 1)).
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
                 saveAndNext(doubleProficiency(ACROBATICS)).
