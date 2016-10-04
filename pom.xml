@@ -114,6 +114,8 @@
                         <arg>-Xlint:all</arg>
                     </compilerArgs>
                     <debug>true</debug>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
                     <source>1.${java.version}</source>
                     <target>1.${java.version}</target>
                 </configuration>
