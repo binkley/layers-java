@@ -29,12 +29,22 @@ public enum Abilities {
         };
     }
 
-    public static LayerMaker abilityScoreIncrease(final Abilities ability,
-            final int increase) {
+    public static LayerMaker abilityScoreIncrease(final Abilities ability) {
         return layers -> {
             final Layer layer = new Layer(layers,
-                    "Ability score increase(s)");
-            layer.put(ability, ofValue(increase));
+                    "Ability (1) score increase");
+            layer.put(ability, ofValue(2));
+            return layer;
+        };
+    }
+
+    public static LayerMaker abilityScoreIncrease(
+            final Abilities firstAbility, final Abilities secondAbility) {
+        return layers -> {
+            final Layer layer = new Layer(layers,
+                    "Ability (2) score increases");
+            layer.put(firstAbility, ofValue(1));
+            layer.put(secondAbility, ofValue(1));
             return layer;
         };
     }

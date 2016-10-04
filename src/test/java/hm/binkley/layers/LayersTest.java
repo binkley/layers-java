@@ -61,7 +61,7 @@ class LayersTest {
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(beltOfGiantStrength(20)).
-                saveAndNext(abilityScoreIncrease(STR, 2)).
+                saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 20, layers.get(STR));
@@ -73,7 +73,7 @@ class LayersTest {
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(beltOfGiantStrength(20));
-        girdle.saveAndNext(abilityScoreIncrease(STR, 2)).
+        girdle.saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(ScratchLayer::new);
         girdle.forget();
 

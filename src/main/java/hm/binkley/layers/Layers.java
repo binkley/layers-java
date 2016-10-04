@@ -98,7 +98,7 @@ public final class Layers {
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
                 saveAndNext(doubleProficiency(ACROBATICS)).
                 saveAndNext(beltOfGiantStrength(20)).
-                saveAndNext(abilityScoreIncrease(STR, 2)).
+                saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(ScratchLayer::new);
 
         out.println("layers =");
