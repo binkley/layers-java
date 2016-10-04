@@ -1,14 +1,16 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.Layer.LayerView;
 import hm.binkley.layers.dnd.Abilities;
 import hm.binkley.layers.dnd.Proficiencies;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import static hm.binkley.layers.Layers.firstLayer;
+import static hm.binkley.layers.Value.ofValue;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
@@ -20,7 +22,10 @@ import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
 import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
 import static hm.binkley.layers.dnd.Proficiencies.proficiencyBonus;
 import static java.util.Collections.singleton;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -69,7 +74,7 @@ class LayersTest {
     @Test
     void shouldContainKey() {
         firstLayer.
-                put("FOO", Value.ofValue("BAR")).
+                put("FOO", ofValue("BAR")).
                 saveAndNext(ScratchLayer::new);
 
         assertTrue(layers.containsKey("FOO"));
@@ -87,13 +92,16 @@ class LayersTest {
     @Test
     void shouldHaveHistory() {
         firstLayer.
+                put("BOB", ofValue(17)).
                 saveAndNext(ScratchLayer::new);
 
-        final List<LayerView> history = layers.
+        final List<Map<Object, Object>> history = layers.
                 history().
+                map(layer -> layer.stream().
+                        collect(toMap(Entry::getKey, Entry::getValue))).
                 collect(toList());
 
-        assertEquals(1, history.size());
+        assertEquals(singletonList(singletonMap("BOB", 17)), history);
     }
 
     @Test

@@ -3,10 +3,16 @@ package hm.binkley.layers;
 import hm.binkley.layers.Layers.Surface;
 import lombok.RequiredArgsConstructor;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Collections.unmodifiableMap;
 
 /**
  * @todo Trade-off between too many references (hard on GC) and ease of use
@@ -43,6 +49,13 @@ public class Layer {
         return this;
     }
 
+    public Stream<Entry<Object, Object>> stream() {
+        return values.entrySet().stream().
+                filter(pair -> pair.getValue().value().isPresent()).
+                map(pair -> new SimpleImmutableEntry<>(pair.getKey(),
+                        pair.getValue().value().get()));
+    }
+
     public Layer saveAndNext(final LayerMaker ctor) {
         return layers.saveAndNext(this, ctor);
     }
@@ -53,6 +66,11 @@ public class Layer {
 
     public LayerView view() {
         return new LayerView();
+    }
+
+    public Map<Object, Object> toMap() {
+        return unmodifiableMap(stream().
+                collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
     }
 
     @Override
@@ -79,6 +97,14 @@ public class Layer {
 
         public <T> Value<T> get(final Object key) {
             return Layer.this.get(key);
+        }
+
+        public Stream<Entry<Object, Object>> stream() {
+            return Layer.this.stream();
+        }
+
+        public Map<Object, Object> toMap() {
+            return Layer.this.toMap();
         }
 
         public void forget() {

@@ -6,11 +6,15 @@ import hm.binkley.layers.dnd.Characters;
 import hm.binkley.layers.dnd.Proficiencies;
 import lombok.RequiredArgsConstructor;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -71,6 +75,12 @@ public final class Layers {
     public <T> T get(final Object key) {
         return this.<T>ruleValueFor(key).
                 apply(this);
+    }
+
+    public Map<Object, Object> toMap() {
+        return keys().stream().
+                map(key -> new SimpleImmutableEntry<>(key, get(key))).
+                collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
     public Stream<LayerView> history() {
