@@ -4,7 +4,6 @@ import hm.binkley.layers.Layers.Surface;
 import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashMap;
-import java.util.function.Function;
 
 /**
  * @todo Trade-off between too many references (hard on GC) and ease of use
@@ -15,7 +14,7 @@ public class Layer
     private final Surface layers;
     private final String name;
 
-    public Layer saveAndNext(final Function<Surface, Layer> ctor) {
+    public Layer saveAndNext(final LayerMaker ctor) {
         return layers.saveAndNext(this, ctor);
     }
 

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -32,7 +31,7 @@ import static lombok.AccessLevel.PRIVATE;
 public final class Layers {
     private final List<Layer> layers = new ArrayList<>();
 
-    public static Layer firstLayer(final Function<Surface, Layer> ctor,
+    public static Layer firstLayer(final LayerMaker ctor,
             final Consumer<Layers> layersHolder) {
         final Layers layers = new Layers();
         layersHolder.accept(layers);
@@ -59,8 +58,7 @@ public final class Layers {
     }
 
     public final class Surface {
-        public Layer saveAndNext(final Layer layer,
-                final Function<Surface, Layer> next) {
+        public Layer saveAndNext(final Layer layer, final LayerMaker next) {
             layers.add(0, layer);
             return next.apply(this);
         }
