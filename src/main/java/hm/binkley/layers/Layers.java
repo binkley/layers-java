@@ -1,5 +1,6 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.Layer.LayerView;
 import hm.binkley.layers.dnd.Abilities;
 import hm.binkley.layers.dnd.Characters;
 import hm.binkley.layers.dnd.Proficiencies;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -23,7 +25,9 @@ import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
 import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
 import static hm.binkley.layers.dnd.Proficiencies.proficiencyBonus;
 import static java.lang.System.out;
+import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toSet;
 import static lombok.AccessLevel.PRIVATE;
 
 @SuppressWarnings("WeakerAccess")
@@ -38,11 +42,49 @@ public final class Layers {
         return ctor.apply(layers.new Surface());
     }
 
+    public boolean isEmpty() {
+        return !layers.stream().
+                anyMatch(layer -> !layer.isEmpty());
+    }
+
+    public int size() {
+        return (int) layers.stream().
+                flatMap(layer -> layer.keys().stream()).
+                distinct().
+                count();
+    }
+
+    public Set<Object> keys() {
+        return unmodifiableSet(layers.stream().
+                flatMap(layer -> layer.keys().stream()).
+                collect(toSet()));
+    }
+
+    public boolean containsKey(final Object key) {
+        return streamFor(key).
+                findAny().
+                isPresent();
+    }
+
     public <T> T get(final Object key) {
-        return this.<T>ruleValuesFor(key).
-                findFirst().
-                orElse(Value.mostRecent(key)).
+        return this.<T>ruleValueFor(key).
                 apply(this);
+    }
+
+    public Stream<LayerView> history() {
+        return layers.stream().
+                map(Layer::view);
+    }
+
+    public <T> Value<T> ruleValueFor(final Object key) {
+        return this.<T>allRuleValuesFor(key).
+                findFirst().
+                orElse(Value.mostRecent(key));
+    }
+
+    public <T> Stream<Value<T>> allRuleValuesFor(final Object key) {
+        return this.<T>streamFor(key).
+                filter(value -> value.rule().isPresent());
     }
 
     public <T> Stream<T> plainValuesFor(final Object key) {
@@ -50,11 +92,6 @@ public final class Layers {
                 map(Value::value).
                 filter(Optional::isPresent).
                 map(Optional::get);
-    }
-
-    public <T> Stream<Value<T>> ruleValuesFor(final Object key) {
-        return this.<T>streamFor(key).
-                filter(value -> value.rule().isPresent());
     }
 
     public final class Surface {
@@ -76,11 +113,10 @@ public final class Layers {
                 collect(joining("\n"));
     }
 
-    @SuppressWarnings("unchecked")
     private <T> Stream<Value<T>> streamFor(final Object key) {
         return layers.stream().
                 filter(layer -> layer.containsKey(key)).
-                map(layer -> (Value<T>) layer.<T>get(key));
+                map(layer -> layer.<T>get(key));
     }
 
     public static void main(final String... args) {
@@ -101,7 +137,6 @@ public final class Layers {
                 saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(ScratchLayer::new);
 
-        out.println("layers =");
         out.println(layers);
 
         for (final Characters description : Characters.values())
