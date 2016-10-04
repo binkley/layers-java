@@ -42,13 +42,12 @@ public abstract class XEnum<E extends XEnum<E>>
     }
 
     @Override
-    public final int compareTo(final E o) {
-        final XEnum<?> other = o;
+    public final int compareTo(final E that) {
         final XEnum<E> self = this;
-        if (self.getClass() != other.getClass() && // optimization
-                self.getDeclaringClass() != other.getDeclaringClass())
+        if (self.getClass() != ((XEnum<?>) that).getClass() && // optimization
+                self.getDeclaringClass() != that.getDeclaringClass())
             throw new ClassCastException();
-        return self.ordinal - other.ordinal;
+        return self.ordinal - ((XEnum<?>) that).ordinal;
     }
 
     public final Class<E> getDeclaringClass() {

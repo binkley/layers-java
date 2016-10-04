@@ -17,12 +17,12 @@ public class Abilities
         extends XEnum<Abilities> {
     private static final AtomicInteger ordinal = new AtomicInteger();
     private static final List<Abilities> values = new ArrayList<>();
-    public static final Abilities STR = new Abilities("STR");
-    public static final Abilities DEX = new Abilities("DEX");
-    public static final Abilities CON = new Abilities("CON");
-    public static final Abilities INT = new Abilities("INT");
-    public static final Abilities WIS = new Abilities("WIS");
-    public static final Abilities CHA = new Abilities("CHA");
+    public static final Abilities STR = new Abilities("STR") {};
+    public static final Abilities DEX = new Abilities("DEX") {};
+    public static final Abilities CON = new Abilities("CON") {};
+    public static final Abilities INT = new Abilities("INT") {};
+    public static final Abilities WIS = new Abilities("WIS") {};
+    public static final Abilities CHA = new Abilities("CHA") {};
 
     public static List<Abilities> values() {
         return unmodifiableList(values);
@@ -33,25 +33,27 @@ public class Abilities
         values.add(this);
     }
 
-    public static LayerMaker abilityScores(final int _str, final int _dex,
-            final int _con, final int _int, final int _wis, final int _cha) {
+    public static LayerMaker abilityScores(final int strength,
+            final int dexterity, final int constitution,
+            final int intelligence, final int wisdom, final int charisma) {
         return layers -> {
             final Layer layer = new Layer(layers, "Base ability scores");
-            layer.put(STR, ofValue(_str));
-            layer.put(DEX, ofValue(_dex));
-            layer.put(CON, ofValue(_con));
-            layer.put(INT, ofValue(_int));
-            layer.put(WIS, ofValue(_wis));
-            layer.put(CHA, ofValue(_cha));
+            layer.put(STR, ofValue(strength));
+            layer.put(DEX, ofValue(dexterity));
+            layer.put(CON, ofValue(constitution));
+            layer.put(INT, ofValue(intelligence));
+            layer.put(WIS, ofValue(wisdom));
+            layer.put(CHA, ofValue(charisma));
             return layer;
         };
     }
 
-    public static LayerMaker abilityScoreIncrease(final Abilities ability) {
+    public static LayerMaker abilityScoreIncrease(
+            final Abilities doubleAbility) {
         return layers -> {
             final Layer layer = new Layer(layers,
                     "Ability (1) score increase");
-            layer.put(ability, ofValue(2));
+            layer.put(doubleAbility, ofValue(2));
             return layer;
         };
     }

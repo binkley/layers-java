@@ -26,15 +26,15 @@ public final class Value<T>
     }
 
     public static Value<Integer> sumAll(final Object key) {
-        return new Value<>(null, Rule.sumAll(key));
+        return ofRule(Rule.sumAll(key));
     }
 
     public static Value<Integer> doubling(final Object key) {
-        return new Value<>(null, Rule.doubling(key));
+        return ofRule(Rule.doubling(key));
     }
 
     public static <T> Value<T> mostRecent(final Object key) {
-        return new Value<>(null, Rule.mostRecent(key));
+        return ofRule(Rule.mostRecent(key));
     }
 
     @Override

@@ -15,7 +15,9 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
+import static hm.binkley.layers.dnd.Abilities.WIS;
 import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
 import static hm.binkley.layers.dnd.Characters.characterDescription;
@@ -135,6 +137,7 @@ public final class Layers {
                 saveAndNext(doubleProficiency(ACROBATICS)).
                 saveAndNext(beltOfGiantStrength(20)).
                 saveAndNext(abilityScoreIncrease(STR)).
+                saveAndNext(abilityScoreIncrease(CON, WIS)).
                 saveAndNext(ScratchLayer::new);
 
         out.println(layers);
