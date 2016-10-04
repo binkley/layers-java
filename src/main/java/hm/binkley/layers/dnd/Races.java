@@ -11,7 +11,7 @@ import static hm.binkley.layers.dnd.Abilities.INT;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.Abilities.WIS;
 
-public class Races {
+public final class Races {
     public static Layer plainHuman(final Surface layers) {
         final Layer layer = new Layer(layers, "Human");
         layer.put(STR, ofValue(1));

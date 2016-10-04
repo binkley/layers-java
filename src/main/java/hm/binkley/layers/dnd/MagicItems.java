@@ -7,7 +7,7 @@ import hm.binkley.layers.Value;
 
 import static hm.binkley.layers.dnd.Abilities.STR;
 
-public class MagicItems {
+public final class MagicItems {
     public static LayerMaker beltOfGiantStrength(final int strength) {
         return layers -> {
             final Layer layer = new Layer(layers, "Belt of Giant Strength");
