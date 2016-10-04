@@ -1,11 +1,18 @@
 package hm.binkley.layers;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.function.BiFunction;
 
+@RequiredArgsConstructor
 public abstract class Rule<T>
         implements BiFunction<Layers, T, T> {
+    private final String name;
+
     @Override
-    public abstract String toString();
+    public final String toString() {
+        return "Rule: " + name;
+    }
 
     public static <T> Rule<T> mostRecent(final Object key) {
         return new MostRecentRule<>(key);
@@ -27,7 +34,10 @@ public abstract class Rule<T>
             extends Rule<T> {
         private final Object key;
 
-        private MostRecentRule(final Object key) {this.key = key;}
+        private MostRecentRule(final Object key) {
+            super("Most recent");
+            this.key = key;
+        }
 
         @Override
         public T apply(final Layers layers, final T value) {
@@ -35,18 +45,16 @@ public abstract class Rule<T>
                     findFirst().
                     get();
         }
-
-        @Override
-        public String toString() {
-            return "Rule: Most recent";
-        }
     }
 
     private static final class SumAllRule
             extends Rule<Integer> {
         private final Object key;
 
-        private SumAllRule(final Object key) {this.key = key;}
+        private SumAllRule(final Object key) {
+            super("Sum all");
+            this.key = key;
+        }
 
         @Override
         public Integer apply(final Layers layers, final Integer value) {
@@ -54,38 +62,32 @@ public abstract class Rule<T>
                     mapToInt(Integer::intValue).
                     sum();
         }
-
-        @Override
-        public String toString() {
-            return "Rule: Sum all";
-        }
     }
 
     private static final class DoublingRule
             extends Rule<Integer> {
         private final Object key;
 
-        private DoublingRule(final Object key) {this.key = key;}
+        private DoublingRule(final Object key) {
+            super("Doubling");
+            this.key = key;
+        }
 
         @Override
         public Integer apply(final Layers layers, final Integer value) {
             return 2 * sumAll(key).apply(layers, value);
         }
-
-        @Override
-        public String toString() {
-            return "Rule: Doubling";
-        }
     }
 
     private static class ExactlyRule<T>
             extends Rule<T> {
-        @Override
-        public T apply(final Layers layers, final T value) {return value;}
+        private ExactlyRule() {
+            super("Exactly");
+        }
 
         @Override
-        public String toString() {
-            return "Rule: Exactly";
+        public T apply(final Layers layers, final T value) {
+            return value;
         }
     }
 }
