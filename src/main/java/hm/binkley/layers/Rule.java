@@ -41,7 +41,7 @@ public abstract class Rule<T>
 
         @Override
         public T apply(final Layers layers, final T value) {
-            return layers.<T>valuesFor(key).
+            return layers.<T>plainValuesFor(key).
                     findFirst().
                     get();
         }
@@ -58,7 +58,7 @@ public abstract class Rule<T>
 
         @Override
         public Integer apply(final Layers layers, final Integer value) {
-            return layers.<Integer>valuesFor(key).
+            return layers.<Integer>plainValuesFor(key).
                     mapToInt(Integer::intValue).
                     sum();
         }
@@ -79,7 +79,7 @@ public abstract class Rule<T>
         }
     }
 
-    private static class ExactlyRule<T>
+    private static final class ExactlyRule<T>
             extends Rule<T> {
         private ExactlyRule() {
             super("Exactly");

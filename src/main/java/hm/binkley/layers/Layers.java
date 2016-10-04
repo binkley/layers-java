@@ -45,7 +45,7 @@ public final class Layers {
                 apply(this);
     }
 
-    public <T> Stream<T> valuesFor(final Object key) {
+    public <T> Stream<T> plainValuesFor(final Object key) {
         return this.<T>streamFor(key).
                 map(Value::value).
                 filter(Optional::isPresent).
