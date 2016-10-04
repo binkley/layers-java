@@ -4,16 +4,34 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.Value;
+import hm.binkley.layers.XEnum;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static hm.binkley.layers.Value.ofValue;
+import static java.util.Collections.unmodifiableList;
 
-public enum Abilities {
-    STR,
-    DEX,
-    CON,
-    INT,
-    WIS,
-    CHA;
+public class Abilities
+        extends XEnum<Abilities> {
+    private static final AtomicInteger ordinal = new AtomicInteger();
+    private static final List<Abilities> values = new ArrayList<>();
+    public static final Abilities STR = new Abilities("STR");
+    public static final Abilities DEX = new Abilities("DEX");
+    public static final Abilities CON = new Abilities("CON");
+    public static final Abilities INT = new Abilities("INT");
+    public static final Abilities WIS = new Abilities("WIS");
+    public static final Abilities CHA = new Abilities("CHA");
+
+    public static List<Abilities> values() {
+        return unmodifiableList(values);
+    }
+
+    protected Abilities(final String name) {
+        super(name, ordinal.getAndIncrement());
+        values.add(this);
+    }
 
     public static LayerMaker abilityScores(final int _str, final int _dex,
             final int _con, final int _int, final int _wis, final int _cha) {
@@ -51,7 +69,7 @@ public enum Abilities {
 
     public static Layer baseRuleAbilityScores(final Surface layers) {
         final Layer layer = new Layer(layers, "Base ability scores rules");
-        for (final Abilities ability : Abilities.values())
+        for (final Abilities ability : values())
             layer.put(ability, Value.sumAll(ability));
         return layer;
     }
