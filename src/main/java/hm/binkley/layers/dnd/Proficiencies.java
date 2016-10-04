@@ -60,7 +60,7 @@ public class Proficiencies
 
     public static Layer baseRuleProficiencyBonuses(final Surface layers) {
         final Layer layer = new Layer(layers, "Base proficiency bonus rules");
-        for (final Proficiencies proficiency : Proficiencies.values())
+        for (final Proficiencies proficiency : values())
             layer.put(proficiency, Value.sumAll(proficiency));
         return layer;
     }
