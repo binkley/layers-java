@@ -72,6 +72,8 @@ public final class Layers {
                 isPresent();
     }
 
+    /** @todo Rethink tradeoff of no type token in arg vs safety */
+    @SuppressWarnings("TypeParameterUnusedInFormals")
     public <T> T get(final Object key) {
         return this.<T>ruleValueFor(key).
                 apply(this);
