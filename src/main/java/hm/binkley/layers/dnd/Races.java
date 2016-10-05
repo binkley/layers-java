@@ -35,15 +35,26 @@ public final class Races {
 
         public static class WithSTR {
             public LayerMaker withDEX() {
-                return layers -> {
-                    final Layer layer = new Layer(layers, "Variant Human");
-                    layer.put(STR, ofValue(1));
-                    layer.put(DEX, ofValue(1));
-                    return layer;
-                };
+                return withDoubleAbilities(STR, DEX);
             }
+
+            public LayerMaker withCON() {
+                return withDoubleAbilities(STR, CON);
+            }
+
+            private WithSTR() {}
         }
 
         private HumanVariant() {}
+    }
+
+    private static LayerMaker withDoubleAbilities(final Abilities ability1,
+            final Abilities ability2) {
+        return layers -> {
+            final Layer layer = new Layer(layers, "Variant Human");
+            layer.put(ability1, ofValue(1));
+            layer.put(ability2, ofValue(1));
+            return layer;
+        };
     }
 }
