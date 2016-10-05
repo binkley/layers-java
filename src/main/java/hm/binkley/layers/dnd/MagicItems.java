@@ -134,6 +134,7 @@ public final class MagicItems {
         return beltOfGiantStrength(layers, "Storm", 29, LEGENDARY);
     }
 
+    /** @todo Uses broken rule; see GitHub #6. */
     private static Layer beltOfGiantStrength(final Surface layers,
             final String giantKind, final int strength, final Rarity rarity) {
         final Layer layer = new MagicItem(layers,
