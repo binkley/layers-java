@@ -19,7 +19,7 @@ import static java.util.Collections.unmodifiableMap;
  */
 @RequiredArgsConstructor
 public class Layer {
-    private final Map<Object, Value> values = new LinkedHashMap<>();
+    private final Map<Object, Value<?>> values = new LinkedHashMap<>();
     private final Surface layers;
     private final String name;
 
