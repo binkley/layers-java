@@ -59,7 +59,7 @@ public final class MagicItems {
         final Layer layer = new Layer(layers,
                 "Belt of " + giantKind + " Giant Strength");
         layer.put(STR, Value.ofBoth(strength, Rule.exactly()));
-        layer.put(Rarity.class.getSimpleName(), Value.ofValue(rarity));
+        layer.details().put(Rarity.class.getSimpleName(), rarity);
         return layer;
     }
 }
