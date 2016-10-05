@@ -24,6 +24,10 @@ public class Layer {
     private final Surface layers;
     private final String name;
 
+    public String name() {
+        return name;
+    }
+
     public boolean isEmpty() {
         return values.isEmpty();
     }
@@ -95,6 +99,10 @@ public class Layer {
     }
 
     public class LayerView {
+        public String name() {
+            return Layer.this.name();
+        }
+
         public boolean isEmpty() {
             return Layer.this.isEmpty();
         }
