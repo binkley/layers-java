@@ -105,6 +105,34 @@ class LayersTest {
     }
 
     @Test
+    void shouldHaveWhatIfWithLayer() {
+        firstLayer.
+                put("BOB", ofValue(32));
+
+        assertTrue(layers.whatIfWith(firstLayer).containsKey("BOB"));
+    }
+
+    @Test
+    void shouldHaveWhatIfWithoutLayer() {
+        firstLayer.
+                put("BOB", ofValue(32)).
+                saveAndNext(ScratchLayer::new);
+
+        assertFalse(layers.whatIfWithout(firstLayer).containsKey("BOB"));
+    }
+
+    @Test
+    void shouldHaveNetStrengthIfBeltNotBetter() {
+        firstLayer.
+                saveAndNext(Abilities::baseRuleAbilityScores).
+                saveAndNext(abilityScores(23, 8, 8, 8, 8, 8)).
+                saveAndNext(MagicItems::beltOfHillGiantStrength).
+                saveAndNext(ScratchLayer::new);
+
+        assertEquals((Integer) 23, layers.get(STR));
+    }
+
+    @Test
     void shouldHaveNoStrengthBeforeAddingScores() {
         firstLayer.
                 saveAndNext(Abilities::baseRuleAbilityScores).
@@ -158,7 +186,7 @@ class LayersTest {
                 saveAndNext(MagicItems::beltOfFrostGiantStrength);
         girdle.saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(ScratchLayer::new);
-        girdle.forget();
+        girdle.discard();
 
         assertEquals((Integer) 11, layers.get(STR));
     }

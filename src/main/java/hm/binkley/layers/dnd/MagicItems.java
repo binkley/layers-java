@@ -1,6 +1,7 @@
 package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
+import hm.binkley.layers.Layers;
 import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.Rule;
 import hm.binkley.layers.Value;
@@ -16,6 +17,7 @@ import static hm.binkley.layers.dnd.MagicItems.Rarity.UNCOMMON;
 import static hm.binkley.layers.dnd.MagicItems.Rarity.VERY_RARE;
 import static hm.binkley.layers.dnd.MagicItems.Type.ARMOR;
 import static hm.binkley.layers.dnd.MagicItems.Type.WONDROUS_ITEM;
+import static java.lang.Integer.max;
 
 /**
  * @todo Does description belong in {@code} Layer?
@@ -111,34 +113,33 @@ public final class MagicItems {
     }
 
     public static Layer beltOfHillGiantStrength(final Surface layers) {
-        return beltOfGiantStrength(layers, "Hill", 21, RARE);
+        return beltOfGiantStrength(layers, "Hill", RARE, 21);
     }
 
     public static Layer beltOfStoneGiantStrength(final Surface layers) {
-        return beltOfGiantStrength(layers, "Stone", 23, VERY_RARE);
+        return beltOfGiantStrength(layers, "Stone", VERY_RARE, 23);
     }
 
     public static Layer beltOfFrostGiantStrength(final Surface layers) {
-        return beltOfGiantStrength(layers, "Frost", 23, VERY_RARE);
+        return beltOfGiantStrength(layers, "Frost", VERY_RARE, 23);
     }
 
     public static Layer beltOfFireGiantStrength(final Surface layers) {
-        return beltOfGiantStrength(layers, "Fire", 25, VERY_RARE);
+        return beltOfGiantStrength(layers, "Fire", VERY_RARE, 25);
     }
 
     public static Layer beltOfCloudGiantStrength(final Surface layers) {
-        return beltOfGiantStrength(layers, "Cloud", 27, LEGENDARY);
+        return beltOfGiantStrength(layers, "Cloud", LEGENDARY, 27);
     }
 
     public static Layer beltOfStormGiantStrength(final Surface layers) {
-        return beltOfGiantStrength(layers, "Storm", 29, LEGENDARY);
+        return beltOfGiantStrength(layers, "Storm", LEGENDARY, 29);
     }
 
-    /** @todo Uses broken rule; see GitHub #6. */
     private static Layer beltOfGiantStrength(final Surface layers,
-            final String giantKind, final int strength, final Rarity rarity) {
-        final Layer layer = new MagicItem(layers,
-                "Belt of " + giantKind + " Giant Strength",
+            final String giantKind, final Rarity rarity, final int strength) {
+        final String name = "Belt of " + giantKind + " Giant Strength";
+        final Layer layer = new MagicItem(layers, name,
                 "While wearing this belt, your Strength score changes to a "
                         + "score granted by the belt. If your Strength is "
                         + "already equal to or greater than the belt's "
@@ -149,7 +150,12 @@ public final class MagicItems {
                         + "strength and the belt of frost giant strength "
                         + "look different, but they have the same effect.",
                 WONDROUS_ITEM, rarity, ATTUNED);
-        layer.put(STR, Value.ofBoth(strength, Rule.exactly()));
+        layer.put(STR, Value.ofBoth(strength, new Rule<Integer>(name) {
+            @Override
+            public Integer apply(final Layers layers, final Integer integer) {
+                return max(strength, layers.whatIfWithout(layer).get(STR));
+            }
+        }));
         return layer;
     }
 }

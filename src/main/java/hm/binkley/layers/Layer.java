@@ -84,8 +84,8 @@ public class Layer {
         return layers.saveAndNext(this, ctor);
     }
 
-    public void forget() {
-        layers.forget(this);
+    public void discard() {
+        layers.discard(this);
     }
 
     public LayerView view() {
@@ -136,7 +136,7 @@ public class Layer {
         }
 
         public void forget() {
-            Layer.this.forget();
+            Layer.this.discard();
         }
     }
 }

@@ -67,7 +67,7 @@ public final class Layers {
     }
 
     public boolean containsKey(final Object key) {
-        return streamFor(key).
+        return streamFor(key, layers.stream()).
                 findAny().
                 isPresent();
     }
@@ -75,7 +75,7 @@ public final class Layers {
     /** @todo Rethink tradeoff of no type token in arg vs safety */
     @SuppressWarnings("TypeParameterUnusedInFormals")
     public <T> T get(final Object key) {
-        return this.<T>ruleValueFor(key).
+        return Layers.<T>ruleValueFor(key, layers.stream()).
                 apply(this);
     }
 
@@ -90,22 +90,63 @@ public final class Layers {
                 map(Layer::view);
     }
 
-    public <T> Value<T> ruleValueFor(final Object key) {
-        return this.<T>allRuleValuesFor(key).
+    private static <T> Value<T> ruleValueFor(final Object key,
+            final Stream<Layer> layers) {
+        return Layers.<T>streamFor(key, layers).
+                filter(value -> value.rule().isPresent()).
                 findFirst().
                 orElse(Value.mostRecent(key));
     }
 
-    public <T> Stream<Value<T>> allRuleValuesFor(final Object key) {
-        return this.<T>streamFor(key).
-                filter(value -> value.rule().isPresent());
-    }
-
     public <T> Stream<T> plainValuesFor(final Object key) {
-        return this.<T>streamFor(key).
+        return Layers.<T>streamFor(key, layers.stream()).
                 map(Value::value).
                 filter(Optional::isPresent).
                 map(Optional::get);
+    }
+
+    @RequiredArgsConstructor(access = PRIVATE)
+    public static final class LayersView {
+        private final Layers scenario;
+
+        public boolean isEmpty() {
+            return !scenario.layers.stream().
+                    anyMatch(layer -> !layer.isEmpty());
+        }
+
+        public int size() {
+            return (int) scenario.layers.stream().
+                    flatMap(layer -> layer.keys().stream()).
+                    distinct().
+                    count();
+        }
+
+        public boolean containsKey(final Object key) {
+            return streamFor(key, scenario.layers.stream()).
+                    findAny().
+                    isPresent();
+        }
+
+        /** @todo Rethink tradeoff of no type token in arg vs safety */
+        @SuppressWarnings("TypeParameterUnusedInFormals")
+        public <T> T get(final Object key) {
+            return Layers.<T>ruleValueFor(key, scenario.layers.stream()).
+                    apply(scenario);
+        }
+    }
+
+    public LayersView whatIfWith(final Layer layer) {
+        final Layers scenario = new Layers();
+        scenario.layers.addAll(layers);
+        scenario.layers.add(0, layer);
+        return new LayersView(scenario);
+    }
+
+    public LayersView whatIfWithout(final Layer layer) {
+        final Layers scenario = new Layers();
+        scenario.layers.addAll(layers);
+        scenario.layers.remove(layer);
+        return new LayersView(scenario);
     }
 
     public final class Surface {
@@ -114,7 +155,7 @@ public final class Layers {
             return next.apply(this);
         }
 
-        public void forget(final Layer discard) {
+        public void discard(final Layer discard) {
             layers.remove(discard);
         }
     }
@@ -127,8 +168,9 @@ public final class Layers {
                 collect(joining("\n"));
     }
 
-    private <T> Stream<Value<T>> streamFor(final Object key) {
-        return layers.stream().
+    private static <T> Stream<Value<T>> streamFor(final Object key,
+            final Stream<Layer> layers) {
+        return layers.
                 filter(layer -> layer.containsKey(key)).
                 map(layer -> layer.<T>get(key));
     }
