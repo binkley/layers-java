@@ -61,6 +61,11 @@ public class Layer {
         return this;
     }
 
+    public Layer blend(final LayerMaker that) {
+        values.putAll(that.apply(layers).values);
+        return this;
+    }
+
     public Layer saveAndNext(final LayerMaker ctor) {
         return layers.saveAndNext(this, ctor);
     }

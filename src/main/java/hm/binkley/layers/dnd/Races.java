@@ -11,6 +11,7 @@ import static hm.binkley.layers.dnd.Abilities.DEX;
 import static hm.binkley.layers.dnd.Abilities.INT;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.Abilities.WIS;
+import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 
 public final class Races {
     public static Layer plainHuman(final Surface layers) {
@@ -52,8 +53,7 @@ public final class Races {
             final Abilities ability2) {
         return layers -> {
             final Layer layer = new Layer(layers, "Variant Human");
-            layer.put(ability1, ofValue(1));
-            layer.put(ability2, ofValue(1));
+            layer.blend(abilityScoreIncrease(ability1, ability2));
             return layer;
         };
     }
