@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import static hm.binkley.layers.Layers.firstLayer;
+import static hm.binkley.layers.Rule.sumAll;
+import static hm.binkley.layers.Value.ofRule;
 import static hm.binkley.layers.Value.ofValue;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
@@ -119,6 +121,17 @@ class LayersTest {
                 saveAndNext(ScratchLayer::new);
 
         assertFalse(layers.whatIfWithout(firstLayer).containsKey("BOB"));
+    }
+
+    @Test
+    void shouldProjectToMap() {
+        firstLayer.
+                put("FOO", ofRule(sumAll("FOO"))).
+                saveAndNext(ScratchLayer::new).
+                put("FOO", ofValue(3)).
+                saveAndNext(ScratchLayer::new);
+
+        assertEquals(singletonMap("FOO", 3), layers.toMap());
     }
 
     @Test
