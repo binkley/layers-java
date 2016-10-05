@@ -3,6 +3,7 @@ package hm.binkley.layers;
 import hm.binkley.layers.Layer.LayerView;
 import hm.binkley.layers.dnd.Abilities;
 import hm.binkley.layers.dnd.Characters;
+import hm.binkley.layers.dnd.MagicItems;
 import hm.binkley.layers.dnd.Proficiencies;
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +25,6 @@ import static hm.binkley.layers.dnd.Abilities.WIS;
 import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
 import static hm.binkley.layers.dnd.Characters.characterDescription;
-import static hm.binkley.layers.dnd.MagicItems.beltOfGiantStrength;
 import static hm.binkley.layers.dnd.Proficiencies.ACROBATICS;
 import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
 import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
@@ -145,7 +145,7 @@ public final class Layers {
                 saveAndNext(proficiencyBonus(ACROBATICS, 1)).
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
                 saveAndNext(doubleProficiency(ACROBATICS)).
-                saveAndNext(beltOfGiantStrength(20)).
+                saveAndNext(MagicItems::beltOfHillGiantStrength).
                 saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(abilityScoreIncrease(CON, WIS)).
                 saveAndNext(ScratchLayer::new);

@@ -1,6 +1,7 @@
 package hm.binkley.layers;
 
 import hm.binkley.layers.dnd.Abilities;
+import hm.binkley.layers.dnd.MagicItems;
 import hm.binkley.layers.dnd.Proficiencies;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,6 @@ import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
 import static hm.binkley.layers.dnd.Characters.NAME;
 import static hm.binkley.layers.dnd.Characters.characterDescription;
-import static hm.binkley.layers.dnd.MagicItems.beltOfGiantStrength;
 import static hm.binkley.layers.dnd.Proficiencies.ACROBATICS;
 import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
 import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
@@ -130,10 +130,10 @@ class LayersTest {
                 saveAndNext(Abilities::baseRuleAbilityScores).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(beltOfGiantStrength(20)).
+                saveAndNext(MagicItems::beltOfHillGiantStrength).
                 saveAndNext(ScratchLayer::new);
 
-        assertEquals((Integer) 20, layers.get(STR));
+        assertEquals((Integer) 21, layers.get(STR));
     }
 
     @Test
@@ -142,11 +142,11 @@ class LayersTest {
                 saveAndNext(Abilities::baseRuleAbilityScores).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(beltOfGiantStrength(20)).
+                saveAndNext(MagicItems::beltOfStoneGiantStrength).
                 saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(ScratchLayer::new);
 
-        assertEquals((Integer) 20, layers.get(STR));
+        assertEquals((Integer) 23, layers.get(STR));
     }
 
     @Test
@@ -155,7 +155,7 @@ class LayersTest {
                 saveAndNext(Abilities::baseRuleAbilityScores).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(beltOfGiantStrength(20));
+                saveAndNext(MagicItems::beltOfFrostGiantStrength);
         girdle.saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(ScratchLayer::new);
         girdle.forget();
