@@ -31,6 +31,7 @@ import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
 import static hm.binkley.layers.dnd.Proficiencies.proficiencyBonus;
 import static hm.binkley.layers.dnd.Races.humanVariant;
 import static java.lang.System.out;
+import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toSet;
@@ -39,11 +40,11 @@ import static lombok.AccessLevel.PRIVATE;
 @SuppressWarnings("WeakerAccess")
 @RequiredArgsConstructor(access = PRIVATE)
 public final class Layers {
-    private final List<Layer> layers = new ArrayList<>();
+    private final List<Layer> layers;
 
     public static Layer firstLayer(final LayerMaker ctor,
             final Consumer<Layers> layersHolder) {
-        final Layers layers = new Layers();
+        final Layers layers = new Layers(new ArrayList<>());
         layersHolder.accept(layers);
         return ctor.apply(layers.new Surface());
     }
@@ -67,7 +68,7 @@ public final class Layers {
     }
 
     public boolean containsKey(final Object key) {
-        return streamFor(key, layers.stream()).
+        return streamFor(key).
                 findAny().
                 isPresent();
     }
@@ -75,14 +76,14 @@ public final class Layers {
     /** @todo Rethink tradeoff of no type token in arg vs safety */
     @SuppressWarnings("TypeParameterUnusedInFormals")
     public <T> T get(final Object key) {
-        return Layers.<T>ruleValueFor(key, layers.stream()).
+        return this.<T>ruleValueFor(key).
                 apply(this);
     }
 
     public Map<Object, Object> toMap() {
-        return keys().stream().
+        return unmodifiableMap(keys().stream().
                 map(key -> new SimpleImmutableEntry<>(key, get(key))).
-                collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+                collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
     }
 
     public Stream<LayerView> history() {
@@ -90,63 +91,25 @@ public final class Layers {
                 map(Layer::view);
     }
 
-    private static <T> Value<T> ruleValueFor(final Object key,
-            final Stream<Layer> layers) {
-        return Layers.<T>streamFor(key, layers).
-                filter(value -> value.rule().isPresent()).
-                findFirst().
-                orElse(Value.mostRecent(key));
-    }
-
     public <T> Stream<T> plainValuesFor(final Object key) {
-        return Layers.<T>streamFor(key, layers.stream()).
+        return this.<T>streamFor(key).
                 map(Value::value).
                 filter(Optional::isPresent).
                 map(Optional::get);
     }
 
-    @RequiredArgsConstructor(access = PRIVATE)
-    public static final class LayersView {
-        private final Layers scenario;
-
-        public boolean isEmpty() {
-            return !scenario.layers.stream().
-                    anyMatch(layer -> !layer.isEmpty());
-        }
-
-        public int size() {
-            return (int) scenario.layers.stream().
-                    flatMap(layer -> layer.keys().stream()).
-                    distinct().
-                    count();
-        }
-
-        public boolean containsKey(final Object key) {
-            return streamFor(key, scenario.layers.stream()).
-                    findAny().
-                    isPresent();
-        }
-
-        /** @todo Rethink tradeoff of no type token in arg vs safety */
-        @SuppressWarnings("TypeParameterUnusedInFormals")
-        public <T> T get(final Object key) {
-            return Layers.<T>ruleValueFor(key, scenario.layers.stream()).
-                    apply(scenario);
-        }
+    public Layers whatIfWith(final Layer layer) {
+        final List<Layer> scenario = new ArrayList<>();
+        scenario.addAll(layers);
+        scenario.add(0, layer);
+        return new Layers(scenario);
     }
 
-    public LayersView whatIfWith(final Layer layer) {
-        final Layers scenario = new Layers();
-        scenario.layers.addAll(layers);
-        scenario.layers.add(0, layer);
-        return new LayersView(scenario);
-    }
-
-    public LayersView whatIfWithout(final Layer layer) {
-        final Layers scenario = new Layers();
-        scenario.layers.addAll(layers);
-        scenario.layers.remove(layer);
-        return new LayersView(scenario);
+    public Layers whatIfWithout(final Layer layer) {
+        final List<Layer> scenario = new ArrayList<>();
+        scenario.addAll(layers);
+        scenario.remove(layer);
+        return new Layers(scenario);
     }
 
     public final class Surface {
@@ -168,9 +131,15 @@ public final class Layers {
                 collect(joining("\n"));
     }
 
-    private static <T> Stream<Value<T>> streamFor(final Object key,
-            final Stream<Layer> layers) {
-        return layers.
+    private <T> Value<T> ruleValueFor(final Object key) {
+        return this.<T>streamFor(key).
+                filter(value -> value.rule().isPresent()).
+                findFirst().
+                orElse(Value.mostRecent(key));
+    }
+
+    private <T> Stream<Value<T>> streamFor(final Object key) {
+        return layers.stream().
                 filter(layer -> layer.containsKey(key)).
                 map(layer -> layer.<T>get(key));
     }
