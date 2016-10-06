@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,6 +17,7 @@ import static java.util.Collections.unmodifiableSet;
 
 /**
  * @todo Trade-off between too many references (hard on GC) and ease of use
+ * @todo Rethink immutable vs editable - not consistently expressed
  */
 @RequiredArgsConstructor
 public class Layer {
@@ -73,7 +75,16 @@ public class Layer {
 
     public Map<Object, Object> toMap() {
         return unmodifiableMap(stream().
-                collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
+                collect(Collectors.toMap(Entry::getKey, Entry::getValue,
+                        throwingMerger(), LinkedHashMap::new)));
+    }
+
+    /** @todo Hidden away in {@link Collectors}. */
+    private static <T> BinaryOperator<T> throwingMerger() {
+        return (u, v) -> {
+            throw new IllegalStateException(
+                    String.format("Duplicate key %s", u));
+        };
     }
 
     public Map<Object, Object> details() {
