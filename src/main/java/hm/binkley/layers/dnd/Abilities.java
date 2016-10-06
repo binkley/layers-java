@@ -2,8 +2,6 @@ package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
-import hm.binkley.layers.Layers.Surface;
-import hm.binkley.layers.Value;
 import hm.binkley.layers.XEnum;
 
 import java.util.ArrayList;
@@ -67,12 +65,5 @@ public class Abilities
             layer.put(secondAbility, ofValue(1));
             return layer;
         };
-    }
-
-    public static Layer baseRuleAbilityScores(final Surface layers) {
-        final Layer layer = new Layer(layers, "Base ability scores rules");
-        for (final Abilities ability : values())
-            layer.put(ability, Value.sumAll(ability));
-        return layer;
     }
 }

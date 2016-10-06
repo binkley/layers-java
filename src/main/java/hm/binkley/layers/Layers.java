@@ -2,6 +2,7 @@ package hm.binkley.layers;
 
 import hm.binkley.layers.Layer.LayerView;
 import hm.binkley.layers.dnd.Abilities;
+import hm.binkley.layers.dnd.Bases;
 import hm.binkley.layers.dnd.Characters;
 import hm.binkley.layers.dnd.MagicItems;
 import hm.binkley.layers.dnd.Proficiencies;
@@ -146,12 +147,11 @@ public final class Layers {
 
     public static void main(final String... args) {
         final Layers[] layersHolder = new Layers[1];
-        final Layer firstLayer = firstLayer(Abilities::baseRuleAbilityScores,
+        final Layer firstLayer = firstLayer(Bases::baseRules,
                 layers -> layersHolder[0] = layers);
         final Layers layers = layersHolder[0];
 
         firstLayer.
-                saveAndNext(Proficiencies::baseRuleProficiencyBonuses).
                 saveAndNext(characterDescription("Bob")).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(humanVariant().withSTR().withDEX()).

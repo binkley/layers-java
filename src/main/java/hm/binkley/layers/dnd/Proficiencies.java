@@ -2,7 +2,6 @@ package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
-import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.Value;
 import hm.binkley.layers.XEnum;
 
@@ -56,12 +55,5 @@ public class Proficiencies
             layer.put(proficiency, Value.doubling(proficiency));
             return layer;
         };
-    }
-
-    public static Layer baseRuleProficiencyBonuses(final Surface layers) {
-        final Layer layer = new Layer(layers, "Base proficiency bonus rules");
-        for (final Proficiencies proficiency : values())
-            layer.put(proficiency, Value.sumAll(proficiency));
-        return layer;
     }
 }
