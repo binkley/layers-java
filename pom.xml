@@ -164,6 +164,9 @@ Error Prone with the latest version -->
                     <execution>
                         <id>jacoco-report</id>
                         <phase>test</phase>
+                        <configuration>
+                            <outputDirectory>${CIRCLE_ARTIFACTS}</outputDirectory>
+                        </configuration>
                         <goals>
                             <goal>report</goal>
                         </goals>
