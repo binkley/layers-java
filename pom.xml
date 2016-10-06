@@ -153,7 +153,6 @@ Error Prone with the latest version -->
                     <execution>
                         <id>jacoco-prepare-agent</id>
                         <configuration>
-                            <propertyName>jacocoArgLine</propertyName>
                             <excludes>
                                 <exclude>*Test</exclude>
                             </excludes>
@@ -190,9 +189,6 @@ Error Prone with the latest version -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <argLine>${jacocoArgLine}</argLine>
-                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
