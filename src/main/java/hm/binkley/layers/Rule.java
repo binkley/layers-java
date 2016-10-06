@@ -26,10 +26,6 @@ public abstract class Rule<T>
         return new DoublingRule(key);
     }
 
-    public static <T> Rule<T> exactly() {
-        return new ExactlyRule<>();
-    }
-
     private static final class MostRecentRule<T>
             extends Rule<T> {
         private final Object key;
@@ -76,18 +72,6 @@ public abstract class Rule<T>
         @Override
         public Integer apply(final Layers layers, final Integer value) {
             return 2 * sumAll(key).apply(layers, value);
-        }
-    }
-
-    private static final class ExactlyRule<T>
-            extends Rule<T> {
-        private ExactlyRule() {
-            super("Exactly");
-        }
-
-        @Override
-        public T apply(final Layers layers, final T value) {
-            return value;
         }
     }
 }
