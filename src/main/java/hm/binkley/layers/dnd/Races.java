@@ -14,6 +14,8 @@ import static hm.binkley.layers.dnd.Abilities.WIS;
 import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 
 public final class Races {
+    private Races() {}
+
     public static Layer plainHuman(final Surface layers) {
         final Layer layer = new Layer(layers, "Human");
         layer.put(STR, ofValue(1));
