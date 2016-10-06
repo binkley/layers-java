@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static hm.binkley.layers.XEnumTest.Eg.A;
 import static hm.binkley.layers.XEnumTest.Eg.B;
 import static java.util.Arrays.asList;
+import static java.util.Collections.sort;
 import static java.util.Collections.unmodifiableList;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,6 +30,19 @@ class XEnumTest {
     @Test
     void shouldIterateInOrdinalOrder() {
         assertEquals(asList(A, B), Eg.values());
+    }
+
+    @Test
+    void shouldCompareInDeclarationOrder() {
+        final List<Eg> values = asList(B, A);
+        sort(values);
+
+        assertEquals(Eg.values(), values);
+    }
+
+    @Test
+    void shouldHaveRightDeclaringClass() {
+        assertEquals(Eg.class, A.getDeclaringClass());
     }
 
     static final class Eg
