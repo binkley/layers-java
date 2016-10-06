@@ -122,6 +122,14 @@ public final class Layers {
         public void discard(final Layer discard) {
             layers.remove(discard);
         }
+
+        public Layers whatIfWith(final Layer layer) {
+            return Layers.this.whatIfWith(layer);
+        }
+
+        public Layers whatIfWithout(final Layer layer) {
+            return Layers.this.whatIfWithout(layer);
+        }
     }
 
     @Override

@@ -53,4 +53,11 @@ class LayerTest {
     void shouldDelegateSizeToLayerFromLayerView() {
         assertEquals(layer.size(), layer.view().size());
     }
+
+    @Test
+    void shouldDelegateDetailsToLayerFromLayerView() {
+        layer.details().put("apple", "cart");
+
+        assertEquals(layer.details(), layer.view().details());
+    }
 }

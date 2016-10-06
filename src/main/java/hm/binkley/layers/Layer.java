@@ -79,6 +79,14 @@ public class Layer {
                         throwingMerger(), LinkedHashMap::new)));
     }
 
+    public Layers whatIfWith() {
+        return layers.whatIfWith(this);
+    }
+
+    public Layers whatIfWithout() {
+        return layers.whatIfWithout(this);
+    }
+
     /** @todo Hidden away in {@link Collectors}. */
     private static <T> BinaryOperator<T> throwingMerger() {
         return (u, v) -> {
@@ -146,7 +154,7 @@ public class Layer {
             return unmodifiableMap(Layer.this.details());
         }
 
-        public void forget() {
+        public void discard() {
             Layer.this.discard();
         }
     }
