@@ -66,6 +66,7 @@ public class Layer {
         return this;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Stream<Entry<Object, Object>> stream() {
         return values.entrySet().stream().
                 filter(pair -> pair.getValue().value().isPresent()).
@@ -73,16 +74,19 @@ public class Layer {
                         pair.getValue().value().get()));
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Map<Object, Object> toMap() {
         return unmodifiableMap(stream().
                 collect(Collectors.toMap(Entry::getKey, Entry::getValue,
                         throwingMerger(), LinkedHashMap::new)));
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Layers whatIfWith() {
         return layers.whatIfWith(this);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Layers whatIfWithout() {
         return layers.whatIfWithout(this);
     }
@@ -95,6 +99,7 @@ public class Layer {
         };
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Map<Object, Object> details() {
         return details;
     }
@@ -103,10 +108,13 @@ public class Layer {
         return layers.saveAndNext(this, ctor);
     }
 
+    /** @todo Rethink #discard on Layer: only makes sense if saved */
+    @SuppressWarnings("WeakerAccess")
     public void discard() {
         layers.discard(this);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public LayerView view() {
         return new LayerView();
     }
@@ -117,6 +125,7 @@ public class Layer {
                 : name + ": " + values + " [" + details + "]";
     }
 
+    @SuppressWarnings("WeakerAccess")
     public class LayerView {
         public String name() {
             return Layer.this.name();

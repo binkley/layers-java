@@ -40,11 +40,6 @@ class LayerTest {
     }
 
     @Test
-    void shouldDiscard() {
-
-    }
-
-    @Test
     void shouldDelegateNameToLayerFromLayerMap() {
         assertEquals(layer.name(), layer.view().name());
     }
@@ -78,6 +73,12 @@ class LayerTest {
     @Test
     void shouldDelegateSizeToLayerFromLayerView() {
         assertEquals(layer.size(), layer.view().size());
+    }
+
+    @Test
+    void shouldDelegateContainsKeyToLayerFromLayerView() {
+        assertEquals(layer.containsKey("A"),
+                layer.view().containsKey("A"));
     }
 
     @Test

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -26,11 +27,13 @@ public final class Layers {
         updateCache();
     }
 
+    /** @todo Should update for one key, not all? */
     private void updateCache() {
         cache.clear();
         layers.stream().
                 flatMap(layer -> layer.keys().stream()).
-                forEach(key -> cache.put(key, ruleValueFor(key).apply(this)));
+                forEach(key -> cache.
+                        putIfAbsent(key, ruleValueFor(key).apply(this)));
     }
 
     public static Layer firstLayer(final LayerMaker ctor,
@@ -125,7 +128,8 @@ public final class Layers {
         return this.<T>streamFor(key).
                 filter(value -> value.rule().isPresent()).
                 findFirst().
-                orElse(Value.mostRecent(key));
+                orElseThrow(() -> new NoSuchElementException(
+                        "No rule present for key: " + key));
     }
 
     private <T> Stream<Value<T>> streamFor(final Object key) {

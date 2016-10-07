@@ -2,8 +2,10 @@ package hm.binkley.layers;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public abstract class Rule<T>
@@ -50,6 +52,11 @@ public abstract class Rule<T>
         public final int hashCode() {
             return Objects.hash(getClass(), key);
         }
+
+        protected Supplier<NoSuchElementException> noValueForKey() {
+            return () -> new NoSuchElementException(
+                    "No value present for key: " + key);
+        }
     }
 
     private static final class MostRecentRule<T>
@@ -62,7 +69,7 @@ public abstract class Rule<T>
         public T apply(final Layers layers, final T value) {
             return layers.<T>plainValuesFor(key).
                     findFirst().
-                    get();
+                    orElseThrow(noValueForKey());
         }
     }
 

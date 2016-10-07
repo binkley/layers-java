@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import static hm.binkley.layers.Layers.firstLayer;
+import static hm.binkley.layers.Rule.mostRecent;
 import static hm.binkley.layers.Rule.sumAll;
+import static hm.binkley.layers.Value.ofBoth;
 import static hm.binkley.layers.Value.ofRule;
 import static hm.binkley.layers.Value.ofValue;
 import static hm.binkley.layers.dnd.Abilities.STR;
@@ -75,7 +77,7 @@ class LayersTest {
     @Test
     void shouldContainKey() {
         firstLayer.
-                put("FOO", ofValue("BAR")).
+                put("FOO", ofBoth("BAR", mostRecent("FOO"))).
                 saveAndNext(ScratchLayer::new);
 
         assertTrue(layers.containsKey("FOO"));
@@ -84,7 +86,7 @@ class LayersTest {
     @Test
     void shouldHaveKeys() {
         firstLayer.
-                put("FOO", ofValue(3)).
+                put("FOO", ofBoth(3, sumAll("FOO"))).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals(singleton("FOO"), layers.keys());
@@ -93,7 +95,7 @@ class LayersTest {
     @Test
     void shouldHaveHistory() {
         firstLayer.
-                put("BOB", ofValue(17)).
+                put("BOB", ofBoth(17, mostRecent("BOB"))).
                 saveAndNext(ScratchLayer::new);
 
         final List<Map<Object, Object>> history = layers.
@@ -122,7 +124,7 @@ class LayersTest {
     @Test
     void shouldHaveWhatIfWithLayer() {
         firstLayer.
-                put("BOB", ofValue(32));
+                put("BOB", ofBoth(32, mostRecent("BOB")));
 
         assertTrue(firstLayer.whatIfWith().containsKey("BOB"));
     }
@@ -130,7 +132,7 @@ class LayersTest {
     @Test
     void shouldHaveWhatIfWithoutLayer() {
         firstLayer.
-                put("BOB", ofValue(32)).
+                put("BOB", ofBoth(31, sumAll("BOB"))).
                 saveAndNext(ScratchLayer::new);
 
         assertFalse(firstLayer.whatIfWithout().containsKey("BOB"));
@@ -220,6 +222,7 @@ class LayersTest {
     @Test
     void shouldHaveMostRecentName() {
         firstLayer.
+                saveAndNext(Bases::baseRules).
                 saveAndNext(characterDescription("Bob")).
                 saveAndNext(characterDescription("Nancy")).
                 saveAndNext(ScratchLayer::new);
