@@ -40,6 +40,11 @@ class LayerTest {
     }
 
     @Test
+    void shouldDiscard() {
+
+    }
+
+    @Test
     void shouldDelegateNameToLayerFromLayerMap() {
         assertEquals(layer.name(), layer.view().name());
     }

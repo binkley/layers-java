@@ -31,8 +31,8 @@ class RacesTest {
     @Test
     void shouldIncreaseAllAbilitiesForPlainHuman() {
         firstLayer.
-                saveAndNext(Races::plainHuman).
                 saveAndNext(abilityScores(15, 14, 13, 12, 10, 8)).
+                saveAndNext(Races::plainHuman).
                 saveAndNext(ScratchLayer::new);
 
         assertAll(() -> assertEquals((Integer) 16, layers.get(STR)),
@@ -44,10 +44,25 @@ class RacesTest {
     }
 
     @Test
-    void shouldIncreaseAllAbilitiesForVariantHuman() {
+    void shouldIncreaseTwoForVariantHuman_STR_DEX() {
         firstLayer.
-                saveAndNext(humanVariant().withSTR().withCON()).
                 saveAndNext(abilityScores(15, 14, 13, 12, 10, 8)).
+                saveAndNext(humanVariant().withSTR().withDEX()).
+                saveAndNext(ScratchLayer::new);
+
+        assertAll(() -> assertEquals((Integer) 16, layers.get(STR)),
+                () -> assertEquals((Integer) 15, layers.get(DEX)),
+                () -> assertEquals((Integer) 13, layers.get(CON)),
+                () -> assertEquals((Integer) 12, layers.get(INT)),
+                () -> assertEquals((Integer) 10, layers.get(WIS)),
+                () -> assertEquals((Integer) 8, layers.get(CHA)));
+    }
+
+    @Test
+    void shouldIncreaseTwoForVariantHuman_STR_CON() {
+        firstLayer.
+                saveAndNext(abilityScores(15, 14, 13, 12, 10, 8)).
+                saveAndNext(humanVariant().withSTR().withCON()).
                 saveAndNext(ScratchLayer::new);
 
         assertAll(() -> assertEquals((Integer) 16, layers.get(STR)),

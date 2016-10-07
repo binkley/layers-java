@@ -45,6 +45,11 @@ class XEnumTest {
         assertEquals(Eg.class, A.getDeclaringClass());
     }
 
+    @Test
+    void shouldDefaultToStringToName() {
+        assertEquals(A.name(), A.toString());
+    }
+
     static final class Eg
             extends XEnum<Eg> {
         private static final AtomicInteger ordinal = new AtomicInteger();

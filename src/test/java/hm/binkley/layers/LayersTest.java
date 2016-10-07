@@ -106,11 +106,25 @@ class LayersTest {
     }
 
     @Test
+    void shouldDiscardThroughLayer() {
+        firstLayer.discard();
+
+        assertEquals(0, layers.history().count());
+    }
+
+    @Test
+    void shouldDiscardThroughLayerView() {
+        firstLayer.view().discard();
+
+        assertEquals(0, layers.history().count());
+    }
+
+    @Test
     void shouldHaveWhatIfWithLayer() {
         firstLayer.
                 put("BOB", ofValue(32));
 
-        assertTrue(layers.whatIfWith(firstLayer).containsKey("BOB"));
+        assertTrue(firstLayer.whatIfWith().containsKey("BOB"));
     }
 
     @Test
@@ -119,7 +133,7 @@ class LayersTest {
                 put("BOB", ofValue(32)).
                 saveAndNext(ScratchLayer::new);
 
-        assertFalse(layers.whatIfWithout(firstLayer).containsKey("BOB"));
+        assertFalse(firstLayer.whatIfWithout().containsKey("BOB"));
     }
 
     @Test
