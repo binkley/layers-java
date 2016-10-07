@@ -221,24 +221,22 @@ class LayersTest {
 
     @Test
     void shouldHaveMostRecentName() {
-        firstLayer.
+        assertEquals("Nancy", firstLayer.
                 saveAndNext(Bases::baseRules).
                 saveAndNext(characterDescription("Bob")).
                 saveAndNext(characterDescription("Nancy")).
-                saveAndNext(ScratchLayer::new);
-
-        assertEquals("Nancy", layers.get(NAME));
+                whatIfWith().
+                get(NAME));
     }
 
     @Test
     void shouldDoubleProficiencies() {
-        firstLayer.
+        assertEquals((Integer) 2, firstLayer.
                 saveAndNext(Bases::baseRules).
                 saveAndNext(proficiencyBonus(ACROBATICS, 1)).
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
                 saveAndNext(doubleProficiency(ACROBATICS)).
-                saveAndNext(ScratchLayer::new);
-
-        assertEquals((Integer) 2, layers.get(ACROBATICS));
+                whatIfWith().
+                get(ACROBATICS));
     }
 }
