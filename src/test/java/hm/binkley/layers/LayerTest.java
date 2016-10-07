@@ -40,6 +40,27 @@ class LayerTest {
     }
 
     @Test
+    void shouldDelegateNameToLayerFromLayerMap() {
+        assertEquals(layer.name(), layer.view().name());
+    }
+
+    @Test
+    void shouldDelegateKeysToLayerFromLayerMap() {
+        assertEquals(layer.keys(), layer.view().keys());
+    }
+
+    @Test
+    void shouldDelegateGetToLayerFromLayerMap() {
+        assertEquals(layer.get("A"), layer.view().get("A"));
+    }
+
+    @Test
+    void shouldDelegateStreamToLayerFromLayerMap() {
+        assertEquals(layer.stream().collect(toList()),
+                layer.view().stream().collect(toList()));
+    }
+
+    @Test
     void shouldDelegateToMapToLayerFromLayerView() {
         assertEquals(layer.toMap(), layer.view().toMap());
     }
