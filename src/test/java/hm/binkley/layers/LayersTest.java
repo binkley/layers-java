@@ -84,7 +84,7 @@ class LayersTest {
     @Test
     void shouldHaveKeys() {
         firstLayer.
-                put("FOO", null). // TODO: This should die, but not today!
+                put("FOO", ofValue(3)).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals(singleton("FOO"), layers.keys());

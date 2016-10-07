@@ -1,30 +1,37 @@
 package hm.binkley.layers;
 
 import hm.binkley.layers.Layer.LayerView;
-import lombok.RequiredArgsConstructor;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toSet;
-import static lombok.AccessLevel.PRIVATE;
 
 @SuppressWarnings("WeakerAccess")
-@RequiredArgsConstructor(access = PRIVATE)
 public final class Layers {
+    private final transient Map<Object, Object> cache = new LinkedHashMap<>();
     private final List<Layer> layers;
+
+    private Layers(final List<Layer> layers) {
+        this.layers = layers;
+        updateCache();
+    }
+
+    private void updateCache() {
+        cache.clear();
+        layers.stream().
+                flatMap(layer -> layer.keys().stream()).
+                forEach(key -> cache.put(key, ruleValueFor(key).apply(this)));
+    }
 
     public static Layer firstLayer(final LayerMaker ctor,
             final Consumer<Layers> layersHolder) {
@@ -34,40 +41,29 @@ public final class Layers {
     }
 
     public boolean isEmpty() {
-        return !layers.stream().
-                anyMatch(layer -> !layer.isEmpty());
+        return cache.isEmpty();
     }
 
     public int size() {
-        return (int) layers.stream().
-                flatMap(layer -> layer.keys().stream()).
-                distinct().
-                count();
+        return cache.size();
     }
 
     public Set<Object> keys() {
-        return unmodifiableSet(layers.stream().
-                flatMap(layer -> layer.keys().stream()).
-                collect(toSet()));
+        return unmodifiableSet(cache.keySet());
     }
 
     public boolean containsKey(final Object key) {
-        return streamFor(key).
-                findAny().
-                isPresent();
+        return cache.containsKey(key);
     }
 
     /** @todo Rethink tradeoff of no type token in arg vs safety */
-    @SuppressWarnings("TypeParameterUnusedInFormals")
+    @SuppressWarnings({"TypeParameterUnusedInFormals", "unchecked"})
     public <T> T get(final Object key) {
-        return this.<T>ruleValueFor(key).
-                apply(this);
+        return (T) cache.get(key);
     }
 
     public Map<Object, Object> toMap() {
-        return unmodifiableMap(keys().stream().
-                map(key -> new SimpleImmutableEntry<>(key, get(key))).
-                collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
+        return unmodifiableMap(cache);
     }
 
     public Stream<LayerView> history() {
@@ -99,11 +95,13 @@ public final class Layers {
     public final class Surface {
         public Layer saveAndNext(final Layer layer, final LayerMaker next) {
             layers.add(0, layer);
+            updateCache();
             return next.apply(this);
         }
 
         public void discard(final Layer discard) {
             layers.remove(discard);
+            updateCache();
         }
 
         public Layers whatIfWith(final Layer layer) {
