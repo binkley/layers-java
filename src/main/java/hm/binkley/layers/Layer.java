@@ -12,40 +12,45 @@ import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Collections.unmodifiableMap;
-import static java.util.Collections.unmodifiableSet;
-
 /**
  * @todo Trade-off between too many references (hard on GC) and ease of use
  * @todo Rethink immutable vs editable - not consistently expressed
+ * @todo Consider immutable look-a-likes, ala Guava
  */
 @RequiredArgsConstructor
-public class Layer {
+public class Layer
+        implements LayerView {
     private final Map<Object, Value<?>> values = new LinkedHashMap<>();
     private final Map<Object, Object> details = new LinkedHashMap<>();
     private final Surface layers;
     private final String name;
 
+    @Override
     public String name() {
         return name;
     }
 
+    @Override
     public boolean isEmpty() {
         return values.isEmpty();
     }
 
+    @Override
     public int size() {
         return values.size();
     }
 
+    @Override
     public Set<Object> keys() {
         return values.keySet();
     }
 
+    @Override
     public boolean containsKey(final Object key) {
         return values.containsKey(key);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T> Value<T> get(final Object key) {
         return (Value<T>) values.get(key);
@@ -66,6 +71,8 @@ public class Layer {
         return this;
     }
 
+    /** @todo Immutable? */
+    @Override
     @SuppressWarnings("WeakerAccess")
     public Stream<Entry<Object, Object>> stream() {
         return values.entrySet().stream().
@@ -74,11 +81,12 @@ public class Layer {
                         pair.getValue().value().get()));
     }
 
+    @Override
     @SuppressWarnings("WeakerAccess")
     public Map<Object, Object> toMap() {
-        return unmodifiableMap(stream().
+        return stream().
                 collect(Collectors.toMap(Entry::getKey, Entry::getValue,
-                        throwingMerger(), LinkedHashMap::new)));
+                        throwingMerger(), LinkedHashMap::new));
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -91,14 +99,7 @@ public class Layer {
         return layers.whatIfWithout(this);
     }
 
-    /** @todo Hidden away in {@link Collectors}. */
-    private static <T> BinaryOperator<T> throwingMerger() {
-        return (u, v) -> {
-            throw new IllegalStateException(
-                    String.format("Duplicate key %s", u));
-        };
-    }
-
+    @Override
     @SuppressWarnings("WeakerAccess")
     public Map<Object, Object> details() {
         return details;
@@ -109,6 +110,7 @@ public class Layer {
     }
 
     /** @todo Rethink #discard on Layer: only makes sense if saved */
+    @Override
     @SuppressWarnings("WeakerAccess")
     public void discard() {
         layers.discard(this);
@@ -116,7 +118,7 @@ public class Layer {
 
     @SuppressWarnings("WeakerAccess")
     public LayerView view() {
-        return new LayerView();
+        return this;
     }
 
     @Override
@@ -125,46 +127,11 @@ public class Layer {
                 : name + ": " + values + " [" + details + "]";
     }
 
-    @SuppressWarnings("WeakerAccess")
-    public class LayerView {
-        public String name() {
-            return Layer.this.name();
-        }
-
-        public boolean isEmpty() {
-            return Layer.this.isEmpty();
-        }
-
-        public int size() {
-            return Layer.this.size();
-        }
-
-        public Set<Object> keys() {
-            return unmodifiableSet(Layer.this.keys());
-        }
-
-        public boolean containsKey(final Object key) {
-            return Layer.this.containsKey(key);
-        }
-
-        public <T> Value<T> get(final Object key) {
-            return Layer.this.get(key);
-        }
-
-        public Stream<Entry<Object, Object>> stream() {
-            return Layer.this.stream();
-        }
-
-        public Map<Object, Object> toMap() {
-            return Layer.this.toMap();
-        }
-
-        public Map<Object, Object> details() {
-            return unmodifiableMap(Layer.this.details());
-        }
-
-        public void discard() {
-            Layer.this.discard();
-        }
+    /** @todo Hidden away in {@link Collectors}. */
+    private static <T> BinaryOperator<T> throwingMerger() {
+        return (u, v) -> {
+            throw new IllegalStateException(
+                    String.format("Duplicate key %s", u));
+        };
     }
 }

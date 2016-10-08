@@ -1,7 +1,5 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.Layer.LayerView;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
