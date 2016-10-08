@@ -5,6 +5,8 @@
 High-level container of layers with single view of entries (key-value pairs,
 computed after any new value is added for the key).
 
+D&amp;D 5e is an example problem domain.  The rules are sufficiently complex to require several interesting techniques.
+
 ## `Layer`
 
 Scratch key-value map, added to the owning layers with `accept()`, or
