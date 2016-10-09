@@ -13,6 +13,7 @@ import static java.util.Collections.sort;
 import static java.util.Collections.unmodifiableList;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class XEnumTest {
     @Test
@@ -48,6 +49,16 @@ class XEnumTest {
     @Test
     void shouldDefaultToStringToName() {
         assertEquals(A.name(), A.toString());
+    }
+
+    @Test
+    void shouldEschewClone() {
+        assertThrows(CloneNotSupportedException.class, A::clone);
+    }
+
+    @Test
+    void shouldDelegateToSystemHashCode() {
+        assertEquals(System.identityHashCode(A), A.hashCode());
     }
 
     static final class Eg
