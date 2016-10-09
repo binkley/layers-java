@@ -40,6 +40,15 @@ class LayerTest {
     }
 
     @Test
+    void shouldBlendLayer() {
+        final Layer other = new ScratchLayer(null);
+        other.put("A", ofValue(42));
+        layer.blend(other);
+
+        assertEquals(42, layer.get("A").value().get());
+    }
+
+    @Test
     void shouldDelegateNameToLayerFromLayerMap() {
         assertEquals(layer.name(), layer.view().name());
     }

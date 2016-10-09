@@ -9,6 +9,14 @@ import org.junit.jupiter.api.Test;
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
+import static hm.binkley.layers.dnd.MagicItems.Attunement.ATTUNED;
+import static hm.binkley.layers.dnd.MagicItems.Attunement.UNATTUNED;
+import static hm.binkley.layers.dnd.MagicItems.Rarity.LEGENDARY;
+import static hm.binkley.layers.dnd.MagicItems.Rarity.RARE;
+import static hm.binkley.layers.dnd.MagicItems.Rarity.UNCOMMON;
+import static hm.binkley.layers.dnd.MagicItems.Rarity.VERY_RARE;
+import static hm.binkley.layers.dnd.MagicItems.Type.ARMOR;
+import static hm.binkley.layers.dnd.MagicItems.Type.WONDROUS_ITEM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MagicItemsTest {
@@ -81,5 +89,45 @@ class MagicItemsTest {
     void shouldCreateAdamantineArmor() {
         assertEquals("Adamantine Armor",
                 firstLayer.saveAndNext(MagicItems::adamantineArmor).name());
+    }
+
+    @Test
+    void shouldDiplayRarityForUncommon() {
+        assertEquals("Uncommon", UNCOMMON.toString());
+    }
+
+    @Test
+    void shouldDiplayRarityForRare() {
+        assertEquals("Rare", RARE.toString());
+    }
+
+    @Test
+    void shouldDiplayRarityForVeryRare() {
+        assertEquals("Very rare", VERY_RARE.toString());
+    }
+
+    @Test
+    void shouldDiplayRarityForLegendary() {
+        assertEquals("Legendary", LEGENDARY.toString());
+    }
+
+    @Test
+    void shouldDiplayAttunementForYes() {
+        assertEquals("yes", ATTUNED.toString());
+    }
+
+    @Test
+    void shouldDiplayAttunementForNo() {
+        assertEquals("", UNATTUNED.toString());
+    }
+
+    @Test
+    void shouldDisplayTypeForArmor() {
+        assertEquals("Armor", ARMOR.toString());
+    }
+
+    @Test
+    void shouldDisplayTypeForWonderousItem() {
+        assertEquals("Wondrous Item", WONDROUS_ITEM.toString());
     }
 }
