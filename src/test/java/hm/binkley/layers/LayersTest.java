@@ -20,10 +20,6 @@ import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
 import static hm.binkley.layers.dnd.Characters.NAME;
 import static hm.binkley.layers.dnd.Characters.characterDescription;
-import static hm.binkley.layers.dnd.Proficiencies.ACROBATICS;
-import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
-import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
-import static hm.binkley.layers.dnd.Proficiencies.proficiencyBonus;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
@@ -229,14 +225,11 @@ class LayersTest {
                 get(NAME));
     }
 
+    /** @todo Silly jacoco does not support excluding methods */
     @Test
-    void shouldDoubleProficiencies() {
-        assertEquals((Integer) 2, firstLayer.
-                saveAndNext(Bases::baseRules).
-                saveAndNext(proficiencyBonus(ACROBATICS, 1)).
-                saveAndNext(proficiencyBonus(ATHLETICS, 1)).
-                saveAndNext(doubleProficiency(ACROBATICS)).
-                whatIfWith().
-                get(ACROBATICS));
+    void shouldHaveSaneToString() {
+        firstLayer.saveAndNext(ScratchLayer::new);
+
+        assertTrue(layers.toString().contains("Scratch"));
     }
 }

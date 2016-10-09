@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static hm.binkley.layers.XEnumTest.Eg.A;
 import static hm.binkley.layers.XEnumTest.Eg.B;
+import static hm.binkley.layers.XEnumTest.Other.X;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static java.util.Collections.unmodifiableList;
@@ -46,6 +47,13 @@ class XEnumTest {
         assertEquals(Eg.class, A.getDeclaringClass());
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldWhineWhenComparingDifferentEnumTypes() {
+        assertThrows(ClassCastException.class,
+                () -> ((XEnum) A).compareTo(X));
+    }
+
     @Test
     void shouldDefaultToStringToName() {
         assertEquals(A.name(), A.toString());
@@ -75,6 +83,15 @@ class XEnumTest {
         private Eg(final String name) {
             super(name, ordinal.getAndIncrement());
             values.add(this);
+        }
+    }
+
+    static final class Other
+            extends XEnum<Other> {
+        static final Other X = new Other("X", 0);
+
+        private Other(final String name, final int ordinal) {
+            super(name, ordinal);
         }
     }
 }
