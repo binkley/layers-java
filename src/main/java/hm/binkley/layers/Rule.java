@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
+import static java.lang.Integer.max;
+
 @RequiredArgsConstructor
 public abstract class Rule<T>
         implements BiFunction<Layers, T, T> {
@@ -17,16 +19,24 @@ public abstract class Rule<T>
         return "Rule: " + name;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static <T> Rule<T> mostRecent(final Object key) {
         return new MostRecentRule<>(key);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Rule<Integer> sumAll(final Object key) {
         return new SumAllRule(key);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Rule<Integer> doubling(final Object key) {
         return new DoublingRule(key);
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    public static Rule<Integer> floor(final Layer layer, final Object key) {
+        return new FloorRule(key, layer);
     }
 
     protected abstract static class KeyRule<T>
@@ -96,6 +106,21 @@ public abstract class Rule<T>
         @Override
         public Integer apply(final Layers layers, final Integer value) {
             return 2 * sumAll(key).apply(layers, value);
+        }
+    }
+
+    private static class FloorRule
+            extends KeyRule<Integer> {
+        private final Layer layer;
+
+        private FloorRule(final Object key, final Layer layer) {
+            super("Floor", key);
+            this.layer = layer;
+        }
+
+        @Override
+        public Integer apply(final Layers layers, final Integer value) {
+            return max(value, layers.whatIfWithout(layer).get(key));
         }
     }
 }

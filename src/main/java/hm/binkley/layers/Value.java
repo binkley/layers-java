@@ -20,6 +20,10 @@ public interface Value<T>
         return new Both<>(value, rule);
     }
 
+    static <T> Value<T> mostRecent(final Object key, final T defaultValue) {
+        return ofBoth(defaultValue, Rule.mostRecent(key));
+    }
+
     static Value<Integer> sumAll(final Object key) {
         return ofRule(Rule.sumAll(key));
     }
@@ -28,8 +32,9 @@ public interface Value<T>
         return ofRule(Rule.doubling(key));
     }
 
-    static <T> Value<T> mostRecent(final Object key, final T defaultValue) {
-        return ofBoth(defaultValue, Rule.mostRecent(key));
+    static Value<Integer> floor(final Layer layer, final Object key,
+            final Integer minimum) {
+        return ofBoth(minimum, Rule.floor(layer, key));
     }
 
     Optional<T> value();

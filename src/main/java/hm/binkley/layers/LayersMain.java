@@ -40,6 +40,7 @@ public class LayersMain {
                 saveAndNext(MagicItems::beltOfHillGiantStrength).
                 saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(abilityScoreIncrease(CON, WIS)).
+                saveAndNext(MagicItems::amuletOfHealth).
                 saveAndNext(ScratchLayer::new);
 
         out.println(layers);

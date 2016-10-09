@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static hm.binkley.layers.Layers.firstLayer;
+import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,6 +19,14 @@ class MagicItemsTest {
     void setUpLayersAndFirstLayer() {
         firstLayer = firstLayer(Bases::baseRules,
                 layers -> this.layers = layers);
+    }
+
+    @Test
+    void shouldGrant19ConstitutionFromAmuletOfHealth() {
+        firstLayer.saveAndNext(MagicItems::amuletOfHealth).
+                saveAndNext(ScratchLayer::new);
+
+        assertEquals((Integer) 19, layers.get(CON));
     }
 
     @Test

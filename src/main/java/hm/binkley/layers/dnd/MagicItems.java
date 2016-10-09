@@ -1,13 +1,12 @@
 package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.Layers;
 import hm.binkley.layers.Layers.Surface;
-import hm.binkley.layers.Rule;
 import hm.binkley.layers.Value;
 
 import java.util.Map;
 
+import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.MagicItems.Attunement.ATTUNED;
 import static hm.binkley.layers.dnd.MagicItems.Attunement.UNATTUNED;
@@ -17,7 +16,6 @@ import static hm.binkley.layers.dnd.MagicItems.Rarity.UNCOMMON;
 import static hm.binkley.layers.dnd.MagicItems.Rarity.VERY_RARE;
 import static hm.binkley.layers.dnd.MagicItems.Type.ARMOR;
 import static hm.binkley.layers.dnd.MagicItems.Type.WONDROUS_ITEM;
-import static java.lang.Integer.max;
 
 /** @todo Does description belong in {@code Layer}? */
 public final class MagicItems {
@@ -100,6 +98,7 @@ public final class MagicItems {
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Layer adamantineArmor(final Surface layers) {
         return new MagicItem(layers, "Adamantine Armor",
                 "This suit of armor is reinforced with adamantine, one of "
@@ -109,26 +108,42 @@ public final class MagicItems {
                 "medium or heavy, but not hide");
     }
 
+    @SuppressWarnings("WeakerAccess")
+    public static Layer amuletOfHealth(final Surface layers) {
+        final String name = "Amulet of Health";
+        final Layer layer = new MagicItem(layers, name,
+                "Your Constitution score is 19 while you wear this amulet. It has no effect on you if your Constitution is already 19 or higher.",
+                WONDROUS_ITEM, RARE, ATTUNED);
+        layer.put(CON, Value.floor(layer, CON, 19));
+        return layer;
+    }
+
+    @SuppressWarnings("WeakerAccess")
     public static Layer beltOfHillGiantStrength(final Surface layers) {
         return beltOfGiantStrength(layers, "Hill", RARE, 21);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Layer beltOfStoneGiantStrength(final Surface layers) {
         return beltOfGiantStrength(layers, "Stone", VERY_RARE, 23);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Layer beltOfFrostGiantStrength(final Surface layers) {
         return beltOfGiantStrength(layers, "Frost", VERY_RARE, 23);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Layer beltOfFireGiantStrength(final Surface layers) {
         return beltOfGiantStrength(layers, "Fire", VERY_RARE, 25);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Layer beltOfCloudGiantStrength(final Surface layers) {
         return beltOfGiantStrength(layers, "Cloud", LEGENDARY, 27);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Layer beltOfStormGiantStrength(final Surface layers) {
         return beltOfGiantStrength(layers, "Storm", LEGENDARY, 29);
     }
@@ -147,12 +162,7 @@ public final class MagicItems {
                         + "strength and the belt of frost giant strength "
                         + "look different, but they have the same effect.",
                 WONDROUS_ITEM, rarity, ATTUNED);
-        layer.put(STR, Value.ofBoth(strength, new Rule<Integer>(name) {
-            @Override
-            public Integer apply(final Layers layers, final Integer integer) {
-                return max(strength, layers.whatIfWithout(layer).get(STR));
-            }
-        }));
+        layer.put(STR, Value.floor(layer, STR, strength));
         return layer;
     }
 }
