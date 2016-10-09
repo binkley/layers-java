@@ -19,10 +19,7 @@ import static hm.binkley.layers.dnd.MagicItems.Type.ARMOR;
 import static hm.binkley.layers.dnd.MagicItems.Type.WONDROUS_ITEM;
 import static java.lang.Integer.max;
 
-/**
- * @todo Does description belong in {@code} Layer?
- * @todo Giant girdle broken: should only apply when STR not higher
- */
+/** @todo Does description belong in {@code Layer}? */
 public final class MagicItems {
     private MagicItems() {}
 
