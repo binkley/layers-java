@@ -110,11 +110,10 @@ public final class MagicItems {
 
     @SuppressWarnings("WeakerAccess")
     public static Layer amuletOfHealth(final Surface layers) {
-        final String name = "Amulet of Health";
-        final Layer layer = new MagicItem(layers, name,
+        final Layer layer = new MagicItem(layers, "Amulet of Health",
                 "Your Constitution score is 19 while you wear this amulet. It has no effect on you if your Constitution is already 19 or higher.",
                 WONDROUS_ITEM, RARE, ATTUNED);
-        layer.put(CON, Value.floor(layer, CON, 19));
+        layer.put(CON, Value.floor(CON, 19));
         return layer;
     }
 
@@ -162,7 +161,7 @@ public final class MagicItems {
                         + "strength and the belt of frost giant strength "
                         + "look different, but they have the same effect.",
                 WONDROUS_ITEM, rarity, ATTUNED);
-        layer.put(STR, Value.floor(layer, STR, strength));
+        layer.put(STR, Value.floor(STR, strength));
         return layer;
     }
 }

@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import static java.lang.Integer.max;
 
 @RequiredArgsConstructor
 public abstract class Rule<T>
-        implements BiFunction<Layers, T, T> {
+        implements RuleFunction<T> {
     private final String name;
 
     @Override
@@ -35,8 +34,8 @@ public abstract class Rule<T>
     }
 
     @SuppressWarnings("WeakerAccess")
-    public static Rule<Integer> floor(final Layer layer, final Object key) {
-        return new FloorRule(key, layer);
+    public static Rule<Integer> floor(final Object key) {
+        return new FloorRule(key);
     }
 
     protected abstract static class KeyRule<T>
@@ -76,7 +75,8 @@ public abstract class Rule<T>
         }
 
         @Override
-        public T apply(final Layers layers, final T value) {
+        public T apply(final Layers layers, final Layer layer,
+                final T value) {
             return layers.<T>plainValuesFor(key).
                     findFirst().
                     orElseThrow(noValueForKey());
@@ -90,7 +90,8 @@ public abstract class Rule<T>
         }
 
         @Override
-        public Integer apply(final Layers layers, final Integer value) {
+        public Integer apply(final Layers layers, final Layer layer,
+                final Integer value) {
             return layers.<Integer>plainValuesFor(key).
                     mapToInt(Integer::intValue).
                     sum();
@@ -104,22 +105,21 @@ public abstract class Rule<T>
         }
 
         @Override
-        public Integer apply(final Layers layers, final Integer value) {
-            return 2 * sumAll(key).apply(layers, value);
+        public Integer apply(final Layers layers, final Layer layer,
+                final Integer value) {
+            return 2 * sumAll(key).apply(layers, layer, value);
         }
     }
 
     private static class FloorRule
             extends KeyRule<Integer> {
-        private final Layer layer;
-
-        private FloorRule(final Object key, final Layer layer) {
+        private FloorRule(final Object key) {
             super("Floor", key);
-            this.layer = layer;
         }
 
         @Override
-        public Integer apply(final Layers layers, final Integer value) {
+        public Integer apply(final Layers layers, final Layer layer,
+                final Integer value) {
             return max(value, layers.whatIfWithout(layer).get(key));
         }
     }

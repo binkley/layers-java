@@ -28,10 +28,13 @@ public final class Layers {
     /** @todo Should update for one key, not all? */
     private void updateCache() {
         cache.clear();
-        layers.stream().
-                flatMap(layer -> layer.keys().stream()).
-                forEach(key -> cache.
-                        putIfAbsent(key, ruleValueFor(key).apply(this)));
+        layers.forEach(layer -> layer.keys().forEach(key -> {
+            final Value<Object> value = layer.get(key);
+            value.rule().
+                    map(rule -> value.apply(this, layer)).
+                    map(result -> cache.putIfAbsent(key, result)).
+                    isPresent();
+        }));
     }
 
     public static Layer firstLayer(final LayerMaker ctor,

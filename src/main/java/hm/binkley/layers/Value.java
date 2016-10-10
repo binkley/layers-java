@@ -4,10 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public interface Value<T>
-        extends Function<Layers, T> {
+        extends BiFunction<Layers, Layer, T> {
     static <T> Value<T> ofValue(final T value) {
         return new ValueOnly<>(value);
     }
@@ -32,9 +32,8 @@ public interface Value<T>
         return ofRule(Rule.doubling(key));
     }
 
-    static Value<Integer> floor(final Layer layer, final Object key,
-            final Integer minimum) {
-        return ofBoth(minimum, Rule.floor(layer, key));
+    static Value<Integer> floor(final Object key, final Integer minimum) {
+        return ofBoth(minimum, Rule.floor(key));
     }
 
     Optional<T> value();
@@ -61,7 +60,7 @@ public interface Value<T>
         }
 
         @Override
-        public T apply(final Layers layers) {
+        public T apply(final Layers layers, final Layer layer) {
             throw new NullPointerException("Missing rule for value: " + this);
         }
 
@@ -89,8 +88,8 @@ public interface Value<T>
 
         /** @todo Rethink rule-only apply with {@code null} */
         @Override
-        public T apply(final Layers layers) {
-            return rule.apply(layers, null);
+        public T apply(final Layers layers, final Layer layer) {
+            return rule.apply(layers, layer, null);
         }
 
         @Override
@@ -117,8 +116,8 @@ public interface Value<T>
         }
 
         @Override
-        public T apply(final Layers layers) {
-            return rule.apply(layers, value);
+        public T apply(final Layers layers, final Layer layer) {
+            return rule.apply(layers, layer, value);
         }
 
         @Override

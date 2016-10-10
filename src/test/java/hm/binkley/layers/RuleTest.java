@@ -32,7 +32,7 @@ class RuleTest {
         }
 
         @Override
-        public Integer apply(final Layers layers, final Integer value) {
+        public Integer apply(final Layers layers, final Layer layer, final Integer value) {
             return value;
         }
     }
@@ -44,7 +44,7 @@ class RuleTest {
         }
 
         @Override
-        public Integer apply(final Layers layers, final Integer value) {
+        public Integer apply(final Layers layers, final Layer layer, final Integer value) {
             return value;
         }
     }

@@ -42,10 +42,10 @@ class ValueTest {
     @Test
     void shouldYellWhenApplyingValueOnly() {
         final Layers[] layersHolder = new Layers[1];
-        firstLayer(ScratchLayer::new, layers -> layersHolder[0] = layers);
+        final Layer layer = firstLayer(ScratchLayer::new, layers -> layersHolder[0] = layers);
 
         assertThrows(NullPointerException.class,
-                () -> ofValue(3).apply(layersHolder[0]));
+                () -> ofValue(3).apply(layersHolder[0], layer));
     }
 
     @Test
