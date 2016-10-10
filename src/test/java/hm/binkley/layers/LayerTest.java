@@ -11,6 +11,7 @@ import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LayerTest {
@@ -45,10 +46,18 @@ class LayerTest {
     @Test
     void shouldBlendLayer() {
         final Layer other = new ScratchLayer(null);
-        other.put("A", ofValue(42));
+        other.put("C", ofValue(42));
         layer.blend(other);
 
-        assertEquals(42, layer.get("A").value().get());
+        assertEquals(42, layer.get("C").value().get());
+    }
+
+    @Test
+    void shouldCryIfBlendingDuplicateKey() {
+        final Layer other = new ScratchLayer(null);
+        other.put("A", ofValue(42));
+
+        assertThrows(IllegalStateException.class, () -> layer.blend(other));
     }
 
     @Test

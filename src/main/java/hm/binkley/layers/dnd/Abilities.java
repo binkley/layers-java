@@ -26,7 +26,7 @@ public class Abilities
         return unmodifiableList(values);
     }
 
-    protected Abilities(final String name) {
+    public Abilities(final String name) {
         super(name, ordinal.getAndIncrement());
         values.add(this);
     }

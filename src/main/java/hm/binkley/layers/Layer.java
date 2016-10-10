@@ -65,7 +65,12 @@ public class Layer
     }
 
     public Layer blend(final Layer that) {
-        values.putAll(that.values);
+        that.values.forEach(
+                (key, value) -> values.compute(key, (k, existing) -> {
+                    if (null != existing)
+                        throw new IllegalStateException("Duplicate key " + k);
+                    return value;
+                }));
         return this;
     }
 
