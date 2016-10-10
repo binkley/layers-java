@@ -86,11 +86,6 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>${versions-maven-plugin.version}</version>
-                <configuration>
-                    <rulesUri>
-                        file://${session.executionRootDirectory}/maven-version-rules.xml
-                    </rulesUri>
-                </configuration>
                 <executions>
                     <execution>
                         <id>update-dependencies</id>
