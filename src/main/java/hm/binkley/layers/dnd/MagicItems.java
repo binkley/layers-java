@@ -17,7 +17,10 @@ import static hm.binkley.layers.dnd.MagicItems.Rarity.VERY_RARE;
 import static hm.binkley.layers.dnd.MagicItems.Type.ARMOR;
 import static hm.binkley.layers.dnd.MagicItems.Type.WONDROUS_ITEM;
 
-/** @todo Does description belong in {@code Layer}? */
+/**
+ * @todo Does description belong in {@code Layer}?
+ * @todo Builder for shared details
+ */
 public final class MagicItems {
     private MagicItems() {}
 
@@ -49,7 +52,8 @@ public final class MagicItems {
     }
 
     public enum Type {
-        ARMOR("Armor"), WONDROUS_ITEM("Wondrous Item");
+        ARMOR("Armor"),
+        WONDROUS_ITEM("Wondrous Item");
 
         private final String display;
 
@@ -64,7 +68,9 @@ public final class MagicItems {
     }
 
     public enum Rarity {
-        UNCOMMON("Uncommon"), RARE("Rare"), VERY_RARE("Very rare"),
+        UNCOMMON("Uncommon"),
+        RARE("Rare"),
+        VERY_RARE("Very rare"),
         LEGENDARY("Legendary");
 
         private final String display;
@@ -80,7 +86,8 @@ public final class MagicItems {
     }
 
     public enum Attunement {
-        UNATTUNED(""), ATTUNED("yes");
+        UNATTUNED(""),
+        ATTUNED("yes");
 
         private final String display;
 
@@ -107,7 +114,9 @@ public final class MagicItems {
     @SuppressWarnings("WeakerAccess")
     public static Layer amuletOfHealth(final Surface layers) {
         final Layer layer = new MagicItem(layers, "Amulet of Health",
-                "Your Constitution score is 19 while you wear this amulet. It has no effect on you if your Constitution is already 19 or higher.",
+                "Your Constitution score is 19 while you wear this amulet. "
+                        + "It has no effect on you if your Constitution is "
+                        + "already 19 or higher.",
                 WONDROUS_ITEM, RARE, ATTUNED);
         layer.put(CON, Value.floor(CON, 19));
         return layer;

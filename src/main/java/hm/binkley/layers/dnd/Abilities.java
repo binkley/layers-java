@@ -31,6 +31,7 @@ public class Abilities
         values.add(this);
     }
 
+    /** @todo Builder */
     public static LayerMaker abilityScores(final int strength,
             final int dexterity, final int constitution,
             final int intelligence, final int wisdom, final int charisma) {
