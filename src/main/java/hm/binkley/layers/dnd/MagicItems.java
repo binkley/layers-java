@@ -49,8 +49,7 @@ public final class MagicItems {
     }
 
     public enum Type {
-        ARMOR("Armor"),
-        WONDROUS_ITEM("Wondrous Item");
+        ARMOR("Armor"), WONDROUS_ITEM("Wondrous Item");
 
         private final String display;
 
@@ -65,9 +64,7 @@ public final class MagicItems {
     }
 
     public enum Rarity {
-        UNCOMMON("Uncommon"),
-        RARE("Rare"),
-        VERY_RARE("Very rare"),
+        UNCOMMON("Uncommon"), RARE("Rare"), VERY_RARE("Very rare"),
         LEGENDARY("Legendary");
 
         private final String display;
@@ -83,8 +80,7 @@ public final class MagicItems {
     }
 
     public enum Attunement {
-        UNATTUNED(""),
-        ATTUNED("yes");
+        UNATTUNED(""), ATTUNED("yes");
 
         private final String display;
 
@@ -149,8 +145,8 @@ public final class MagicItems {
 
     private static Layer beltOfGiantStrength(final Surface layers,
             final String giantKind, final Rarity rarity, final int strength) {
-        final String name = "Belt of " + giantKind + " Giant Strength";
-        final Layer layer = new MagicItem(layers, name,
+        final Layer layer = new MagicItem(layers,
+                "Belt of " + giantKind + " Giant Strength",
                 "While wearing this belt, your Strength score changes to a "
                         + "score granted by the belt. If your Strength is "
                         + "already equal to or greater than the belt's "
