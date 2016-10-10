@@ -8,7 +8,10 @@ import java.util.Map;
 
 import static hm.binkley.layers.Value.ofValue;
 import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LayerTest {
     private Layer layer;
@@ -49,6 +52,15 @@ class LayerTest {
     }
 
     @Test
+    void shouldPrintClassKeysNicely() {
+        layer.put(String.class, ofValue("FOO"));
+
+        final String display = layer.toString();
+        assertAll(() -> assertTrue(display.contains("String")),
+                () -> assertFalse(display.contains("java.lang.String")));
+    }
+
+    @Test
     void shouldDelegateNameToLayerFromLayerMap() {
         assertEquals(layer.name(), layer.view().name());
     }
@@ -86,8 +98,7 @@ class LayerTest {
 
     @Test
     void shouldDelegateContainsKeyToLayerFromLayerView() {
-        assertEquals(layer.containsKey("A"),
-                layer.view().containsKey("A"));
+        assertEquals(layer.containsKey("A"), layer.view().containsKey("A"));
     }
 
     @Test

@@ -12,6 +12,9 @@ import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.lang.String.format;
+import static java.util.stream.Collectors.joining;
+
 /**
  * @todo Trade-off between too many references (hard on GC) and ease of use
  * @todo Rethink immutable vs editable - not consistently expressed
@@ -121,6 +124,7 @@ public class Layer
         return this;
     }
 
+    /** @todo Replace with {@code Key} type which smart `toString` */
     @Override
     public final String toString() {
         final String x = values.entrySet().stream().
@@ -129,7 +133,7 @@ public class Layer
                     return (key instanceof Class ? ((Class) key)
                             .getSimpleName() : key) + "=" + e.getValue();
                 }).
-                collect(Collectors.joining(", ", "{", "}"));
+                collect(joining(", ", "{", "}"));
 
         return details.isEmpty() ? name + ": " + x
                 : name + ": " + x + " [" + details + "]";
@@ -138,8 +142,7 @@ public class Layer
     /** @todo Hidden away in {@link Collectors}. */
     private static <T> BinaryOperator<T> throwingMerger() {
         return (u, v) -> {
-            throw new IllegalStateException(
-                    String.format("Duplicate key %s", u));
+            throw new IllegalStateException(format("Duplicate key %s", u));
         };
     }
 }
