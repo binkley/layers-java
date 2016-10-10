@@ -61,6 +61,15 @@ class LayerTest {
     }
 
     @Test
+    void shouldCryIfBlendingDuplicateKeyTheOtherWay() {
+        final Layer other = new ScratchLayer(null);
+        other.put("A", ofValue(42));
+
+        assertThrows(IllegalStateException.class,
+                () -> layer.blend(layers -> other));
+    }
+
+    @Test
     void shouldPrintClassKeysNicely() {
         layer.put(String.class, ofValue("FOO"));
 

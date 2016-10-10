@@ -75,8 +75,7 @@ public class Layer
     }
 
     public Layer blend(final LayerMaker that) {
-        values.putAll(that.apply(layers).values);
-        return this;
+        return blend(that.apply(layers));
     }
 
     /** @todo Immutable? */
