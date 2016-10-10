@@ -123,8 +123,16 @@ public class Layer
 
     @Override
     public final String toString() {
-        return details.isEmpty() ? name + ": " + values
-                : name + ": " + values + " [" + details + "]";
+        final String x = values.entrySet().stream().
+                map(e -> {
+                    final Object key = e.getKey();
+                    return (key instanceof Class ? ((Class) key)
+                            .getSimpleName() : key) + "=" + e.getValue();
+                }).
+                collect(Collectors.joining(", ", "{", "}"));
+
+        return details.isEmpty() ? name + ": " + x
+                : name + ": " + x + " [" + details + "]";
     }
 
     /** @todo Hidden away in {@link Collectors}. */
