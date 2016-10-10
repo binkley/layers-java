@@ -1,6 +1,6 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.dnd.Bases;
+import hm.binkley.layers.dnd.BaseRule;
 import hm.binkley.layers.dnd.MagicItems;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -148,7 +148,7 @@ class LayersTest {
     @Test
     void shouldHaveNetStrengthIfBeltNotBetter() {
         firstLayer.
-                saveAndNext(Bases::baseRules).
+                saveAndNext(BaseRule::baseRules).
                 saveAndNext(abilityScores(23, 8, 8, 8, 8, 8)).
                 saveAndNext(MagicItems::beltOfHillGiantStrength).
                 saveAndNext(ScratchLayer::new);
@@ -159,7 +159,7 @@ class LayersTest {
     @Test
     void shouldHaveNoStrengthBeforeAddingScores() {
         firstLayer.
-                saveAndNext(Bases::baseRules).
+                saveAndNext(BaseRule::baseRules).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 0, layers.get(STR));
@@ -168,7 +168,7 @@ class LayersTest {
     @Test
     void shouldHaveNetStrengthAfterGainingAbility() {
         firstLayer.
-                saveAndNext(Bases::baseRules).
+                saveAndNext(BaseRule::baseRules).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(ScratchLayer::new);
@@ -179,7 +179,7 @@ class LayersTest {
     @Test
     void shouldHaveStrengthOfBelt() {
         firstLayer.
-                saveAndNext(Bases::baseRules).
+                saveAndNext(BaseRule::baseRules).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(MagicItems::beltOfHillGiantStrength).
@@ -191,7 +191,7 @@ class LayersTest {
     @Test
     void shouldHaveStrengthOfBeltAfterGainingAbility() {
         firstLayer.
-                saveAndNext(Bases::baseRules).
+                saveAndNext(BaseRule::baseRules).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(MagicItems::beltOfStoneGiantStrength).
@@ -204,7 +204,7 @@ class LayersTest {
     @Test
     void shouldHaveNetStrengthAfterRemovingBelt() {
         final Layer girdle = firstLayer.
-                saveAndNext(Bases::baseRules).
+                saveAndNext(BaseRule::baseRules).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(MagicItems::beltOfFrostGiantStrength);
@@ -218,7 +218,7 @@ class LayersTest {
     @Test
     void shouldHaveMostRecentName() {
         assertEquals("Nancy", firstLayer.
-                saveAndNext(Bases::baseRules).
+                saveAndNext(BaseRule::baseRules).
                 saveAndNext(characterDescription("Bob")).
                 saveAndNext(characterDescription("Nancy")).
                 whatIfWith().

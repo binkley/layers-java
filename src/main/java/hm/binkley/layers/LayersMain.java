@@ -1,11 +1,12 @@
 package hm.binkley.layers;
 
 import hm.binkley.layers.dnd.Abilities;
-import hm.binkley.layers.dnd.Bases;
+import hm.binkley.layers.dnd.BaseRule;
 import hm.binkley.layers.dnd.Characters;
 import hm.binkley.layers.dnd.MagicItems;
 import hm.binkley.layers.dnd.Proficiencies;
 
+import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.Abilities.WIS;
@@ -26,7 +27,7 @@ import static java.lang.System.out;
 public class LayersMain {
     public static void main(final String... args) {
         final Layers[] layersHolder = new Layers[1];
-        final Layer firstLayer = Layers.firstLayer(Bases::baseRules,
+        final Layer firstLayer = firstLayer(BaseRule::baseRules,
                 layers -> layersHolder[0] = layers);
         final Layers layers = layersHolder[0];
 

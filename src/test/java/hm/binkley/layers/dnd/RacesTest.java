@@ -24,7 +24,7 @@ class RacesTest {
 
     @BeforeEach
     void setUpLayers() {
-        firstLayer = firstLayer(Bases::baseRules,
+        firstLayer = firstLayer(BaseRule::baseRules,
                 layers -> this.layers = layers);
     }
 

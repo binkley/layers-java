@@ -25,7 +25,7 @@ class MagicItemsTest {
 
     @BeforeEach
     void setUpLayersAndFirstLayer() {
-        firstLayer = firstLayer(Bases::baseRules,
+        firstLayer = firstLayer(BaseRule::baseRules,
                 layers -> this.layers = layers);
     }
 

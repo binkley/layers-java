@@ -18,14 +18,14 @@ class ProficienciesTest {
 
     @BeforeEach
     void setUpLayers() {
-        firstLayer = firstLayer(Bases::baseRuleProficiencyBonuses,
+        firstLayer = firstLayer(BaseRule::baseRules,
                 layers -> this.layers = layers);
     }
 
     @Test
     void shouldDoubleProficiencies() {
         assertEquals((Integer) 2, firstLayer.
-                saveAndNext(Bases::baseRules).
+                saveAndNext(BaseRule::baseRules).
                 saveAndNext(proficiencyBonus(ACROBATICS, 1)).
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
                 saveAndNext(doubleProficiency(ACROBATICS)).
