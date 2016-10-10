@@ -12,7 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <prerequisites>
-        <maven>3.0</maven>
+        <maven>3.3</maven>
     </prerequisites>
 
     <groupId>hm.binkley</groupId>
@@ -54,6 +54,7 @@
         <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
         <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+        <metainf-services.version>1.7</metainf-services.version>
         <minimum-coverage-ratio>0.85</minimum-coverage-ratio>
         <plexus-compiler-javac-errorprone.version>2.8.1</plexus-compiler-javac-errorprone.version>
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
@@ -70,6 +71,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.kohsuke.metainf-services</groupId>
+            <artifactId>metainf-services</artifactId>
+            <version>${metainf-services.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -150,7 +157,8 @@ Error Prone with the latest version -->
                         <configuration>
                             <excludes>
                                 <exclude>*Test</exclude>
-                                <exclude>hm.binkley.layers.LayersMain</exclude>
+                                <exclude>hm.binkley.layers.LayersMain
+                                </exclude>
                             </excludes>
                         </configuration>
                         <goals>
@@ -161,7 +169,8 @@ Error Prone with the latest version -->
                         <id>jacoco-report</id>
                         <phase>test</phase>
                         <configuration>
-                            <outputDirectory>${CIRCLE_ARTIFACTS}</outputDirectory>
+                            <outputDirectory>${CIRCLE_ARTIFACTS}
+                            </outputDirectory>
                         </configuration>
                         <goals>
                             <goal>report</goal>
@@ -175,16 +184,20 @@ Error Prone with the latest version -->
                                     <element>CLASS</element>
                                     <excludes>
                                         <exclude>*Test</exclude>
-                                        <exclude>hm.binkley.layers.LayersMain</exclude>
+                                        <exclude>
+                                            hm.binkley.layers.LayersMain
+                                        </exclude>
                                     </excludes>
                                     <limits>
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>${minimum-coverage-ratio}</minimum>
+                                            <minimum>
+                                                ${minimum-coverage-ratio}
+                                            </minimum>
                                         </limit>
                                     </limits>
-                                 </rule>
+                                </rule>
                             </rules>
                         </configuration>
                         <goals>
