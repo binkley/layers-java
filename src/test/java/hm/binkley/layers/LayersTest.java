@@ -89,32 +89,49 @@ class LayersTest {
     }
 
     @Test
-    void shouldHaveHistory() {
+    void shouldHaveView() {
         firstLayer.
                 put("BOB", ofBoth(17, mostRecent("BOB"))).
                 saveAndNext(ScratchLayer::new);
 
-        final List<Map<Object, Object>> history = layers.
-                history().
+        final List<Map<Object, Object>> view = layers.
+                view().
                 map(layer -> layer.stream().
                         collect(toMap(Entry::getKey, Entry::getValue))).
                 collect(toList());
 
-        assertEquals(singletonList(singletonMap("BOB", 17)), history);
+        assertEquals(singletonList(singletonMap("BOB", 17)), view);
+    }
+
+    @Test
+    void shouldHaveFilteredView() {
+        firstLayer.
+                put("BOB", ofBoth(17, mostRecent("BOB"))).
+                saveAndNext(EgLayer::new).
+                put("BOB", ofValue(18)).
+                saveAndNext(ScratchLayer::new);
+
+        final List<Map<Object, Object>> view = layers.
+                view(layer -> layer instanceof EgLayer).
+                map(layer -> layer.stream().
+                        collect(toMap(Entry::getKey, Entry::getValue))).
+                collect(toList());
+
+        assertEquals(singletonList(singletonMap("BOB", 18)), view);
     }
 
     @Test
     void shouldDiscardThroughLayer() {
         firstLayer.discard();
 
-        assertEquals(0, layers.history().count());
+        assertEquals(0, layers.view().count());
     }
 
     @Test
     void shouldDiscardThroughLayerView() {
         firstLayer.view().discard();
 
-        assertEquals(0, layers.history().count());
+        assertEquals(0, layers.view().count());
     }
 
     @Test
@@ -231,5 +248,12 @@ class LayersTest {
         firstLayer.saveAndNext(ScratchLayer::new);
 
         assertTrue(layers.toString().contains("Scratch"));
+    }
+
+    private static final class EgLayer
+            extends Layer {
+        private EgLayer(final Layers.Surface layers) {
+            super(layers, "Eg");
+        }
     }
 }

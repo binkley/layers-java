@@ -70,8 +70,15 @@ public final class Layers {
         return unmodifiableMap(cache);
     }
 
-    public Stream<LayerView> history() {
+    public Stream<LayerView> view() {
         return layers.stream().
+                map(Layer::view);
+    }
+
+    /** @todo filter can call mutators */
+    public Stream<LayerView> view(final LayerFilter filter) {
+        return layers.stream().
+                filter(filter).
                 map(Layer::view);
     }
 
