@@ -4,6 +4,7 @@ import hm.binkley.layers.dnd.Abilities;
 import hm.binkley.layers.dnd.BaseRule;
 import hm.binkley.layers.dnd.Characters;
 import hm.binkley.layers.dnd.MagicItems;
+import hm.binkley.layers.dnd.MagicItems.MagicItem;
 import hm.binkley.layers.dnd.Proficiencies;
 
 import static hm.binkley.layers.Layers.firstLayer;
@@ -54,5 +55,8 @@ public class LayersMain {
 
         for (final Proficiencies bonus : Proficiencies.values())
             out.println(bonus + " = " + layers.get(bonus));
+
+        layers.view(layer -> layer instanceof MagicItem).
+                forEach(out::println);
     }
 }
