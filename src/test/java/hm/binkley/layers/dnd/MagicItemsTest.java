@@ -92,32 +92,32 @@ class MagicItemsTest {
     }
 
     @Test
-    void shouldDiplayRarityForUncommon() {
+    void shouldDisplayRarityForUncommon() {
         assertEquals("Uncommon", UNCOMMON.toString());
     }
 
     @Test
-    void shouldDiplayRarityForRare() {
+    void shouldDisplayRarityForRare() {
         assertEquals("Rare", RARE.toString());
     }
 
     @Test
-    void shouldDiplayRarityForVeryRare() {
+    void shouldDisplayRarityForVeryRare() {
         assertEquals("Very rare", VERY_RARE.toString());
     }
 
     @Test
-    void shouldDiplayRarityForLegendary() {
+    void shouldDisplayRarityForLegendary() {
         assertEquals("Legendary", LEGENDARY.toString());
     }
 
     @Test
-    void shouldDiplayAttunementForYes() {
+    void shouldDisplayAttunementForYes() {
         assertEquals("yes", ATTUNED.toString());
     }
 
     @Test
-    void shouldDiplayAttunementForNo() {
+    void shouldDisplayAttunementForNo() {
         assertEquals("", UNATTUNED.toString());
     }
 
