@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -131,16 +132,23 @@ public class Layer
     /** @todo Replace with {@code Key} type which smart `toString` */
     @Override
     public final String toString() {
-        final String x = values.entrySet().stream().
-                map(e -> {
-                    final Object key = e.getKey();
-                    return (key instanceof Class ? ((Class) key)
-                            .getSimpleName() : key) + "=" + e.getValue();
-                }).
+        final Function<Entry<Object, ?>, String> display = e -> {
+            final Object key = e.getKey();
+            return (key instanceof Class ? ((Class) key).getSimpleName()
+                    : key) + "=" + e.getValue();
+        };
+        final String toString = name + ": " + values.entrySet().stream().
+                map(display).
                 collect(joining(", ", "{", "}"));
 
-        return details.isEmpty() ? name + ": " + x
-                : name + ": " + x + " [" + details + "]";
+        if (details.isEmpty())
+            return toString;
+
+        final String details = this.details.entrySet().stream().
+                map(display).
+                collect(joining(", ", "[", "]"));
+
+        return toString + " " + details;
     }
 
     /** @todo Hidden away in {@link Collectors}. */

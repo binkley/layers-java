@@ -70,8 +70,17 @@ class LayerTest {
     }
 
     @Test
-    void shouldPrintClassKeysNicely() {
+    void shouldPrintClassKeysNicelyForLayer() {
         layer.put(String.class, ofValue("FOO"));
+
+        final String display = layer.toString();
+        assertAll(() -> assertTrue(display.contains("String")),
+                () -> assertFalse(display.contains("java.lang.String")));
+    }
+
+    @Test
+    void shouldPrintClassKeysNicelyForDetails() {
+        layer.details().put(String.class, ofValue("FOO"));
 
         final String display = layer.toString();
         assertAll(() -> assertTrue(display.contains("String")),
