@@ -9,12 +9,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.BinaryOperator;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static hm.binkley.layers.DisplayStyle.BRACES;
+import static hm.binkley.layers.DisplayStyle.BRACKETS;
 import static java.lang.String.format;
-import static java.util.stream.Collectors.joining;
 
 /**
  * @todo Trade-off between too many references (hard on GC) and ease of use
@@ -129,26 +129,14 @@ public class Layer
         return this;
     }
 
-    /** @todo Replace with {@code Key} type which smart `toString` */
     @Override
     public final String toString() {
-        final Function<Entry<Object, ?>, String> display = e -> {
-            final Object key = e.getKey();
-            return (key instanceof Class ? ((Class) key).getSimpleName()
-                    : key) + "=" + e.getValue();
-        };
-        final String toString = name + ": " + values.entrySet().stream().
-                map(display).
-                collect(joining(", ", "{", "}"));
+        final String toString = name + ": " + BRACES.display(values);
 
         if (details.isEmpty())
             return toString;
 
-        final String details = this.details.entrySet().stream().
-                map(display).
-                collect(joining(", ", "[", "]"));
-
-        return toString + " " + details;
+        return toString + " " + BRACKETS.display(details);
     }
 
     /** @todo Hidden away in {@link Collectors}. */

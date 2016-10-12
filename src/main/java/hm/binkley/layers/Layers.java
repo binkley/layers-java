@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static hm.binkley.layers.DisplayStyle.BRACES;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.IntStream.range;
 
 @SuppressWarnings("WeakerAccess")
 public final class Layers {
@@ -127,17 +127,9 @@ public final class Layers {
     @Override
     public String toString() {
         final int size = layers.size();
-        return IntStream.range(0, size).
+        return "All: " + BRACES.display(cache) + "\n" + range(0, size).
                 mapToObj(i -> (size - i) + ": " + layers.get(i)).
                 collect(joining("\n"));
-    }
-
-    private <T> Value<T> ruleValueFor(final Object key) {
-        return this.<T>streamFor(key).
-                filter(value -> value.rule().isPresent()).
-                findFirst().
-                orElseThrow(() -> new NoSuchElementException(
-                        "No rule present for key: " + key));
     }
 
     private <T> Stream<Value<T>> streamFor(final Object key) {

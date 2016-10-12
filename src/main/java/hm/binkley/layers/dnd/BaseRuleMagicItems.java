@@ -2,6 +2,7 @@ package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
+import hm.binkley.layers.dnd.MagicItems.Attunement;
 import org.kohsuke.MetaInfServices;
 
 import static hm.binkley.layers.Value.mostRecent;
@@ -13,8 +14,7 @@ public final class BaseRuleMagicItems
     @Override
     public Layer apply(final Layers.Surface layers) {
         final Layer layer = new Layer(layers, "Base magic items rules");
-        layer.put(MagicItems.Attunement.class,
-                mostRecent(MagicItems.Attunement.class, emptySet()));
+        layer.put(Attunement.class, mostRecent(Attunement.class, emptySet()));
         return layer;
     }
 }
