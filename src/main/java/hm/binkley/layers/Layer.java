@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.BinaryOperator;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -132,18 +131,16 @@ public class Layer
     /** @todo Replace with {@code Key} type which smart `toString` */
     @Override
     public final String toString() {
-        final KeyDisplay keyDisplay = new KeyDisplay();
-        final String toString = name + ": " + values.entrySet().stream().
-                map(keyDisplay).
+        final String x = values.entrySet().stream().
+                map(e -> {
+                    final Object key = e.getKey();
+                    return (key instanceof Class ? ((Class) key)
+                            .getSimpleName() : key) + "=" + e.getValue();
+                }).
                 collect(joining(", ", "{", "}"));
 
-        if (details.isEmpty())
-            return toString;
-
-        final String details = this.details.entrySet().stream().
-                map(keyDisplay).
-                collect(joining(", ", "[", "]"));
-        return toString + " " + details;
+        return details.isEmpty() ? name + ": " + x
+                : name + ": " + x + " [" + details + "]";
     }
 
     /** @todo Hidden away in {@link Collectors}. */
@@ -151,15 +148,5 @@ public class Layer
         return (u, v) -> {
             throw new IllegalStateException(format("Duplicate key %s", u));
         };
-    }
-
-    private static class KeyDisplay
-            implements Function<Entry<Object, ?>, String> {
-        @Override
-        public String apply(final Entry<Object, ?> e) {
-            final Object key = e.getKey();
-            return (key instanceof Class ? ((Class) key).getSimpleName()
-                    : key) + "=" + e.getValue();
-        }
     }
 }
