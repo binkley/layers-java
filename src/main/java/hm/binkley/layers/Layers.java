@@ -37,7 +37,7 @@ public final class Layers {
         }));
     }
 
-    public static Layer firstLayer(final LayerMaker ctor,
+    public static <L extends Layer> L firstLayer(final LayerMaker<L> ctor,
             final Consumer<Layers> layersHolder) {
         final Layers layers = new Layers(new ArrayList<>());
         layersHolder.accept(layers);
@@ -104,7 +104,8 @@ public final class Layers {
     }
 
     public final class Surface {
-        public Layer saveAndNext(final Layer layer, final LayerMaker next) {
+        public <L extends Layer> L saveAndNext(final Layer layer,
+                final LayerMaker<L> next) {
             layers.add(0, layer);
             updateCache();
             return next.apply(this);

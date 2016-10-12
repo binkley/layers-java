@@ -32,7 +32,7 @@ public class Abilities
     }
 
     /** @todo Builder */
-    public static LayerMaker abilityScores(final int strength,
+    public static LayerMaker<Layer> abilityScores(final int strength,
             final int dexterity, final int constitution,
             final int intelligence, final int wisdom, final int charisma) {
         return layers -> {
@@ -47,7 +47,7 @@ public class Abilities
         };
     }
 
-    public static LayerMaker abilityScoreIncrease(
+    public static LayerMaker<Layer> abilityScoreIncrease(
             final Abilities doubleAbility) {
         return layers -> {
             final Layer layer = new Layer(layers,
@@ -57,7 +57,7 @@ public class Abilities
         };
     }
 
-    public static LayerMaker abilityScoreIncrease(
+    public static LayerMaker<Layer> abilityScoreIncrease(
             final Abilities firstAbility, final Abilities secondAbility) {
         return layers -> {
             final Layer layer = new Layer(layers,

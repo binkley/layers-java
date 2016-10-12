@@ -27,7 +27,7 @@ public class Characters
         values.add(this);
     }
 
-    public static LayerMaker characterDescription(final String name) {
+    public static LayerMaker<Layer> characterDescription(final String name) {
         return layers -> {
             final Layer layer = new Layer(layers, "Character description");
             layer.put(NAME, ofValue(name));

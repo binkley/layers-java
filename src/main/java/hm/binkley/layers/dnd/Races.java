@@ -37,11 +37,11 @@ public final class Races {
         }
 
         public static class WithSTR {
-            public LayerMaker withDEX() {
+            public LayerMaker<Layer> withDEX() {
                 return withDoubleAbilities(STR, DEX);
             }
 
-            public LayerMaker withCON() {
+            public LayerMaker<Layer> withCON() {
                 return withDoubleAbilities(STR, CON);
             }
 
@@ -51,7 +51,7 @@ public final class Races {
         private HumanVariant() {}
     }
 
-    private static LayerMaker withDoubleAbilities(final Abilities ability1,
+    private static LayerMaker<Layer> withDoubleAbilities(final Abilities ability1,
             final Abilities ability2) {
         return layers -> {
             final Layer layer = new Layer(layers, "Variant Human");

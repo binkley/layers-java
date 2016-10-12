@@ -38,8 +38,8 @@ public class Proficiencies
         return display;
     }
 
-    public static LayerMaker proficiencyBonus(final Proficiencies proficiency,
-            final int bonus) {
+    public static LayerMaker<Layer> proficiencyBonus(
+            final Proficiencies proficiency, final int bonus) {
         return layers -> {
             final Layer layer = new Layer(layers, "Proficiency bonus(es)");
             layer.put(proficiency, ofValue(bonus));
@@ -47,7 +47,7 @@ public class Proficiencies
         };
     }
 
-    public static LayerMaker doubleProficiency(
+    public static LayerMaker<Layer> doubleProficiency(
             final Proficiencies proficiency) {
         return layers -> {
             final Layer layer = new Layer(layers,

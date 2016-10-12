@@ -47,6 +47,11 @@ public final class MagicItems {
             details.put(Rarity.class, rarity);
             details.put(Attunement.class, attunement);
         }
+
+        public <L extends Layer> L attune(final LayerMaker<L> next) {
+            return layers
+                    .saveAndNext(new MagicItems.Attune(layers, this), next);
+        }
     }
 
     /**
@@ -57,7 +62,7 @@ public final class MagicItems {
      */
     public static class Attune
             extends Layer {
-        public static LayerMaker attune(final MagicItem magicItem) {
+        public static LayerMaker<Attune> attune(final MagicItem magicItem) {
             return layers -> new Attune(layers, magicItem);
         }
 
@@ -118,7 +123,7 @@ public final class MagicItems {
     }
 
     @SuppressWarnings("WeakerAccess")
-    public static Layer adamantineArmor(final Surface layers) {
+    public static MagicItem adamantineArmor(final Surface layers) {
         return new MagicItem(layers, "Adamantine Armor",
                 "This suit of armor is reinforced with adamantine, one of "
                         + "the hardest substances in existence. While "
@@ -128,8 +133,8 @@ public final class MagicItems {
     }
 
     @SuppressWarnings("WeakerAccess")
-    public static Layer amuletOfHealth(final Surface layers) {
-        final Layer layer = new MagicItem(layers, "Amulet of Health",
+    public static MagicItem amuletOfHealth(final Surface layers) {
+        final MagicItem layer = new MagicItem(layers, "Amulet of Health",
                 "Your Constitution score is 19 while you wear this amulet. "
                         + "It has no effect on you if your Constitution is "
                         + "already 19 or higher.", WONDROUS_ITEM, RARE,
@@ -139,38 +144,38 @@ public final class MagicItems {
     }
 
     @SuppressWarnings("WeakerAccess")
-    public static Layer beltOfHillGiantStrength(final Surface layers) {
+    public static MagicItem beltOfHillGiantStrength(final Surface layers) {
         return beltOfGiantStrength(layers, "Hill", RARE, 21);
     }
 
     @SuppressWarnings("WeakerAccess")
-    public static Layer beltOfStoneGiantStrength(final Surface layers) {
+    public static MagicItem beltOfStoneGiantStrength(final Surface layers) {
         return beltOfGiantStrength(layers, "Stone", VERY_RARE, 23);
     }
 
     @SuppressWarnings("WeakerAccess")
-    public static Layer beltOfFrostGiantStrength(final Surface layers) {
+    public static MagicItem beltOfFrostGiantStrength(final Surface layers) {
         return beltOfGiantStrength(layers, "Frost", VERY_RARE, 23);
     }
 
     @SuppressWarnings("WeakerAccess")
-    public static Layer beltOfFireGiantStrength(final Surface layers) {
+    public static MagicItem beltOfFireGiantStrength(final Surface layers) {
         return beltOfGiantStrength(layers, "Fire", VERY_RARE, 25);
     }
 
     @SuppressWarnings("WeakerAccess")
-    public static Layer beltOfCloudGiantStrength(final Surface layers) {
+    public static MagicItem beltOfCloudGiantStrength(final Surface layers) {
         return beltOfGiantStrength(layers, "Cloud", LEGENDARY, 27);
     }
 
     @SuppressWarnings("WeakerAccess")
-    public static Layer beltOfStormGiantStrength(final Surface layers) {
+    public static MagicItem beltOfStormGiantStrength(final Surface layers) {
         return beltOfGiantStrength(layers, "Storm", LEGENDARY, 29);
     }
 
-    private static Layer beltOfGiantStrength(final Surface layers,
+    private static MagicItem beltOfGiantStrength(final Surface layers,
             final String giantKind, final Rarity rarity, final int strength) {
-        final Layer layer = new MagicItem(layers,
+        final MagicItem layer = new MagicItem(layers,
                 "Belt of " + giantKind + " Giant Strength",
                 "While wearing this belt, your Strength score changes to a "
                         + "score granted by the belt. If your Strength is "

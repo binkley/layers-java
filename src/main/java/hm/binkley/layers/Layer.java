@@ -75,7 +75,7 @@ public class Layer
         return this;
     }
 
-    public Layer blend(final LayerMaker that) {
+    public Layer blend(final LayerMaker<? extends Layer> that) {
         return blend(that.apply(layers));
     }
 
@@ -113,7 +113,7 @@ public class Layer
         return details;
     }
 
-    public Layer saveAndNext(final LayerMaker ctor) {
+    public <L extends Layer> L saveAndNext(final LayerMaker<L> ctor) {
         return layers.saveAndNext(this, ctor);
     }
 
