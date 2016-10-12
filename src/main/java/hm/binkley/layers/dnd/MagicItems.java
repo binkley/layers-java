@@ -1,11 +1,14 @@
 package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
+import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.Value;
 
 import java.util.Map;
 
+import static hm.binkley.layers.LayerSet.singleton;
+import static hm.binkley.layers.Value.ofValue;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.MagicItems.Attunement.ATTUNED;
@@ -30,13 +33,8 @@ public final class MagicItems {
                 final String description, final Type type,
                 final Rarity rarity, final Attunement attunement,
                 final String notes) {
-            super(layers, name);
-            final Map<Object, Object> details = details();
-            details.put("Description", description);
-            details.put(Type.class.getSimpleName(), type);
-            details.put(Rarity.class.getSimpleName(), rarity);
-            details.put(Attunement.class.getSimpleName(), attunement);
-            details.put("Notes", notes);
+            this(layers, name, description, type, rarity, attunement);
+            details().put("Notes", notes);
         }
 
         public MagicItem(final Surface layers, final String name,
@@ -45,9 +43,27 @@ public final class MagicItems {
             super(layers, name);
             final Map<Object, Object> details = details();
             details.put("Description", description);
-            details.put(Type.class.getSimpleName(), type);
-            details.put(Rarity.class.getSimpleName(), rarity);
-            details.put(Attunement.class.getSimpleName(), attunement);
+            details.put(Type.class, type);
+            details.put(Rarity.class, rarity);
+            details.put(Attunement.class, attunement);
+        }
+    }
+
+    /**
+     * @todo Subtype MagicItem for attuned/unattuned to move class cast
+     * exception to compile-time error
+     * @todo Update LayerMaker and Layers to return subtype of Layer
+     * @todo How to syntactically prevent attuning layer not yet saved?
+     */
+    public static class Attune
+            extends Layer {
+        public static LayerMaker attune(final MagicItem magicItem) {
+            return layers -> new Attune(layers, magicItem);
+        }
+
+        private Attune(final Surface layers, final MagicItem magicItem) {
+            super(layers, "Attune");
+            put(Attunement.class, ofValue(singleton(magicItem)));
         }
     }
 
@@ -116,8 +132,8 @@ public final class MagicItems {
         final Layer layer = new MagicItem(layers, "Amulet of Health",
                 "Your Constitution score is 19 while you wear this amulet. "
                         + "It has no effect on you if your Constitution is "
-                        + "already 19 or higher.",
-                WONDROUS_ITEM, RARE, ATTUNED);
+                        + "already 19 or higher.", WONDROUS_ITEM, RARE,
+                ATTUNED);
         layer.put(CON, Value.floor(CON, 19));
         return layer;
     }

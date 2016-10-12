@@ -3,12 +3,17 @@ package hm.binkley.layers.dnd;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
+import hm.binkley.layers.dnd.MagicItems.Attunement;
+import hm.binkley.layers.dnd.MagicItems.MagicItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static hm.binkley.layers.LayerSet.singleton;
 import static hm.binkley.layers.Layers.firstLayer;
+import static hm.binkley.layers.Value.ofValue;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
+import static hm.binkley.layers.dnd.MagicItems.Attune.attune;
 import static hm.binkley.layers.dnd.MagicItems.Attunement.ATTUNED;
 import static hm.binkley.layers.dnd.MagicItems.Attunement.UNATTUNED;
 import static hm.binkley.layers.dnd.MagicItems.Rarity.LEGENDARY;
@@ -17,7 +22,11 @@ import static hm.binkley.layers.dnd.MagicItems.Rarity.UNCOMMON;
 import static hm.binkley.layers.dnd.MagicItems.Rarity.VERY_RARE;
 import static hm.binkley.layers.dnd.MagicItems.Type.ARMOR;
 import static hm.binkley.layers.dnd.MagicItems.Type.WONDROUS_ITEM;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MagicItemsTest {
     private Layers layers;
@@ -129,5 +138,43 @@ class MagicItemsTest {
     @Test
     void shouldDisplayTypeForWonderousItem() {
         assertEquals("Wondrous Item", WONDROUS_ITEM.toString());
+    }
+
+    @Test
+    void shouldDisplayAttunementNicely() {
+        final Layer amuletOfHealth = firstLayer.
+                saveAndNext(MagicItems::amuletOfHealth);
+        final Layer attunement = amuletOfHealth.
+                saveAndNext(ScratchLayer::new).
+                put(Attunement.class, ofValue(singleton(amuletOfHealth)));
+        attunement.
+                saveAndNext(ScratchLayer::new);
+        final String display = attunement.toString();
+
+        assertAll(() -> assertTrue(display.contains(amuletOfHealth.name())),
+                () -> assertFalse(display.contains(
+                        amuletOfHealth.details().get("Description")
+                                .toString())));
+    }
+
+    @Test
+    void shouldLimitAttunementTo3Items() { // TODO: Distinct items
+        final Layer amuletOfHealth = firstLayer.
+                saveAndNext(MagicItems::amuletOfHealth);
+        final Layer beltOfHillGiantStrength = amuletOfHealth.
+                saveAndNext(attune((MagicItem) amuletOfHealth)).
+                saveAndNext(MagicItems::beltOfHillGiantStrength);
+        final Layer beltOfStoneGiantStrength = beltOfHillGiantStrength.
+                saveAndNext(attune((MagicItem) beltOfHillGiantStrength)).
+                saveAndNext(MagicItems::beltOfStoneGiantStrength);
+        final Layer beltOfFrostGiantStrength = beltOfStoneGiantStrength.
+                saveAndNext(attune((MagicItem) beltOfStoneGiantStrength)).
+                saveAndNext(MagicItems::beltOfFrostGiantStrength);
+        final Layer attuneBeltOfFrostGiantStrength = beltOfFrostGiantStrength.
+                saveAndNext(attune((MagicItem) beltOfFrostGiantStrength));
+
+        assertThrows(IllegalStateException.class,
+                () -> attuneBeltOfFrostGiantStrength
+                        .saveAndNext(ScratchLayer::new));
     }
 }

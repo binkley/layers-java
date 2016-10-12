@@ -14,6 +14,7 @@ import static hm.binkley.layers.dnd.Abilities.WIS;
 import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
 import static hm.binkley.layers.dnd.Characters.characterDescription;
+import static hm.binkley.layers.dnd.MagicItems.Attune.attune;
 import static hm.binkley.layers.dnd.Proficiencies.ACROBATICS;
 import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
 import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
@@ -32,17 +33,21 @@ public class LayersMain {
                 layers -> layersHolder[0] = layers);
         final Layers layers = layersHolder[0];
 
-        firstLayer.
+        final Layer beltOfHillGiantStrength = firstLayer.
                 saveAndNext(characterDescription("Bob")).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(humanVariant().withSTR().withDEX()).
                 saveAndNext(proficiencyBonus(ACROBATICS, 1)).
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
                 saveAndNext(doubleProficiency(ACROBATICS)).
-                saveAndNext(MagicItems::beltOfHillGiantStrength).
+                saveAndNext(MagicItems::beltOfHillGiantStrength);
+        final Layer amuletOfHealth = beltOfHillGiantStrength.
                 saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(abilityScoreIncrease(CON, WIS)).
-                saveAndNext(MagicItems::amuletOfHealth).
+                saveAndNext(MagicItems::amuletOfHealth);
+        amuletOfHealth.
+                saveAndNext(attune((MagicItem) beltOfHillGiantStrength)).
+                saveAndNext(attune((MagicItem) amuletOfHealth)).
                 saveAndNext(ScratchLayer::new);
 
         out.println(layers);

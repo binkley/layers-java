@@ -26,7 +26,7 @@ public class Layer
         implements LayerView {
     private final Map<Object, Value<?>> values = new LinkedHashMap<>();
     private final Map<Object, Object> details = new LinkedHashMap<>();
-    private final Surface layers;
+    protected final Surface layers;
     private final String name;
 
     @Override
