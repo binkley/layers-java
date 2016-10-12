@@ -118,6 +118,7 @@
                 <configuration>
                     <compilerArgs>
                         <arg>-Werror</arg>
+                        <arg>-Xdiags:verbose</arg>
                         <arg>-Xlint:all</arg>
                         <arg>-Xlint:-processing</arg>
                         <arg>-Xlint:-serial</arg>
