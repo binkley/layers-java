@@ -159,7 +159,7 @@ Error Prone with the latest version -->
                         <configuration>
                             <excludes>
                                 <exclude>*Test</exclude>
-                                <exclude>hm.binkley.layers.LayersMain
+                                <exclude>hm.binkley.layers.dnd.DndMain
                                 </exclude>
                             </excludes>
                         </configuration>
@@ -187,7 +187,7 @@ Error Prone with the latest version -->
                                     <excludes>
                                         <exclude>*Test</exclude>
                                         <exclude>
-                                            hm.binkley.layers.LayersMain
+                                            hm.binkley.layers.dnd.DndMain
                                         </exclude>
                                     </excludes>
                                     <limits>

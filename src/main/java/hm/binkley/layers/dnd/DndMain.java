@@ -1,11 +1,9 @@
-package hm.binkley.layers;
+package hm.binkley.layers.dnd;
 
-import hm.binkley.layers.dnd.Abilities;
-import hm.binkley.layers.dnd.BaseRule;
-import hm.binkley.layers.dnd.Characters;
-import hm.binkley.layers.dnd.MagicItems;
+import hm.binkley.layers.Layer;
+import hm.binkley.layers.Layers;
+import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.dnd.MagicItems.MagicItem;
-import hm.binkley.layers.dnd.Proficiencies;
 
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.CON;
@@ -25,7 +23,7 @@ import static java.lang.System.out;
  * @todo Annoying, cannot inline with {@link Layers} because Jacoco does not
  * support excluding methods, and #main blows up coverage
  */
-public class LayersMain {
+public class DndMain {
     public static void main(final String... args) {
         final Layers[] layersHolder = new Layers[1];
         final Layer firstLayer = firstLayer(BaseRule::baseRules,
@@ -47,8 +45,6 @@ public class LayersMain {
         amuletOfHealth.attuneAndNext(ScratchLayer::new);
         beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
 
-        out.println(layers);
-
         for (final Characters description : Characters.values())
             out.println(description + " = " + layers.get(description));
 
@@ -60,5 +56,7 @@ public class LayersMain {
 
         layers.view(layer -> layer instanceof MagicItem).
                 forEach(out::println);
+
+        out.println(layers);
     }
 }
