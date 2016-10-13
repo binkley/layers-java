@@ -7,11 +7,12 @@ import org.kohsuke.MetaInfServices;
 import static hm.binkley.layers.Value.sumAll;
 
 @MetaInfServices
-public final class BaseRuleAbilityScores
+public final class AbilitiesBaseRules
         implements BaseRule {
     @Override
     public Layer apply(final Layers.Surface layers) {
-        final Layer layer = new Layer(layers, "Base ability scores rules");
+        final Layer layer = new Layer(layers,
+                "Base rules for ability scores");
         for (final Abilities key : Abilities.values())
             layer.put(key, sumAll(key));
         return layer;

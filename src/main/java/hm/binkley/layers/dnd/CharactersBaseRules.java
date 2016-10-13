@@ -7,12 +7,12 @@ import org.kohsuke.MetaInfServices;
 import static hm.binkley.layers.Value.mostRecent;
 
 @MetaInfServices
-public final class BaseRuleCharacterDescription
+public final class CharactersBaseRules
         implements BaseRule {
     @Override
     public Layer apply(final Layers.Surface layers) {
         final Layer layer = new Layer(layers,
-                "Base character description rules");
+                "Base rules for character descriptions");
         for (final Characters key : Characters.values())
             layer.put(key, mostRecent(key, ""));
         return layer;

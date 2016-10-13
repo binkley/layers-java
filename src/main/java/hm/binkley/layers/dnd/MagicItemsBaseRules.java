@@ -15,11 +15,11 @@ import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toCollection;
 
 @MetaInfServices
-public final class BaseRuleMagicItems
+public final class MagicItemsBaseRules
         implements BaseRule {
     @Override
     public Layer apply(final Layers.Surface layers) {
-        final Layer layer = new Layer(layers, "Base magic items rules");
+        final Layer layer = new Layer(layers, "Base rules for magic items");
         layer.put(Attunement.class,
                 Value.ofBoth(emptySet(), new AttunementRule()));
         return layer;
