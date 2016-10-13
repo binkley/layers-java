@@ -159,22 +159,21 @@ class MagicItemsTest {
 
     @Test
     void shouldLimitAttunementTo3Items() { // TODO: Distinct items
-        final Layer amuletOfHealth = firstLayer.
+        final MagicItem amuletOfHealth = firstLayer.
                 saveAndNext(MagicItems::amuletOfHealth);
-        final Layer beltOfHillGiantStrength = amuletOfHealth.
-                saveAndNext(attune((MagicItem) amuletOfHealth)).
+        final MagicItem beltOfHillGiantStrength = amuletOfHealth.
+                saveAndNext(attune(amuletOfHealth)).
                 saveAndNext(MagicItems::beltOfHillGiantStrength);
-        final Layer beltOfStoneGiantStrength = beltOfHillGiantStrength.
-                saveAndNext(attune((MagicItem) beltOfHillGiantStrength)).
+        final MagicItem beltOfStoneGiantStrength = beltOfHillGiantStrength.
                 saveAndNext(MagicItems::beltOfStoneGiantStrength);
-        final Layer beltOfFrostGiantStrength = beltOfStoneGiantStrength.
-                saveAndNext(attune((MagicItem) beltOfStoneGiantStrength)).
+        final MagicItem beltOfFrostGiantStrength = beltOfStoneGiantStrength.
                 saveAndNext(MagicItems::beltOfFrostGiantStrength);
-        final Layer attuneBeltOfFrostGiantStrength = beltOfFrostGiantStrength.
-                saveAndNext(attune((MagicItem) beltOfFrostGiantStrength));
+
+        beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
+        beltOfStoneGiantStrength.attuneAndNext(ScratchLayer::new);
 
         assertThrows(IllegalStateException.class,
-                () -> attuneBeltOfFrostGiantStrength
-                        .saveAndNext(ScratchLayer::new));
+                () -> beltOfFrostGiantStrength
+                        .attuneAndNext(ScratchLayer::new));
     }
 }

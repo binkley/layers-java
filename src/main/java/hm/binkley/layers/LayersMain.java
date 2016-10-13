@@ -44,8 +44,8 @@ public class LayersMain {
                 saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(abilityScoreIncrease(CON, WIS)).
                 saveAndNext(MagicItems::amuletOfHealth);
-        amuletOfHealth.attune(ScratchLayer::new);
-        beltOfHillGiantStrength.attune(ScratchLayer::new);
+        amuletOfHealth.attuneAndNext(ScratchLayer::new);
+        beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
 
         out.println(layers);
 

@@ -48,7 +48,7 @@ public final class MagicItems {
             details.put(Attunement.class, attunement);
         }
 
-        public <L extends Layer> L attune(final LayerMaker<L> next) {
+        public <L extends Layer> L attuneAndNext(final LayerMaker<L> next) {
             return layers
                     .saveAndNext(new MagicItems.Attune(layers, this), next);
         }
@@ -62,8 +62,8 @@ public final class MagicItems {
      */
     public static class Attune
             extends Layer {
-        public static LayerMaker<Attune> attune(final MagicItem magicItem) {
-            return layers -> new Attune(layers, magicItem);
+        public static LayerMaker<Attune> attune(final MagicItem layer) {
+            return layers -> new Attune(layers, layer);
         }
 
         private Attune(final Surface layers, final MagicItem magicItem) {
