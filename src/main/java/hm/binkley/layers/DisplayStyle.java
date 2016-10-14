@@ -22,8 +22,11 @@ public enum DisplayStyle {
     public final String display(final Map<Object, ?> map) {
         final Function<Map.Entry<Object, ?>, String> display = e -> {
             final Object key = e.getKey();
+            final Object value = e.getValue();
+            final String v = value instanceof String ? ("\"" + value + '"')
+                    : value.toString();
             return (key instanceof Class ? ((Class) key).getSimpleName()
-                    : key) + "=" + e.getValue();
+                    : key) + "=" + v;
         };
         return map.entrySet().stream().
                 map(display).

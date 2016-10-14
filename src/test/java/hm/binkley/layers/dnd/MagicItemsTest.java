@@ -168,7 +168,7 @@ class MagicItemsTest {
                 saveAndNext(MagicItems::beltOfHillGiantStrength);
         final MagicItem beltOfStoneGiantStrength = beltOfHillGiantStrength.
                 saveAndNext(MagicItems::beltOfStoneGiantStrength);
-        final MagicItem beltOfFrostGiantStrength = beltOfStoneGiantStrength.
+        beltOfStoneGiantStrength.
                 saveAndNext(MagicItems::beltOfFrostGiantStrength);
 
         beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
