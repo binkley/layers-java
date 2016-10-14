@@ -49,8 +49,7 @@ public final class MagicItems {
         }
 
         public <L extends Layer> L attuneAndNext(final LayerMaker<L> next) {
-            return layers
-                    .saveAndNext(new MagicItems.Attune(layers, this), next);
+            return layers.saveAndNext(new Attune(layers, this), next);
         }
     }
 

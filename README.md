@@ -9,8 +9,7 @@ D&amp;D 5e is an example problem domain.  The rules are sufficiently complex to 
 
 ## `Layer`
 
-Scratch key-value map, added to the owning layers with `accept()`, or
-discarded with `reject()`.
+Scratch key-value map, added to the owning layers with `saveAndNext()`.
 
 ## Rules
 

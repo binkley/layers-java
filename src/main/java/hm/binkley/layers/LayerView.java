@@ -22,6 +22,4 @@ public interface LayerView {
     Map<Object, Object> toMap(); // TODO: Unmodifiable
 
     Map<Object, Object> details(); // TODO: Unmodifiable
-
-    void discard();
 }

@@ -117,13 +117,6 @@ public class Layer
         return layers.saveAndNext(this, ctor);
     }
 
-    /** @todo Rethink #discard on Layer: only makes sense if saved */
-    @Override
-    @SuppressWarnings("WeakerAccess")
-    public void discard() {
-        layers.discard(this);
-    }
-
     @SuppressWarnings("WeakerAccess")
     public LayerView view() {
         return this;

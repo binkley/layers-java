@@ -3,6 +3,7 @@ package hm.binkley.layers;
 import hm.binkley.layers.dnd.BaseRule;
 import hm.binkley.layers.dnd.MagicItems;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -121,20 +122,6 @@ class LayersTest {
     }
 
     @Test
-    void shouldDiscardThroughLayer() {
-        firstLayer.discard();
-
-        assertEquals(0, layers.view().count());
-    }
-
-    @Test
-    void shouldDiscardThroughLayerView() {
-        firstLayer.view().discard();
-
-        assertEquals(0, layers.view().count());
-    }
-
-    @Test
     void shouldHaveWhatIfWithLayer() {
         firstLayer.
                 put("BOB", ofBoth(32, mostRecent("BOB")));
@@ -219,6 +206,7 @@ class LayersTest {
     }
 
     @Test
+    @Disabled("Pending issue #9")
     void shouldHaveNetStrengthAfterRemovingBelt() {
         final Layer girdle = firstLayer.
                 saveAndNext(BaseRule::baseRules).
@@ -227,7 +215,6 @@ class LayersTest {
                 saveAndNext(MagicItems::beltOfFrostGiantStrength);
         girdle.saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(ScratchLayer::new);
-        girdle.discard();
 
         assertEquals((Integer) 11, layers.get(STR));
     }

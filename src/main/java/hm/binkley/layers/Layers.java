@@ -116,11 +116,6 @@ public final class Layers {
             return next.apply(this);
         }
 
-        public void discard(final Layer discard) {
-            layers.remove(discard);
-            updateCache();
-        }
-
         public Layers whatIfWith(final Layer layer) {
             return Layers.this.whatIfWith(layer);
         }
