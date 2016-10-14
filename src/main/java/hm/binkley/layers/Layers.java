@@ -27,14 +27,19 @@ public final class Layers {
 
     /** @todo Should update for one key, not all? */
     private void updateCache() {
-        cache.clear();
+        // TODO: Test to show compute-then-update works
+        // This ensures 1) rules see a complete cache, not partially updated
+        // 2) rules relying on other values work against prior cache
+        final Map<Object, Object> updated = new LinkedHashMap<>();
         layers.forEach(layer -> layer.keys().forEach(key -> {
             final Value<Object> value = layer.get(key);
             value.rule().
                     map(rule -> value.apply(this, layer)).
-                    map(result -> cache.putIfAbsent(key, result)).
+                    map(result -> updated.putIfAbsent(key, result)).
                     isPresent();
         }));
+        cache.clear();
+        cache.putAll(updated);
     }
 
     public static <L extends Layer> L firstLayer(final LayerMaker<L> ctor,
