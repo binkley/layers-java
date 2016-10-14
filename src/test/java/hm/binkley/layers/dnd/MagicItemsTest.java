@@ -8,6 +8,8 @@ import hm.binkley.layers.dnd.MagicItems.MagicItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 import static hm.binkley.layers.LayerSet.singleton;
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.Value.ofValue;
@@ -155,6 +157,24 @@ class MagicItemsTest {
                 () -> assertFalse(display.contains(
                         amuletOfHealth.details().get("Description")
                                 .toString())));
+    }
+
+    @Test
+    void shouldBeAbleToAttune3Items() { // TODO: Distinct items
+        final MagicItem amuletOfHealth = firstLayer.
+                saveAndNext(MagicItems::amuletOfHealth);
+        final MagicItem beltOfHillGiantStrength = amuletOfHealth.
+                saveAndNext(attune(amuletOfHealth)).
+                saveAndNext(MagicItems::beltOfHillGiantStrength);
+        final MagicItem beltOfStoneGiantStrength = beltOfHillGiantStrength.
+                saveAndNext(MagicItems::beltOfStoneGiantStrength);
+        final MagicItem beltOfFrostGiantStrength = beltOfStoneGiantStrength.
+                saveAndNext(MagicItems::beltOfFrostGiantStrength);
+
+        beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
+        beltOfStoneGiantStrength.attuneAndNext(ScratchLayer::new);
+
+        assertEquals(3, layers.<Set<Layer>>get(Attunement.class).size());
     }
 
     @Test
