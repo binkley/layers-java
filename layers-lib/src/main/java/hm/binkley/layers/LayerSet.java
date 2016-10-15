@@ -11,6 +11,10 @@ public class LayerSet
         extends LinkedHashSet<Layer> {
     private final int max;
 
+    public static LayerSet empty() {
+        return new LayerSet(0);
+    }
+
     public static LayerSet singleton(final Layer layer) {
         final LayerSet set = new LayerSet(1);
         set.add(layer);
