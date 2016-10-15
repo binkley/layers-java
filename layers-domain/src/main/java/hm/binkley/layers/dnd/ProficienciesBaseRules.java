@@ -5,7 +5,7 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import org.kohsuke.MetaInfServices;
 
-import static hm.binkley.layers.Value.sumAll;
+import static hm.binkley.layers.values.Value.sumAll;
 
 @MetaInfServices
 public final class ProficienciesBaseRules

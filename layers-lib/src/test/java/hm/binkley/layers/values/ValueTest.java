@@ -1,5 +1,8 @@
-package hm.binkley.layers;
+package hm.binkley.layers.values;
 
+import hm.binkley.layers.Layer;
+import hm.binkley.layers.Layers;
+import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.rules.Rule;
 import org.junit.jupiter.api.Test;
 
@@ -7,9 +10,9 @@ import java.util.Objects;
 
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.rules.Rule.doubling;
-import static hm.binkley.layers.Value.ofBoth;
-import static hm.binkley.layers.Value.ofRule;
-import static hm.binkley.layers.Value.ofValue;
+import static hm.binkley.layers.values.Value.ofBoth;
+import static hm.binkley.layers.values.Value.ofRule;
+import static hm.binkley.layers.values.Value.ofValue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -43,7 +46,8 @@ class ValueTest {
     @Test
     void shouldYellWhenApplyingValueOnly() {
         final Layers[] layersHolder = new Layers[1];
-        final Layer layer = firstLayer(ScratchLayer::new, layers -> layersHolder[0] = layers);
+        final Layer layer = firstLayer(ScratchLayer::new,
+                layers -> layersHolder[0] = layers);
 
         assertThrows(NullPointerException.class,
                 () -> ofValue(3).apply(layersHolder[0], layer));

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static hm.binkley.layers.Value.ofValue;
-import static hm.binkley.layers.Value.sumAll;
+import static hm.binkley.layers.values.Value.ofValue;
+import static hm.binkley.layers.values.Value.sumAll;
 import static java.util.Collections.unmodifiableList;
 
 public class Numbers

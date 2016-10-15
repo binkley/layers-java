@@ -6,7 +6,7 @@ import hm.binkley.layers.dnd.MagicItems.Attunement;
 import hm.binkley.layers.rules.BaseRule;
 import org.kohsuke.MetaInfServices;
 
-import static hm.binkley.layers.Value.ofBoth;
+import static hm.binkley.layers.values.Value.ofBoth;
 import static hm.binkley.layers.rules.Rule.layerSet;
 import static java.util.Collections.emptySet;
 

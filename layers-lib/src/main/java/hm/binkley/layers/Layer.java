@@ -1,6 +1,7 @@
 package hm.binkley.layers;
 
 import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.values.Value;
 import lombok.RequiredArgsConstructor;
 
 import java.util.AbstractMap.SimpleImmutableEntry;

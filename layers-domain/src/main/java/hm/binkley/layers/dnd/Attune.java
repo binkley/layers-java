@@ -6,7 +6,7 @@ import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.dnd.MagicItems.Attunement;
 
 import static hm.binkley.layers.DisplayStyle.BRACES;
-import static hm.binkley.layers.Value.ofValue;
+import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.singleton;
 
 public class Attune

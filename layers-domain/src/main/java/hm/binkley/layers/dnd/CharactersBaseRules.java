@@ -5,7 +5,7 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import org.kohsuke.MetaInfServices;
 
-import static hm.binkley.layers.Value.mostRecent;
+import static hm.binkley.layers.values.Value.mostRecent;
 
 @MetaInfServices
 public final class CharactersBaseRules

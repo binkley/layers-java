@@ -7,8 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.Value.ofRule;
-import static hm.binkley.layers.Value.ofValue;
+import static hm.binkley.layers.values.Value.ofRule;
+import static hm.binkley.layers.values.Value.ofValue;
 import static hm.binkley.layers.rules.Rule.doubling;
 import static hm.binkley.layers.rules.Rule.sumAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;

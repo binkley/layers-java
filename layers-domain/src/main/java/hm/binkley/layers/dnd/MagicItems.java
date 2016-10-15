@@ -1,7 +1,7 @@
 package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layers.Surface;
-import hm.binkley.layers.Value;
+import hm.binkley.layers.values.Value;
 
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;

@@ -4,7 +4,7 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.Surface;
 
-import static hm.binkley.layers.Value.ofValue;
+import static hm.binkley.layers.values.Value.ofValue;
 import static hm.binkley.layers.dnd.Abilities.CHA;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.DEX;

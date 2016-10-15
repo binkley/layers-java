@@ -2,14 +2,14 @@ package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
-import hm.binkley.layers.Value;
+import hm.binkley.layers.values.Value;
 import hm.binkley.layers.XEnum;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static hm.binkley.layers.Value.ofValue;
+import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.unmodifiableList;
 
 public class Proficiencies

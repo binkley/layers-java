@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Set;
 
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.Value.ofValue;
+import static hm.binkley.layers.values.Value.ofValue;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.Attune.attune;
