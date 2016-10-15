@@ -1,10 +1,9 @@
 package hm.binkley.layers.dnd;
 
-import hm.binkley.layers.BaseRule;
+import hm.binkley.layers.rules.BaseRule;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
-import hm.binkley.layers.dnd.MagicItems.MagicItem;
 
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.CON;

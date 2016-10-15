@@ -1,5 +1,6 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.rules.BaseRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,8 +9,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.Rule.mostRecent;
-import static hm.binkley.layers.Rule.sumAll;
+import static hm.binkley.layers.Numbers.FIRST;
+import static hm.binkley.layers.Numbers.numbers;
+import static hm.binkley.layers.rules.Rule.mostRecent;
+import static hm.binkley.layers.rules.Rule.sumAll;
 import static hm.binkley.layers.Texts.NAME;
 import static hm.binkley.layers.Texts.texts;
 import static hm.binkley.layers.Value.ofBoth;
@@ -77,7 +80,7 @@ class LayersTest {
     @Test
     void shouldHaveKeys() {
         firstLayer.
-                put("FOO", ofBoth(3, Rule.sumAll("FOO"))).
+                put("FOO", ofBoth(3, sumAll("FOO"))).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals(singleton("FOO"), layers.keys());
@@ -144,13 +147,23 @@ class LayersTest {
     }
 
     @Test
-    void shouldHaveMostRecentName() {
+    void shouldHaveMostRecentTexts() {
         assertEquals("Nancy", firstLayer.
                 saveAndNext(BaseRule::baseRules).
                 saveAndNext(texts("Bob")).
                 saveAndNext(texts("Nancy")).
                 whatIfWith().
                 get(NAME));
+    }
+
+    @Test
+    void shouldHaveSumAllNumbers() {
+        assertEquals((Integer) 3, firstLayer.
+                saveAndNext(BaseRule::baseRules).
+                saveAndNext(numbers(1, 2)).
+                saveAndNext(numbers(2, 0)).
+                whatIfWith().
+                get(FIRST));
     }
 
     /** @todo Silly jacoco does not support excluding methods */

@@ -1,22 +1,20 @@
 package hm.binkley.layers.dnd;
 
-import hm.binkley.layers.BaseRule;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.dnd.MagicItems.Attunement;
-import hm.binkley.layers.dnd.MagicItems.MagicItem;
+import hm.binkley.layers.rules.BaseRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static hm.binkley.layers.LayerSet.singleton;
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.Value.ofValue;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
-import static hm.binkley.layers.dnd.MagicItems.Attune.attune;
+import static hm.binkley.layers.dnd.Attune.attune;
 import static hm.binkley.layers.dnd.MagicItems.Attunement.ATTUNED;
 import static hm.binkley.layers.dnd.MagicItems.Attunement.UNATTUNED;
 import static hm.binkley.layers.dnd.MagicItems.Rarity.LEGENDARY;
@@ -25,7 +23,7 @@ import static hm.binkley.layers.dnd.MagicItems.Rarity.UNCOMMON;
 import static hm.binkley.layers.dnd.MagicItems.Rarity.VERY_RARE;
 import static hm.binkley.layers.dnd.MagicItems.Type.ARMOR;
 import static hm.binkley.layers.dnd.MagicItems.Type.WONDROUS_ITEM;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static hm.binkley.layers.LayerSet.singleton;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -144,7 +142,7 @@ class MagicItemsTest {
     }
 
     @Test
-    void shouldDisplayAttunementNicely() {
+    void shouldDisplayAttunementBriefly() {
         final Layer amuletOfHealth = firstLayer.
                 saveAndNext(MagicItems::amuletOfHealth);
         final Layer attunement = amuletOfHealth.
@@ -154,10 +152,22 @@ class MagicItemsTest {
                 saveAndNext(ScratchLayer::new);
         final String display = attunement.toString();
 
-        assertAll(() -> assertTrue(display.contains(amuletOfHealth.name())),
-                () -> assertFalse(display.contains(
-                        amuletOfHealth.details().get("Description")
-                                .toString())));
+        assertTrue(display.contains(amuletOfHealth.name()));
+    }
+
+    @Test
+    void shouldNotDisplayAttunementVerbosely() {
+        final Layer amuletOfHealth = firstLayer.
+                saveAndNext(MagicItems::amuletOfHealth);
+        final Layer attunement = amuletOfHealth.
+                saveAndNext(ScratchLayer::new).
+                put(Attunement.class, ofValue(singleton(amuletOfHealth)));
+        attunement.
+                saveAndNext(ScratchLayer::new);
+        final String display = attunement.toString();
+
+        assertFalse(display.contains(
+                amuletOfHealth.details().get("Description").toString()));
     }
 
     @Test

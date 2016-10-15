@@ -123,7 +123,7 @@ public class Layer
     }
 
     @Override
-    public final String toString() {
+    public String toString() {
         final String toString = name + ": " + BRACES.display(values);
 
         if (details.isEmpty())

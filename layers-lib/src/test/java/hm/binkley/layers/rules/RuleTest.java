@@ -1,6 +1,7 @@
-package hm.binkley.layers;
+package hm.binkley.layers.rules;
 
-import hm.binkley.layers.Rule.KeyRule;
+import hm.binkley.layers.Layer;
+import hm.binkley.layers.Layers;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

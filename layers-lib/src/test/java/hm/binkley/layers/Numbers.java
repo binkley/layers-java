@@ -1,5 +1,6 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.rules.BaseRule;
 import org.kohsuke.MetaInfServices;
 
 import java.util.ArrayList;

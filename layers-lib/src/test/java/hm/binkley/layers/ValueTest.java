@@ -1,11 +1,12 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.rules.Rule;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
 
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.Rule.doubling;
+import static hm.binkley.layers.rules.Rule.doubling;
 import static hm.binkley.layers.Value.ofBoth;
 import static hm.binkley.layers.Value.ofRule;
 import static hm.binkley.layers.Value.ofValue;

@@ -1,5 +1,6 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.rules.Rule;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,7 @@
-package hm.binkley.layers;
+package hm.binkley.layers.rules;
+
+import hm.binkley.layers.Layer;
+import hm.binkley.layers.Layers;
 
 @FunctionalInterface
 public interface RuleFunction<T> {
