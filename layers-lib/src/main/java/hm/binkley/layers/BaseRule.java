@@ -1,8 +1,4 @@
-package hm.binkley.layers.dnd;
-
-import hm.binkley.layers.Layer;
-import hm.binkley.layers.LayerMaker;
-import hm.binkley.layers.Layers;
+package hm.binkley.layers;
 
 import static java.util.ServiceLoader.load;
 

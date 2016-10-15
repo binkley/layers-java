@@ -1,5 +1,6 @@
 package hm.binkley.layers.dnd;
 
+import hm.binkley.layers.BaseRule;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerSet;
 import hm.binkley.layers.Layers;

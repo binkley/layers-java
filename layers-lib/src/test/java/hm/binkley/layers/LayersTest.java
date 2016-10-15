@@ -1,9 +1,6 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.dnd.BaseRule;
-import hm.binkley.layers.dnd.MagicItems;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -13,14 +10,11 @@ import java.util.Map.Entry;
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.Rule.mostRecent;
 import static hm.binkley.layers.Rule.sumAll;
+import static hm.binkley.layers.Texts.NAME;
+import static hm.binkley.layers.Texts.texts;
 import static hm.binkley.layers.Value.ofBoth;
 import static hm.binkley.layers.Value.ofRule;
 import static hm.binkley.layers.Value.ofValue;
-import static hm.binkley.layers.dnd.Abilities.STR;
-import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
-import static hm.binkley.layers.dnd.Abilities.abilityScores;
-import static hm.binkley.layers.dnd.Characters.NAME;
-import static hm.binkley.layers.dnd.Characters.characterDescription;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
@@ -83,7 +77,7 @@ class LayersTest {
     @Test
     void shouldHaveKeys() {
         firstLayer.
-                put("FOO", ofBoth(3, sumAll("FOO"))).
+                put("FOO", ofBoth(3, Rule.sumAll("FOO"))).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals(singleton("FOO"), layers.keys());
@@ -150,81 +144,11 @@ class LayersTest {
     }
 
     @Test
-    void shouldHaveNetStrengthIfBeltNotBetter() {
-        firstLayer.
-                saveAndNext(BaseRule::baseRules).
-                saveAndNext(abilityScores(23, 8, 8, 8, 8, 8)).
-                saveAndNext(MagicItems::beltOfHillGiantStrength).
-                saveAndNext(ScratchLayer::new);
-
-        assertEquals((Integer) 23, layers.get(STR));
-    }
-
-    @Test
-    void shouldHaveNoStrengthBeforeAddingScores() {
-        firstLayer.
-                saveAndNext(BaseRule::baseRules).
-                saveAndNext(ScratchLayer::new);
-
-        assertEquals((Integer) 0, layers.get(STR));
-    }
-
-    @Test
-    void shouldHaveNetStrengthAfterGainingAbility() {
-        firstLayer.
-                saveAndNext(BaseRule::baseRules).
-                saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
-                saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(ScratchLayer::new);
-
-        assertEquals((Integer) 9, layers.get(STR));
-    }
-
-    @Test
-    void shouldHaveStrengthOfBelt() {
-        firstLayer.
-                saveAndNext(BaseRule::baseRules).
-                saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
-                saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(MagicItems::beltOfHillGiantStrength).
-                saveAndNext(ScratchLayer::new);
-
-        assertEquals((Integer) 21, layers.get(STR));
-    }
-
-    @Test
-    void shouldHaveStrengthOfBeltAfterGainingAbility() {
-        firstLayer.
-                saveAndNext(BaseRule::baseRules).
-                saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
-                saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(MagicItems::beltOfStoneGiantStrength).
-                saveAndNext(abilityScoreIncrease(STR)).
-                saveAndNext(ScratchLayer::new);
-
-        assertEquals((Integer) 23, layers.get(STR));
-    }
-
-    @Test
-    @Disabled("Pending issue #9")
-    void shouldHaveNetStrengthAfterRemovingBelt() {
-        final Layer girdle = firstLayer.
-                saveAndNext(BaseRule::baseRules).
-                saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
-                saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(MagicItems::beltOfFrostGiantStrength);
-        girdle.saveAndNext(abilityScoreIncrease(STR)).
-                saveAndNext(ScratchLayer::new);
-
-        assertEquals((Integer) 11, layers.get(STR));
-    }
-
-    @Test
     void shouldHaveMostRecentName() {
         assertEquals("Nancy", firstLayer.
                 saveAndNext(BaseRule::baseRules).
-                saveAndNext(characterDescription("Bob")).
-                saveAndNext(characterDescription("Nancy")).
+                saveAndNext(texts("Bob")).
+                saveAndNext(texts("Nancy")).
                 whatIfWith().
                 get(NAME));
     }

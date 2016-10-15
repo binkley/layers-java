@@ -1,20 +1,21 @@
 package hm.binkley.layers.dnd;
 
+import hm.binkley.layers.BaseRule;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import org.kohsuke.MetaInfServices;
 
-import static hm.binkley.layers.Value.mostRecent;
+import static hm.binkley.layers.Value.sumAll;
 
 @MetaInfServices
-public final class CharactersBaseRules
+public final class AbilitiesBaseRules
         implements BaseRule {
     @Override
     public Layer apply(final Layers.Surface layers) {
         final Layer layer = new Layer(layers,
-                "Base rules for character descriptions");
-        for (final Characters key : Characters.values())
-            layer.put(key, mostRecent(key, ""));
+                "Base rules for ability scores");
+        for (final Abilities key : Abilities.values())
+            layer.put(key, sumAll(key));
         return layer;
     }
 }
