@@ -9,11 +9,13 @@ import org.junit.jupiter.api.Test;
 import java.util.Objects;
 
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.rules.Rule.doubling;
+import static hm.binkley.layers.values.Value.doubling;
 import static hm.binkley.layers.values.Value.floor;
+import static hm.binkley.layers.values.Value.mostRecent;
 import static hm.binkley.layers.values.Value.ofBoth;
 import static hm.binkley.layers.values.Value.ofRule;
 import static hm.binkley.layers.values.Value.ofValue;
+import static hm.binkley.layers.values.Value.sumAll;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -27,19 +29,20 @@ class ValueTest {
 
     @Test
     void shouldHaveRuleForOfRule() {
-        final Rule<Integer> rule = doubling(null);
+        final Rule<Integer> rule = Rule.doubling(null);
 
         assertEquals(rule, ofRule(rule).rule().get());
     }
 
     @Test
     void shouldHaveValueForOfBoth() {
-        assertEquals((Integer) 3, ofBoth(3, doubling(null)).value().get());
+        assertEquals((Integer) 3,
+                ofBoth(3, Rule.doubling(null)).value().get());
     }
 
     @Test
     void shouldHaveRuleForOfBoth() {
-        final Rule<Integer> rule = doubling(null);
+        final Rule<Integer> rule = Rule.doubling(null);
 
         assertEquals(rule, ofBoth(3, rule).rule().get());
     }
@@ -61,12 +64,14 @@ class ValueTest {
 
     @Test
     void shouldEqualsAllInstancesForRuleOnly() {
-        assertEquals(ofRule(doubling("BOB")), ofRule(doubling("BOB")));
+        assertEquals(ofRule(Rule.doubling("BOB")),
+                ofRule(Rule.doubling("BOB")));
     }
 
     @Test
     void shouldEqualsAllInstancesForBoth() {
-        assertEquals(ofBoth(3, doubling("BOB")), ofBoth(3, doubling("BOB")));
+        assertEquals(ofBoth(3, Rule.doubling("BOB")),
+                ofBoth(3, Rule.doubling("BOB")));
     }
 
     @Test
@@ -76,14 +81,14 @@ class ValueTest {
 
     @Test
     void shouldHashCodeSameAllInstancesForRuleOnly() {
-        assertEquals(ofRule(doubling("BOB")).hashCode(),
-                ofRule(doubling("BOB")).hashCode());
+        assertEquals(ofRule(Rule.doubling("BOB")).hashCode(),
+                ofRule(Rule.doubling("BOB")).hashCode());
     }
 
     @Test
     void shouldHashCodeSameAllInstancesForBoth() {
-        assertEquals(ofBoth(3, doubling("BOB")).hashCode(),
-                ofBoth(3, doubling("BOB")).hashCode());
+        assertEquals(ofBoth(3, Rule.doubling("BOB")).hashCode(),
+                ofBoth(3, Rule.doubling("BOB")).hashCode());
     }
 
     /**
@@ -101,7 +106,7 @@ class ValueTest {
      */
     @Test
     void shouldHaveToStringForRuleOnly() {
-        final Rule<Integer> rule = doubling(null);
+        final Rule<Integer> rule = Rule.doubling(null);
 
         assertTrue(ofRule(rule).toString().contains(rule.toString()));
     }
@@ -112,7 +117,7 @@ class ValueTest {
      */
     @Test
     void shouldHaveToStringForBoth() {
-        final Rule<Integer> rule = doubling(null);
+        final Rule<Integer> rule = Rule.doubling(null);
         final String valueString = Objects.toString(3);
         final String ruleString = rule.toString();
 
@@ -120,6 +125,27 @@ class ValueTest {
 
         assertAll(() -> assertTrue(both.toString().contains(valueString)),
                 () -> assertTrue(both.toString().contains(ruleString)));
+    }
+
+    @Test
+    void shouldHaveToStringForMostRecent() {
+        final String display = mostRecent("A", "xxx").toString();
+
+        assertTrue(display.contains("Most recent"));
+    }
+
+    @Test
+    void shouldHaveToStringForSumAll() {
+        final String display = sumAll("A").toString();
+
+        assertTrue(display.contains("Sum all"));
+    }
+
+    @Test
+    void shouldHaveToStringForDoubling() {
+        final String display = doubling("A").toString();
+
+        assertTrue(display.contains("Doubling"));
     }
 
     @Test
