@@ -1,9 +1,9 @@
-package hm.binkley.layers.dnd;
+package hm.binkley.layers.dnd.magic;
 
-import hm.binkley.layers.rules.BaseRule;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
+import hm.binkley.layers.rules.BaseRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FixMeUpTest {
+class GiantGirdleTest {
     private Layers layers;
     private Layer firstLayer;
 

@@ -1,5 +1,7 @@
 package hm.binkley.layers.dnd;
 
+import hm.binkley.layers.dnd.magic.MagicItem;
+import hm.binkley.layers.dnd.magic.MagicItems;
 import hm.binkley.layers.rules.BaseRule;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;

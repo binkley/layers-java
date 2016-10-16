@@ -1,9 +1,9 @@
-package hm.binkley.layers.dnd;
+package hm.binkley.layers.dnd.magic;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.Surface;
-import hm.binkley.layers.dnd.MagicItems.Attunement;
+import hm.binkley.layers.dnd.magic.MagicItems.Attunement;
 
 import static hm.binkley.layers.DisplayStyle.BRACES;
 import static hm.binkley.layers.values.Value.ofValue;

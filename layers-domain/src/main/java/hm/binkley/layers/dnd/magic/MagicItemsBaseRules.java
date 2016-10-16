@@ -1,8 +1,8 @@
-package hm.binkley.layers.dnd;
+package hm.binkley.layers.dnd.magic;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
-import hm.binkley.layers.dnd.MagicItems.Attunement;
+import hm.binkley.layers.dnd.magic.MagicItems.Attunement;
 import hm.binkley.layers.rules.BaseRule;
 import org.kohsuke.MetaInfServices;
 

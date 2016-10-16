@@ -1,18 +1,18 @@
-package hm.binkley.layers.dnd;
+package hm.binkley.layers.dnd.magic;
 
 import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.values.Value;
 
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
-import static hm.binkley.layers.dnd.MagicItems.Attunement.ATTUNED;
-import static hm.binkley.layers.dnd.MagicItems.Attunement.UNATTUNED;
-import static hm.binkley.layers.dnd.MagicItems.Rarity.LEGENDARY;
-import static hm.binkley.layers.dnd.MagicItems.Rarity.RARE;
-import static hm.binkley.layers.dnd.MagicItems.Rarity.UNCOMMON;
-import static hm.binkley.layers.dnd.MagicItems.Rarity.VERY_RARE;
-import static hm.binkley.layers.dnd.MagicItems.Type.ARMOR;
-import static hm.binkley.layers.dnd.MagicItems.Type.WONDROUS_ITEM;
+import static hm.binkley.layers.dnd.magic.MagicItems.Attunement.ATTUNED;
+import static hm.binkley.layers.dnd.magic.MagicItems.Attunement.UNATTUNED;
+import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.LEGENDARY;
+import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.RARE;
+import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.UNCOMMON;
+import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.VERY_RARE;
+import static hm.binkley.layers.dnd.magic.MagicItems.Type.ARMOR;
+import static hm.binkley.layers.dnd.magic.MagicItems.Type.WONDROUS_ITEM;
 
 /**
  * @todo Does description belong in {@code Layer}?

@@ -1,29 +1,29 @@
-package hm.binkley.layers.dnd;
+package hm.binkley.layers.dnd.magic;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
-import hm.binkley.layers.dnd.MagicItems.Attunement;
+import hm.binkley.layers.dnd.magic.MagicItems.Attunement;
 import hm.binkley.layers.rules.BaseRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
+import static hm.binkley.layers.LayerSet.singleton;
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.values.Value.ofValue;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
-import static hm.binkley.layers.dnd.Attune.attune;
-import static hm.binkley.layers.dnd.MagicItems.Attunement.ATTUNED;
-import static hm.binkley.layers.dnd.MagicItems.Attunement.UNATTUNED;
-import static hm.binkley.layers.dnd.MagicItems.Rarity.LEGENDARY;
-import static hm.binkley.layers.dnd.MagicItems.Rarity.RARE;
-import static hm.binkley.layers.dnd.MagicItems.Rarity.UNCOMMON;
-import static hm.binkley.layers.dnd.MagicItems.Rarity.VERY_RARE;
-import static hm.binkley.layers.dnd.MagicItems.Type.ARMOR;
-import static hm.binkley.layers.dnd.MagicItems.Type.WONDROUS_ITEM;
-import static hm.binkley.layers.LayerSet.singleton;
+import static hm.binkley.layers.dnd.magic.Attune.attune;
+import static hm.binkley.layers.dnd.magic.MagicItems.Attunement.ATTUNED;
+import static hm.binkley.layers.dnd.magic.MagicItems.Attunement.UNATTUNED;
+import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.LEGENDARY;
+import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.RARE;
+import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.UNCOMMON;
+import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.VERY_RARE;
+import static hm.binkley.layers.dnd.magic.MagicItems.Type.ARMOR;
+import static hm.binkley.layers.dnd.magic.MagicItems.Type.WONDROUS_ITEM;
+import static hm.binkley.layers.values.Value.ofValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
