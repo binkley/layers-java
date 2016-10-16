@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.rules.Rule.doubling;
+import static hm.binkley.layers.values.Value.floor;
 import static hm.binkley.layers.values.Value.ofBoth;
 import static hm.binkley.layers.values.Value.ofRule;
 import static hm.binkley.layers.values.Value.ofValue;
@@ -119,5 +120,13 @@ class ValueTest {
 
         assertAll(() -> assertTrue(both.toString().contains(valueString)),
                 () -> assertTrue(both.toString().contains(ruleString)));
+    }
+
+    @Test
+    void shouldHaveToStringForFloor() {
+        final String display = floor("A", 212).toString();
+
+        assertAll(() -> assertTrue(display.contains("Floor")),
+                () -> assertTrue(display.contains("212")));
     }
 }
