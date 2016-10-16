@@ -1,0 +1,16 @@
+package hm.binkley.layers.dnd.magic;
+
+public enum Type {
+    ARMOR("Armor"), WONDROUS_ITEM("Wondrous Item");
+
+    private final String display;
+
+    Type(final String display) {
+        this.display = display;
+    }
+
+    @Override
+    public final String toString() {
+        return display;
+    }
+}

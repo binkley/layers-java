@@ -2,9 +2,9 @@ package hm.binkley.layers.dnd.magic;
 
 import org.junit.jupiter.api.Test;
 
-import static hm.binkley.layers.dnd.magic.MagicItems.Attunement.ATTUNED;
-import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.LEGENDARY;
-import static hm.binkley.layers.dnd.magic.MagicItems.Type.WONDROUS_ITEM;
+import static hm.binkley.layers.dnd.magic.Attunement.ATTUNED;
+import static hm.binkley.layers.dnd.magic.Rarity.LEGENDARY;
+import static hm.binkley.layers.dnd.magic.Type.WONDROUS_ITEM;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AttuneTest {

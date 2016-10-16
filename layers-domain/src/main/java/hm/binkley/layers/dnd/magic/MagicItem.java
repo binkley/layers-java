@@ -3,9 +3,6 @@ package hm.binkley.layers.dnd.magic;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.Surface;
-import hm.binkley.layers.dnd.magic.MagicItems.Attunement;
-import hm.binkley.layers.dnd.magic.MagicItems.Rarity;
-import hm.binkley.layers.dnd.magic.MagicItems.Type;
 
 import java.util.Map;
 

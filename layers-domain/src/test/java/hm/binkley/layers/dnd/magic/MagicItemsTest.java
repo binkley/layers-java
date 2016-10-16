@@ -3,7 +3,6 @@ package hm.binkley.layers.dnd.magic;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
-import hm.binkley.layers.dnd.magic.MagicItems.Attunement;
 import hm.binkley.layers.rules.BaseRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,14 +14,14 @@ import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.magic.Attune.attune;
-import static hm.binkley.layers.dnd.magic.MagicItems.Attunement.ATTUNED;
-import static hm.binkley.layers.dnd.magic.MagicItems.Attunement.UNATTUNED;
-import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.LEGENDARY;
-import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.RARE;
-import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.UNCOMMON;
-import static hm.binkley.layers.dnd.magic.MagicItems.Rarity.VERY_RARE;
-import static hm.binkley.layers.dnd.magic.MagicItems.Type.ARMOR;
-import static hm.binkley.layers.dnd.magic.MagicItems.Type.WONDROUS_ITEM;
+import static hm.binkley.layers.dnd.magic.Attunement.ATTUNED;
+import static hm.binkley.layers.dnd.magic.Attunement.UNATTUNED;
+import static hm.binkley.layers.dnd.magic.Rarity.LEGENDARY;
+import static hm.binkley.layers.dnd.magic.Rarity.RARE;
+import static hm.binkley.layers.dnd.magic.Rarity.UNCOMMON;
+import static hm.binkley.layers.dnd.magic.Rarity.VERY_RARE;
+import static hm.binkley.layers.dnd.magic.Type.ARMOR;
+import static hm.binkley.layers.dnd.magic.Type.WONDROUS_ITEM;
 import static hm.binkley.layers.values.Value.ofValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -41,7 +40,7 @@ class MagicItemsTest {
 
     @Test
     void shouldGrant19ConstitutionFromAmuletOfHealth() {
-        firstLayer.saveAndNext(MagicItems::amuletOfHealth).
+        firstLayer.saveAndNext(AmuletOfHealth::new).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 19, layers.get(CON));
@@ -49,7 +48,7 @@ class MagicItemsTest {
 
     @Test
     void shouldGrant21StrengthFromHillGiantGirdle() {
-        firstLayer.saveAndNext(MagicItems::beltOfHillGiantStrength).
+        firstLayer.saveAndNext(BeltOfHillGiantStrength::new).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 21, layers.get(STR));
@@ -57,7 +56,7 @@ class MagicItemsTest {
 
     @Test
     void shouldGrant23StrengthFromStoneGiantGirdle() {
-        firstLayer.saveAndNext(MagicItems::beltOfStoneGiantStrength).
+        firstLayer.saveAndNext(BeltOfStoneGiantStrength::new).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 23, layers.get(STR));
@@ -65,7 +64,7 @@ class MagicItemsTest {
 
     @Test
     void shouldGrant23StrengthFromFrostGiantGirdle() {
-        firstLayer.saveAndNext(MagicItems::beltOfFrostGiantStrength).
+        firstLayer.saveAndNext(BeltOfFrostGiantStrength::new).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 23, layers.get(STR));
@@ -73,7 +72,7 @@ class MagicItemsTest {
 
     @Test
     void shouldGrant25StrengthFromFireGiantGirdle() {
-        firstLayer.saveAndNext(MagicItems::beltOfFireGiantStrength).
+        firstLayer.saveAndNext(BeltOfFireGiantStrength::new).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 25, layers.get(STR));
@@ -81,7 +80,7 @@ class MagicItemsTest {
 
     @Test
     void shouldGrant27StrengthFromCloudGiantGirdle() {
-        firstLayer.saveAndNext(MagicItems::beltOfCloudGiantStrength).
+        firstLayer.saveAndNext(BeltOfCloudGiantStrength::new).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 27, layers.get(STR));
@@ -89,7 +88,7 @@ class MagicItemsTest {
 
     @Test
     void shouldGrant29StrengthFromStormGiantGirdle() {
-        firstLayer.saveAndNext(MagicItems::beltOfStormGiantStrength).
+        firstLayer.saveAndNext(BeltOfStormGiantStrength::new).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 29, layers.get(STR));
@@ -98,7 +97,7 @@ class MagicItemsTest {
     @Test
     void shouldCreateAdamantineArmor() {
         assertEquals("Adamantine Armor",
-                firstLayer.saveAndNext(MagicItems::adamantineArmor).name());
+                firstLayer.saveAndNext(AdamantineArmor::new).name());
     }
 
     @Test
@@ -144,7 +143,7 @@ class MagicItemsTest {
     @Test
     void shouldDisplayAttunementBriefly() {
         final Layer amuletOfHealth = firstLayer.
-                saveAndNext(MagicItems::amuletOfHealth);
+                saveAndNext(AmuletOfHealth::new);
         final Layer attunement = amuletOfHealth.
                 saveAndNext(ScratchLayer::new).
                 put(Attunement.class, ofValue(singleton(amuletOfHealth)));
@@ -158,7 +157,7 @@ class MagicItemsTest {
     @Test
     void shouldNotDisplayAttunementVerbosely() {
         final Layer amuletOfHealth = firstLayer.
-                saveAndNext(MagicItems::amuletOfHealth);
+                saveAndNext(AmuletOfHealth::new);
         final Layer attunement = amuletOfHealth.
                 saveAndNext(ScratchLayer::new).
                 put(Attunement.class, ofValue(singleton(amuletOfHealth)));
@@ -173,14 +172,14 @@ class MagicItemsTest {
     @Test
     void shouldBeAbleToAttune3Items() { // TODO: Distinct items
         final MagicItem amuletOfHealth = firstLayer.
-                saveAndNext(MagicItems::amuletOfHealth);
+                saveAndNext(AmuletOfHealth::new);
         final MagicItem beltOfHillGiantStrength = amuletOfHealth.
                 saveAndNext(attune(amuletOfHealth)).
-                saveAndNext(MagicItems::beltOfHillGiantStrength);
+                saveAndNext(BeltOfHillGiantStrength::new);
         final MagicItem beltOfStoneGiantStrength = beltOfHillGiantStrength.
-                saveAndNext(MagicItems::beltOfStoneGiantStrength);
+                saveAndNext(BeltOfStoneGiantStrength::new);
         beltOfStoneGiantStrength.
-                saveAndNext(MagicItems::beltOfFrostGiantStrength);
+                saveAndNext(BeltOfFrostGiantStrength::new);
 
         beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
         beltOfStoneGiantStrength.attuneAndNext(ScratchLayer::new);
@@ -191,14 +190,14 @@ class MagicItemsTest {
     @Test
     void shouldLimitAttunementTo3Items() { // TODO: Distinct items
         final MagicItem amuletOfHealth = firstLayer.
-                saveAndNext(MagicItems::amuletOfHealth);
+                saveAndNext(AmuletOfHealth::new);
         final MagicItem beltOfHillGiantStrength = amuletOfHealth.
                 saveAndNext(attune(amuletOfHealth)).
-                saveAndNext(MagicItems::beltOfHillGiantStrength);
+                saveAndNext(BeltOfHillGiantStrength::new);
         final MagicItem beltOfStoneGiantStrength = beltOfHillGiantStrength.
-                saveAndNext(MagicItems::beltOfStoneGiantStrength);
+                saveAndNext(BeltOfStoneGiantStrength::new);
         final MagicItem beltOfFrostGiantStrength = beltOfStoneGiantStrength.
-                saveAndNext(MagicItems::beltOfFrostGiantStrength);
+                saveAndNext(BeltOfFrostGiantStrength::new);
 
         beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
         beltOfStoneGiantStrength.attuneAndNext(ScratchLayer::new);

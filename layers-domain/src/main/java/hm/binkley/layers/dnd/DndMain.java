@@ -1,7 +1,8 @@
 package hm.binkley.layers.dnd;
 
+import hm.binkley.layers.dnd.magic.AmuletOfHealth;
+import hm.binkley.layers.dnd.magic.BeltOfHillGiantStrength;
 import hm.binkley.layers.dnd.magic.MagicItem;
-import hm.binkley.layers.dnd.magic.MagicItems;
 import hm.binkley.layers.rules.BaseRule;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
@@ -39,11 +40,11 @@ public class DndMain {
                 saveAndNext(proficiencyBonus(ACROBATICS, 1)).
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
                 saveAndNext(doubleProficiency(ACROBATICS)).
-                saveAndNext(MagicItems::beltOfHillGiantStrength);
+                saveAndNext((layers1) -> new BeltOfHillGiantStrength(layers1));
         final MagicItem amuletOfHealth = beltOfHillGiantStrength.
                 saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(abilityScoreIncrease(CON, WIS)).
-                saveAndNext(MagicItems::amuletOfHealth);
+                saveAndNext((layers1) -> new AmuletOfHealth(layers1));
         amuletOfHealth.attuneAndNext(ScratchLayer::new);
         beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
 
