@@ -5,10 +5,17 @@ import hm.binkley.layers.Layers;
 import hm.binkley.layers.rules.Rule;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiFunction;
+
+import static hm.binkley.layers.LayerSet.singleton;
 
 public interface Value<T>
         extends BiFunction<Layers, Layer, T> {
+    static Value<Set<Layer>> ofValue(final Layer value) {
+        return new ValueOnly<>(singleton(value));
+    }
+
     static <T> Value<T> ofValue(final T value) {
         return new ValueOnly<>(value);
     }
@@ -19,6 +26,11 @@ public interface Value<T>
 
     static <T> Value<T> ofBoth(final T value, final Rule<T> rule) {
         return new Both<>(value, rule);
+    }
+
+    static Value<Set<Layer>> ofBoth(final Layer value,
+            final Rule<Set<Layer>> rule) {
+        return new Both<>(singleton(value), rule);
     }
 
     static <T> Value<T> mostRecent(final Object key, final T defaultValue) {

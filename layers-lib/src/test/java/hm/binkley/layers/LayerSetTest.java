@@ -2,12 +2,13 @@ package hm.binkley.layers;
 
 import org.junit.jupiter.api.Test;
 
+import static hm.binkley.layers.FullnessFunction.max;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LayerSetTest {
-    private LayerSet set = new LayerSet(2);
+    private LayerSet set = new LayerSet(max(2));
 
     @Test
     void shouldComplainWhenOverfull() {
