@@ -29,7 +29,7 @@ class GiantGirdleTest {
         firstLayer.
                 saveAndNext(BaseRule::baseRules).
                 saveAndNext(abilityScores(23, 8, 8, 8, 8, 8)).
-                saveAndNext((layers1) -> new BeltOfHillGiantStrength(layers1)).
+                saveAndNext(BeltOfHillGiantStrength::new).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 23, layers.get(STR));
@@ -61,7 +61,7 @@ class GiantGirdleTest {
                 saveAndNext(BaseRule::baseRules).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext((layers1) -> new BeltOfHillGiantStrength(layers1)).
+                saveAndNext(BeltOfHillGiantStrength::new).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 21, layers.get(STR));
@@ -73,8 +73,7 @@ class GiantGirdleTest {
                 saveAndNext(BaseRule::baseRules).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(
-                        (layers1) -> new BeltOfStoneGiantStrength(layers1)).
+                saveAndNext(BeltOfStoneGiantStrength::new).
                 saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(ScratchLayer::new);
 
@@ -88,8 +87,7 @@ class GiantGirdleTest {
                 saveAndNext(BaseRule::baseRules).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(
-                        (layers1) -> new BeltOfFrostGiantStrength(layers1));
+                saveAndNext(BeltOfFrostGiantStrength::new);
         girdle.saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(ScratchLayer::new);
 
