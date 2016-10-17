@@ -13,9 +13,8 @@ public final class LayerSetRule
         extends KeyRule<Set<Layer>> {
     private final int max;
 
-    LayerSetRule(final String name, final Object key,
-            final int max) {
-        super(name, key);
+    LayerSetRule(final Object key, final int max) {
+        super("Max " + max, key);
         this.max = max;
     }
 

@@ -30,7 +30,7 @@ class LayerSetRuleTest {
     @Test
     void shouldUseLayerSet() {
         firstLayer.
-                put("A", ofBoth(empty(), layerSet("Test", "A", 1))).
+                put("A", ofBoth(empty(), layerSet("A", 1))).
                 saveAndNext(ScratchLayer::new).
                 put("A", ofValue(singleton(firstLayer))).
                 saveAndNext(ScratchLayer::new);
@@ -42,7 +42,7 @@ class LayerSetRuleTest {
     void shouldCapOutLayerSet() {
         final ScratchLayer secondLayer = firstLayer.
                 put("A", ofBoth(singleton(firstLayer),
-                        layerSet("Test", "A", 1))).
+                        layerSet("A", 1))).
                 saveAndNext(ScratchLayer::new);
         secondLayer.
                 put("A", ofValue(singleton(secondLayer)));

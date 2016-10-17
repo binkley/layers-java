@@ -15,8 +15,8 @@ public final class MagicItemsBaseRules
     @Override
     public Layer apply(final Surface layers) {
         final Layer layer = new Layer(layers, "Base rules for magic items");
-        layer.put(Attunement.class, ofBoth(emptySet(),
-                layerSet("Attunement", Attunement.class, 3)));
+        layer.put(Attunement.class,
+                ofBoth(emptySet(), layerSet(Attunement.class, 3)));
         return layer;
     }
 }
