@@ -32,8 +32,8 @@ public abstract class Rule<T>
         return new FloorRule(key);
     }
 
-    public static Rule<Set<Layer>> layerSet(final Object key,
-            final FullnessFunction full) {
-        return new LayerSetRule(key, full);
+    public static <L extends Layer> Rule<Set<L>> layerSet(final Object key,
+            final FullnessFunction<L> full) {
+        return new LayerSetRule<>(key, full);
     }
 }

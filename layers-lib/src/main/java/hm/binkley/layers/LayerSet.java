@@ -8,22 +8,22 @@ import static hm.binkley.layers.FullnessFunction.max;
 import static java.util.stream.Collectors.joining;
 
 @RequiredArgsConstructor
-public class LayerSet
-        extends LinkedHashSet<Layer> {
-    private final FullnessFunction full;
+public class LayerSet<L extends Layer>
+        extends LinkedHashSet<L> {
+    private final FullnessFunction<L> full;
 
-    public static LayerSet empty() {
-        return new LayerSet(max(0));
+    public static <L extends Layer> LayerSet<L> empty() {
+        return new LayerSet<>(max(0));
     }
 
-    public static LayerSet singleton(final Layer layer) {
-        final LayerSet set = new LayerSet(max(1));
+    public static <L extends Layer> LayerSet<L> singleton(final L layer) {
+        final LayerSet<L> set = new LayerSet<>(max(1));
         set.add(layer);
         return set;
     }
 
     @Override
-    public boolean add(final Layer layer) {
+    public boolean add(final L layer) {
         if (full.apply(this, layer))
             throw new IllegalStateException();
         return super.add(layer);
