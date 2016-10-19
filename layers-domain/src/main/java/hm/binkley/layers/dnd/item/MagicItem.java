@@ -7,23 +7,19 @@ import hm.binkley.layers.Layers.Surface;
 import java.util.Map;
 
 public class MagicItem
-        extends Layer {
+        extends Item {
     public MagicItem(final Surface layers, final String name,
             final String description, final Type type, final Rarity rarity,
             final Attunement attunement, final String notes) {
-        this(layers, name, description, type, rarity, attunement);
-        details().put("Notes", notes);
+        super(layers, name, description, type, rarity, notes);
+        final Map<Object, Object> details = details();
+        details.put(Attunement.class, attunement);
     }
 
     public MagicItem(final Surface layers, final String name,
             final String description, final Type type, final Rarity rarity,
             final Attunement attunement) {
-        super(layers, name);
-        final Map<Object, Object> details = details();
-        details.put("Description", description);
-        details.put(Type.class, type);
-        details.put(Rarity.class, rarity);
-        details.put(Attunement.class, attunement);
+        this(layers, name, description, type, rarity, attunement, "");
     }
 
     public <L extends Layer> L attuneAndNext(final LayerMaker<L> next) {
