@@ -1,6 +1,7 @@
 package hm.binkley.layers.dnd.item;
 
 public enum Type {
+    EQUIPMENT("Equipment"),
     ARMOR("Armor"),
     WONDROUS_ITEM("Wondrous Item");
 

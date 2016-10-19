@@ -6,12 +6,13 @@ import hm.binkley.layers.Layers.Surface;
 
 import java.util.Map;
 
+/** @todo Real values for weight/volume */
 public class MagicItem
         extends Item {
     public MagicItem(final Surface layers, final String name,
             final String description, final Type type, final Rarity rarity,
             final Attunement attunement, final String notes) {
-        super(layers, name, description, type, rarity, notes);
+        super(layers, name, description, type, rarity, 0f, 0f, notes);
         final Map<Object, Object> details = details();
         details.put(Attunement.class, attunement);
     }
