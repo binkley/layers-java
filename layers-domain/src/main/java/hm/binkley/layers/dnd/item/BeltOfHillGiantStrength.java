@@ -1,8 +1,8 @@
-package hm.binkley.layers.dnd.magic;
+package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layers.Surface;
 
-import static hm.binkley.layers.dnd.magic.Rarity.RARE;
+import static hm.binkley.layers.dnd.item.Rarity.RARE;
 
 public final class BeltOfHillGiantStrength
         extends GiantBelt {

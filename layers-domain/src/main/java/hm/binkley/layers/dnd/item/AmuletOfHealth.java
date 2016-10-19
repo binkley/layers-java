@@ -1,4 +1,4 @@
-package hm.binkley.layers.dnd.magic;
+package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.values.Value;

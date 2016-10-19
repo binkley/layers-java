@@ -1,10 +1,10 @@
-package hm.binkley.layers.dnd.magic;
+package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layers.Surface;
 
-import static hm.binkley.layers.dnd.magic.Attunement.UNATTUNED;
-import static hm.binkley.layers.dnd.magic.Rarity.UNCOMMON;
-import static hm.binkley.layers.dnd.magic.Type.ARMOR;
+import static hm.binkley.layers.dnd.item.Attunement.UNATTUNED;
+import static hm.binkley.layers.dnd.item.Rarity.UNCOMMON;
+import static hm.binkley.layers.dnd.item.Type.ARMOR;
 
 class AdamantineArmor
         extends MagicItem {

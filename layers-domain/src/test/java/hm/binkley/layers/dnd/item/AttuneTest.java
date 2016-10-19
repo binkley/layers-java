@@ -1,10 +1,10 @@
-package hm.binkley.layers.dnd.magic;
+package hm.binkley.layers.dnd.item;
 
 import org.junit.jupiter.api.Test;
 
-import static hm.binkley.layers.dnd.magic.Attunement.ATTUNED;
-import static hm.binkley.layers.dnd.magic.Rarity.LEGENDARY;
-import static hm.binkley.layers.dnd.magic.Type.WONDROUS_ITEM;
+import static hm.binkley.layers.dnd.item.Attunement.ATTUNED;
+import static hm.binkley.layers.dnd.item.Rarity.LEGENDARY;
+import static hm.binkley.layers.dnd.item.Type.WONDROUS_ITEM;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AttuneTest {

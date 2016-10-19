@@ -1,11 +1,11 @@
-package hm.binkley.layers.dnd.magic;
+package hm.binkley.layers.dnd.item;
 
-public enum Attunement {
-    UNATTUNED(""), ATTUNED("yes");
+public enum Type {
+    ARMOR("Armor"), WONDROUS_ITEM("Wondrous Item");
 
     private final String display;
 
-    Attunement(final String display) {
+    Type(final String display) {
         this.display = display;
     }
 

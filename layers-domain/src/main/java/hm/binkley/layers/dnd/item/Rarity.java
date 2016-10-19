@@ -1,4 +1,4 @@
-package hm.binkley.layers.dnd.magic;
+package hm.binkley.layers.dnd.item;
 
 public enum Rarity {
     UNCOMMON("Uncommon"), RARE("Rare"), VERY_RARE("Very rare"),

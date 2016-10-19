@@ -1,8 +1,8 @@
-package hm.binkley.layers.dnd.magic;
+package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layers.Surface;
 
-import static hm.binkley.layers.dnd.magic.Rarity.LEGENDARY;
+import static hm.binkley.layers.dnd.item.Rarity.LEGENDARY;
 
 public final class BeltOfCloudGiantStrength
         extends GiantBelt {

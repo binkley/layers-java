@@ -1,11 +1,11 @@
-package hm.binkley.layers.dnd.magic;
+package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.values.Value;
 
 import static hm.binkley.layers.dnd.Abilities.STR;
-import static hm.binkley.layers.dnd.magic.Attunement.ATTUNED;
-import static hm.binkley.layers.dnd.magic.Type.WONDROUS_ITEM;
+import static hm.binkley.layers.dnd.item.Attunement.ATTUNED;
+import static hm.binkley.layers.dnd.item.Type.WONDROUS_ITEM;
 
 /**
  * {@code GiantBelt} <b>needs documentation</b>.

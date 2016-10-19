@@ -1,4 +1,4 @@
-package hm.binkley.layers.dnd.magic;
+package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers.Surface;
@@ -15,7 +15,7 @@ public final class MagicItemsBaseRules
         implements BaseRule {
     @Override
     public Layer apply(final Surface layers) {
-        final Layer layer = new Layer(layers, "Base rules for magic items");
+        final Layer layer = new Layer(layers, "Base rules for item items");
         layer.put(Attunement.class,
                 ofBoth(emptySet(), layerSet(Attunement.class, max(3))));
         return layer;

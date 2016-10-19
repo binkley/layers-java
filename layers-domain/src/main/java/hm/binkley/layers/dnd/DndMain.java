@@ -1,8 +1,8 @@
 package hm.binkley.layers.dnd;
 
-import hm.binkley.layers.dnd.magic.AmuletOfHealth;
-import hm.binkley.layers.dnd.magic.BeltOfHillGiantStrength;
-import hm.binkley.layers.dnd.magic.MagicItem;
+import hm.binkley.layers.dnd.item.AmuletOfHealth;
+import hm.binkley.layers.dnd.item.BeltOfHillGiantStrength;
+import hm.binkley.layers.dnd.item.MagicItem;
 import hm.binkley.layers.rules.BaseRule;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
