@@ -6,8 +6,6 @@ import hm.binkley.layers.ScratchLayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-
 import static hm.binkley.layers.FullnessFunction.max;
 import static hm.binkley.layers.FullnessFunction.named;
 import static hm.binkley.layers.LayerSet.empty;
@@ -38,7 +36,7 @@ class LayerSetRuleTest {
                 put("A", ofValue(firstLayer)).
                 saveAndNext(ScratchLayer::new);
 
-        assertEquals(Collections.singleton(firstLayer), layers.get("A"));
+        assertEquals(singleton(firstLayer), layers.get("A"));
     }
 
     @Test
@@ -56,8 +54,8 @@ class LayerSetRuleTest {
     @Test
     void shouldDisplayRuleNameWhenAvailable() {
         firstLayer.
-                put("A", ofBoth(firstLayer, layerSet("A",
-                        named((set, layer) -> 1 == set.size(), "Bob!")))).
+                put("A", ofBoth(firstLayer,
+                        layerSet("A", named(max(1), "Bob!")))).
                 saveAndNext(ScratchLayer::new);
 
         assertTrue(firstLayer.toString().contains("Bob!"));
