@@ -25,7 +25,7 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public class Layer
         implements LayerView {
-    private final Map<Object, Value<?>> values = new LinkedHashMap<>();
+    private final Map<Object, Value<?, ?>> values = new LinkedHashMap<>();
     private final Map<Object, Object> details = new LinkedHashMap<>();
     protected final Surface layers;
     private final String name;
@@ -57,11 +57,11 @@ public class Layer
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> Value<T> get(final Object key) {
-        return (Value<T>) values.get(key);
+    public <T, R> Value<T, R> get(final Object key) {
+        return (Value<T, R>) values.get(key);
     }
 
-    public <T> Layer put(final Object key, final Value<T> value) {
+    public <T, R> Layer put(final Object key, final Value<T, R> value) {
         values.put(key, value);
         return this;
     }

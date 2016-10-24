@@ -4,7 +4,7 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 
 public class SumAllRule
-        extends KeyRule<Integer> {
+        extends KeyRule<Integer, Integer> {
     protected SumAllRule(final Object key) {
         super("Sum all", key);
     }
@@ -12,7 +12,7 @@ public class SumAllRule
     @Override
     public Integer apply(final Layers layers, final Layer layer,
             final Integer value) {
-        return layers.<Integer>plainValuesFor(key).
+        return layers.<Integer, Integer>plainValuesFor(key).
                 mapToInt(Integer::intValue).
                 sum();
     }

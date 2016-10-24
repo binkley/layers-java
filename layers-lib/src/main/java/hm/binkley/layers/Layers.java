@@ -34,7 +34,7 @@ public final class Layers {
         // 2) rules relying on other values work against prior cache
         final Map<Object, Object> updated = new LinkedHashMap<>();
         layers.forEach(layer -> layer.keys().forEach(key -> {
-            final Value<Object> value = layer.get(key);
+            final Value<Object, Object> value = layer.get(key);
             value.rule().
                     map(rule -> value.apply(this, layer)).
                     map(result -> updated.putIfAbsent(key, result)).
@@ -89,8 +89,8 @@ public final class Layers {
                 map(Layer::view);
     }
 
-    public <T> Stream<T> plainValuesFor(final Object key) {
-        return this.<T>streamFor(key).
+    public <T, R> Stream<T> plainValuesFor(final Object key) {
+        return this.<T, R>streamFor(key).
                 map(Value::value).
                 filter(Optional::isPresent).
                 map(Optional::get);
@@ -135,9 +135,9 @@ public final class Layers {
                 collect(joining("\n"));
     }
 
-    private <T> Stream<Value<T>> streamFor(final Object key) {
+    private <T, R> Stream<Value<T, R>> streamFor(final Object key) {
         return layers.stream().
                 filter(layer -> layer.containsKey(key)).
-                map(layer -> layer.<T>get(key));
+                map(layer -> layer.<T, R>get(key));
     }
 }

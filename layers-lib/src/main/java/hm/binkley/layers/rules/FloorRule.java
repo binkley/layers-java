@@ -6,7 +6,7 @@ import hm.binkley.layers.Layers;
 import static java.lang.Integer.max;
 
 public class FloorRule
-        extends KeyRule<Integer> {
+        extends KeyRule<Integer, Integer> {
     protected FloorRule(final Object key) {
         super("Floor", key);
     }

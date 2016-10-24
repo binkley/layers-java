@@ -17,7 +17,7 @@ public interface LayerView {
 
     boolean containsKey(final Object key);
 
-    <T> Value<T> get(final Object key);
+    <T, R> Value<T, R> get(final Object key);
 
     Stream<Map.Entry<Object, Object>> stream();
 

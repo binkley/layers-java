@@ -11,7 +11,7 @@ import java.util.Set;
 import static java.util.stream.Collectors.toCollection;
 
 public final class LayerSetRule<L extends Layer>
-        extends KeyRule<Set<L>> {
+        extends KeyRule<Set<L>, Set<L>> {
     private final FullnessFunction<L> full;
 
     LayerSetRule(final Object key, final FullnessFunction<L> full) {
@@ -23,7 +23,7 @@ public final class LayerSetRule<L extends Layer>
     public Set<L> apply(final Layers layers, final Layer layer,
             final Set<L> value) {
         final LayerSet<L> set = new LayerSet<>(full);
-        return layers.<Set<L>>plainValuesFor(key).
+        return layers.<Set<L>, Set<L>>plainValuesFor(key).
                 flatMap(Collection::stream).
                 collect(toCollection(() -> set));
     }

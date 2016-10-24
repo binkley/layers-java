@@ -27,25 +27,27 @@ class RuleTest {
     }
 
     private static final class DummyRule
-            extends KeyRule<Integer> {
+            extends KeyRule<Integer, Integer> {
         private DummyRule(final String name, final Object key) {
             super(name, key);
         }
 
         @Override
-        public Integer apply(final Layers layers, final Layer layer, final Integer value) {
+        public Integer apply(final Layers layers, final Layer layer,
+                final Integer value) {
             return value;
         }
     }
 
     private static final class DummyRule2
-            extends KeyRule<Integer> {
+            extends KeyRule<Integer, Integer> {
         private DummyRule2(final String name, final Object key) {
             super(name, key);
         }
 
         @Override
-        public Integer apply(final Layers layers, final Layer layer, final Integer value) {
+        public Integer apply(final Layers layers, final Layer layer,
+                final Integer value) {
             return value;
         }
     }

@@ -10,9 +10,9 @@ import java.util.Optional;
 
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public final class RuleOnly<T>
-        implements Value<T> {
-    private final Rule<T> rule;
+public final class RuleOnly<T, R>
+        implements Value<T, R> {
+    private final Rule<T, R> rule;
 
     @Override
     public Optional<T> value() {
@@ -20,13 +20,13 @@ public final class RuleOnly<T>
     }
 
     @Override
-    public Optional<Rule<T>> rule() {
+    public Optional<Rule<T, R>> rule() {
         return Optional.of(rule);
     }
 
     /** @todo Rethink rule-only apply with {@code null} */
     @Override
-    public T apply(final Layers layers, final Layer layer) {
+    public R apply(final Layers layers, final Layer layer) {
         return rule.apply(layers, layer, null);
     }
 

@@ -10,8 +10,8 @@ import java.util.Optional;
 
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public final class ValueOnly<T>
-        implements Value<T> {
+public final class ValueOnly<T, R>
+        implements Value<T, R> {
     private final T value;
 
     @Override
@@ -20,12 +20,12 @@ public final class ValueOnly<T>
     }
 
     @Override
-    public Optional<Rule<T>> rule() {
+    public Optional<Rule<T, R>> rule() {
         return Optional.empty();
     }
 
     @Override
-    public T apply(final Layers layers, final Layer layer) {
+    public R apply(final Layers layers, final Layer layer) {
         throw new NullPointerException("Missing rule for value: " + this);
     }
 

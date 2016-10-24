@@ -29,7 +29,7 @@ class ValueTest {
 
     @Test
     void shouldHaveRuleForOfRule() {
-        final Rule<Integer> rule = Rule.doubling(null);
+        final Rule<Integer, Integer> rule = Rule.doubling(null);
 
         assertEquals(rule, ofRule(rule).rule().get());
     }
@@ -42,7 +42,7 @@ class ValueTest {
 
     @Test
     void shouldHaveRuleForOfBoth() {
-        final Rule<Integer> rule = Rule.doubling(null);
+        final Rule<Integer, Integer> rule = Rule.doubling(null);
 
         assertEquals(rule, ofBoth(3, rule).rule().get());
     }
@@ -106,7 +106,7 @@ class ValueTest {
      */
     @Test
     void shouldHaveToStringForRuleOnly() {
-        final Rule<Integer> rule = Rule.doubling(null);
+        final Rule<Integer, Integer> rule = Rule.doubling(null);
 
         assertTrue(ofRule(rule).toString().contains(rule.toString()));
     }
@@ -117,11 +117,11 @@ class ValueTest {
      */
     @Test
     void shouldHaveToStringForBoth() {
-        final Rule<Integer> rule = Rule.doubling(null);
+        final Rule<Integer, Integer> rule = Rule.doubling(null);
         final String valueString = Objects.toString(3);
         final String ruleString = rule.toString();
 
-        final Value<Integer> both = ofBoth(3, rule);
+        final Value<Integer, Integer> both = ofBoth(3, rule);
 
         assertAll(() -> assertTrue(both.toString().contains(valueString)),
                 () -> assertTrue(both.toString().contains(ruleString)));

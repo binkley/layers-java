@@ -4,8 +4,8 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public abstract class KeyRule<T>
-        extends Rule<T> {
+public abstract class KeyRule<T, R>
+        extends Rule<T, R> {
     protected final Object key;
 
     protected KeyRule(final String name, final Object key) {
@@ -19,7 +19,7 @@ public abstract class KeyRule<T>
             return true;
         if (null == o || getClass() != o.getClass())
             return false;
-        final KeyRule<?> that = (KeyRule<?>) o;
+        final KeyRule<?, ?> that = (KeyRule<?, ?>) o;
         return Objects.equals(key, that.key);
     }
 
