@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
 
-import static hm.binkley.layers.LayerSet.singleton;
+import static hm.binkley.layers.set.LayerSet.singleton;
 
 public interface Value<T, R>
         extends BiFunction<Layers, Layer, R> {

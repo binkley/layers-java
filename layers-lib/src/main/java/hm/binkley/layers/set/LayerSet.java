@@ -1,10 +1,11 @@
-package hm.binkley.layers;
+package hm.binkley.layers.set;
 
+import hm.binkley.layers.Layer;
 import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedHashSet;
 
-import static hm.binkley.layers.FullnessFunction.max;
+import static hm.binkley.layers.set.FullnessFunction.max;
 import static java.util.stream.Collectors.joining;
 
 @RequiredArgsConstructor

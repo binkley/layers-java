@@ -1,6 +1,6 @@
 package hm.binkley.layers.rules;
 
-import hm.binkley.layers.FullnessFunction;
+import hm.binkley.layers.set.FullnessFunction;
 import hm.binkley.layers.Layer;
 import lombok.RequiredArgsConstructor;
 

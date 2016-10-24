@@ -1,9 +1,9 @@
 package hm.binkley.layers.rules;
 
-import hm.binkley.layers.FullnessFunction;
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.LayerSet;
 import hm.binkley.layers.Layers;
+import hm.binkley.layers.set.FullnessFunction;
+import hm.binkley.layers.set.LayerSet;
 
 import java.util.Collection;
 import java.util.Set;

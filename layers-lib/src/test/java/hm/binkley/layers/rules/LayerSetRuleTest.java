@@ -6,12 +6,12 @@ import hm.binkley.layers.ScratchLayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static hm.binkley.layers.FullnessFunction.max;
-import static hm.binkley.layers.FullnessFunction.named;
-import static hm.binkley.layers.LayerSet.empty;
-import static hm.binkley.layers.LayerSet.singleton;
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.rules.Rule.layerSet;
+import static hm.binkley.layers.set.FullnessFunction.max;
+import static hm.binkley.layers.set.FullnessFunction.named;
+import static hm.binkley.layers.set.LayerSet.empty;
+import static hm.binkley.layers.set.LayerSet.singleton;
 import static hm.binkley.layers.values.Value.ofBoth;
 import static hm.binkley.layers.values.Value.ofValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;

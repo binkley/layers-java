@@ -1,8 +1,10 @@
-package hm.binkley.layers;
+package hm.binkley.layers.set;
 
+import hm.binkley.layers.Layers;
+import hm.binkley.layers.ScratchLayer;
 import org.junit.jupiter.api.Test;
 
-import static hm.binkley.layers.FullnessFunction.max;
+import static hm.binkley.layers.set.FullnessFunction.max;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;

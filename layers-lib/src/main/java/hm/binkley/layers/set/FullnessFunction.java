@@ -1,4 +1,6 @@
-package hm.binkley.layers;
+package hm.binkley.layers.set;
+
+import hm.binkley.layers.Layer;
 
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -11,17 +13,7 @@ public abstract class FullnessFunction<L extends Layer>
 
     public static <L extends Layer> FullnessFunction<L> named(
             final BiFunction<Set<L>, L, Boolean> full, final String name) {
-        return new FullnessFunction<L>() {
-            @Override
-            public Boolean apply(final Set<L> layers, final L layer) {
-                return full.apply(layers, layer);
-            }
-
-            @Override
-            public String toString() {
-                return name;
-            }
-        };
+        return new NamedFullnessFunction<>(full, name);
     }
 
     public static <L extends Layer> FullnessFunction<L> max(final int max) {
