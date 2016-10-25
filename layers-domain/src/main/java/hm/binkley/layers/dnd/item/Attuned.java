@@ -8,20 +8,20 @@ import java.util.Set;
 
 import static hm.binkley.layers.values.Value.ofValue;
 
-public class Attune
+public class Attuned
         extends Layer {
-    public static LayerMaker<Attune> attune(final MagicItem layer) {
-        return layers -> new Attune(layers, layer);
+    public static LayerMaker<Attuned> attune(final MagicItem layer) {
+        return layers -> new Attuned(layers, layer);
     }
 
-    public Attune(final Surface layers, final MagicItem magicItem) {
-        super(layers, "Attune");
-        put(Attunement.class, ofValue(magicItem));
+    public Attuned(final Surface layers, final MagicItem magicItem) {
+        super(layers, "Attuned");
+        put(Attuned.class, ofValue(magicItem));
     }
 
     @Override
     public String toString() {
-        return name() + ": " + this.<Layer, Set<Layer>>get(Attunement.class).
+        return name() + ": " + this.<Layer, Set<Layer>>get(Attuned.class).
                 value().
                 get().
                 name();

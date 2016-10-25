@@ -16,7 +16,7 @@ public class MagicItem
         super(layers, name, description, type, rarity, Weight.inPounds(0),
                 Volume.inCuft(0), notes);
         final Map<Object, Object> details = details();
-        details.put(Attunement.class, attunement);
+        details.put(Attuned.class, attunement);
     }
 
     public MagicItem(final Surface layers, final String name,
@@ -26,6 +26,6 @@ public class MagicItem
     }
 
     public <L extends Layer> L attuneAndNext(final LayerMaker<L> next) {
-        return layers.saveAndNext(new Attune(layers, this), next);
+        return layers.saveAndNext(new Attuned(layers, this), next);
     }
 }

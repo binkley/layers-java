@@ -12,7 +12,7 @@ import java.util.Set;
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
-import static hm.binkley.layers.dnd.item.Attune.attune;
+import static hm.binkley.layers.dnd.item.Attuned.attune;
 import static hm.binkley.layers.dnd.item.Attunement.ATTUNED;
 import static hm.binkley.layers.dnd.item.Attunement.UNATTUNED;
 import static hm.binkley.layers.dnd.item.Rarity.LEGENDARY;
@@ -143,7 +143,7 @@ class MagicItemsTest {
         final MagicItem amuletOfHealth = firstLayer.
                 saveAndNext(AmuletOfHealth::new);
         final Layer attunement = amuletOfHealth.
-                saveAndNext(layers -> new Attune(layers, amuletOfHealth));
+                saveAndNext(layers -> new Attuned(layers, amuletOfHealth));
         attunement.
                 saveAndNext(ScratchLayer::new);
         final String display = attunement.toString();
@@ -156,7 +156,7 @@ class MagicItemsTest {
         final MagicItem amuletOfHealth = firstLayer.
                 saveAndNext(AmuletOfHealth::new);
         final Layer attunement = amuletOfHealth.
-                saveAndNext(layers -> new Attune(layers, amuletOfHealth));
+                saveAndNext(layers -> new Attuned(layers, amuletOfHealth));
         attunement.
                 saveAndNext(ScratchLayer::new);
         final String display = attunement.toString();
@@ -181,7 +181,7 @@ class MagicItemsTest {
         beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
         beltOfStoneGiantStrength.attuneAndNext(ScratchLayer::new);
 
-        assertEquals(3, layers.<Set<Layer>>get(Attunement.class).size());
+        assertEquals(3, layers.<Set<Layer>>get(Attuned.class).size());
     }
 
     @Test

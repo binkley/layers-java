@@ -7,10 +7,10 @@ import static hm.binkley.layers.dnd.item.Rarity.LEGENDARY;
 import static hm.binkley.layers.dnd.item.Type.WONDROUS_ITEM;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AttuneTest {
+class AttunedTest {
     @Test
     void shouldDisplayNicely() {
-        final String display = new Attune(null,
+        final String display = new Attuned(null,
                 new MagicItem(null, "Bob", "Cool bob", WONDROUS_ITEM,
                         LEGENDARY, ATTUNED, "Some notes about Bob")).
                 toString();
