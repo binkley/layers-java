@@ -10,10 +10,10 @@ import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.rules.Rule.layerSet;
 import static hm.binkley.layers.set.FullnessFunction.max;
 import static hm.binkley.layers.set.FullnessFunction.named;
-import static hm.binkley.layers.set.LayerSet.empty;
-import static hm.binkley.layers.set.LayerSet.singleton;
 import static hm.binkley.layers.values.Value.ofBoth;
+import static hm.binkley.layers.values.Value.ofRule;
 import static hm.binkley.layers.values.Value.ofValue;
+import static java.util.Collections.singleton;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,7 +31,7 @@ class LayerSetRuleTest {
     @Test
     void shouldUseLayerSet() {
         firstLayer.
-                put("A", ofBoth(empty(), layerSet("A", max(1)))).
+                put("A", ofRule(layerSet("A", max(1)))).
                 saveAndNext(ScratchLayer::new).
                 put("A", ofValue(firstLayer)).
                 saveAndNext(ScratchLayer::new);
@@ -45,7 +45,7 @@ class LayerSetRuleTest {
                 put("A", ofBoth(firstLayer, layerSet("A", max(1)))).
                 saveAndNext(ScratchLayer::new);
         secondLayer.
-                put("A", ofValue(singleton(secondLayer)));
+                put("A", ofValue(secondLayer));
 
         assertThrows(IllegalStateException.class,
                 () -> secondLayer.saveAndNext(ScratchLayer::new));

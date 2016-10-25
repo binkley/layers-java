@@ -32,6 +32,11 @@ public final class Both<T, R>
 
     @Override
     public String toString() {
-        return "{" + value + ", " + rule + "}";
+        final String v;
+        if (value instanceof Layer)
+            v = ((Layer) value).name();
+        else
+            v = value.toString();
+        return "{" + v + ", " + rule + "}";
     }
 }

@@ -1,7 +1,8 @@
 package hm.binkley.layers.dnd.item;
 
 public enum Attunement {
-    UNATTUNED(""), ATTUNED("yes");
+    UNATTUNED(""),
+    ATTUNED("yes");
 
     private final String display;
 

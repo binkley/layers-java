@@ -4,9 +4,9 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.Surface;
 
-import static hm.binkley.layers.DisplayStyle.BRACES;
+import java.util.Set;
+
 import static hm.binkley.layers.values.Value.ofValue;
-import static java.util.Collections.singleton;
 
 public class Attune
         extends Layer {
@@ -16,11 +16,14 @@ public class Attune
 
     public Attune(final Surface layers, final MagicItem magicItem) {
         super(layers, "Attune");
-        put(Attunement.class, ofValue(singleton(magicItem)));
+        put(Attunement.class, ofValue(magicItem));
     }
 
     @Override
     public String toString() {
-        return name() + ": " + BRACES.display(toMap());
+        return name() + ": " + this.<Layer, Set<Layer>>get(Attunement.class).
+                value().
+                get().
+                name();
     }
 }

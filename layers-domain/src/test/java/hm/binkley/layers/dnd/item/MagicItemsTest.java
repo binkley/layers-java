@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static hm.binkley.layers.set.LayerSet.singleton;
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
@@ -22,7 +21,6 @@ import static hm.binkley.layers.dnd.item.Rarity.UNCOMMON;
 import static hm.binkley.layers.dnd.item.Rarity.VERY_RARE;
 import static hm.binkley.layers.dnd.item.Type.ARMOR;
 import static hm.binkley.layers.dnd.item.Type.WONDROUS_ITEM;
-import static hm.binkley.layers.values.Value.ofValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -142,11 +140,10 @@ class MagicItemsTest {
 
     @Test
     void shouldDisplayAttunementBriefly() {
-        final Layer amuletOfHealth = firstLayer.
+        final MagicItem amuletOfHealth = firstLayer.
                 saveAndNext(AmuletOfHealth::new);
         final Layer attunement = amuletOfHealth.
-                saveAndNext(ScratchLayer::new).
-                put(Attunement.class, ofValue(singleton(amuletOfHealth)));
+                saveAndNext(layers -> new Attune(layers, amuletOfHealth));
         attunement.
                 saveAndNext(ScratchLayer::new);
         final String display = attunement.toString();
@@ -156,17 +153,17 @@ class MagicItemsTest {
 
     @Test
     void shouldNotDisplayAttunementVerbosely() {
-        final Layer amuletOfHealth = firstLayer.
+        final MagicItem amuletOfHealth = firstLayer.
                 saveAndNext(AmuletOfHealth::new);
         final Layer attunement = amuletOfHealth.
-                saveAndNext(ScratchLayer::new).
-                put(Attunement.class, ofValue(singleton(amuletOfHealth)));
+                saveAndNext(layers -> new Attune(layers, amuletOfHealth));
         attunement.
                 saveAndNext(ScratchLayer::new);
         final String display = attunement.toString();
 
         assertFalse(display.contains(
-                amuletOfHealth.details().get("Description").toString()));
+                amuletOfHealth.details().get("Description").toString()),
+                () -> "Attunement layer overly verbose: " + display);
     }
 
     @Test
