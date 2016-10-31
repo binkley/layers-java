@@ -1,15 +1,19 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.values.Value;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.rules.Rule.mostRecent;
 import static hm.binkley.layers.rules.Rule.sumAll;
+import static hm.binkley.layers.values.Value.floor;
 import static hm.binkley.layers.values.Value.ofBoth;
 import static hm.binkley.layers.values.Value.ofRule;
 import static hm.binkley.layers.values.Value.ofValue;
@@ -20,6 +24,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LayersTest {
@@ -141,7 +146,6 @@ class LayersTest {
         assertEquals(singletonMap("FOO", 3), layers.toMap());
     }
 
-    /** @todo Silly jacoco does not support excluding methods */
     @Test
     void shouldHaveSaneToString() {
         firstLayer.saveAndNext(ScratchLayer::new);
@@ -149,9 +153,21 @@ class LayersTest {
         assertTrue(layers.toString().contains("Scratch"));
     }
 
+    @Test
+    void shouldComplainIfKeyNull() {
+        assertThrows(NullPointerException.class,
+                () -> layers.get(null));
+    }
+
+    @Test
+    void shouldComplainIfKeyMissing() {
+        assertThrows(NoSuchElementException.class,
+                () -> layers.get("No such key"));
+    }
+
     private static final class EgLayer
             extends Layer {
-        private EgLayer(final Layers.Surface layers) {
+        private EgLayer(final Surface layers) {
             super(layers, "Eg");
         }
     }

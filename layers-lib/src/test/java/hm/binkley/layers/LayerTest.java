@@ -10,6 +10,7 @@ import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.rules.Rule.mostRecent;
 import static hm.binkley.layers.values.Value.ofBoth;
 import static hm.binkley.layers.values.Value.ofValue;
+import static hm.binkley.layers.values.Value.sumAll;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -142,12 +143,13 @@ class LayerTest {
     void shouldDelegateWhatIfWithoutToLayers() {
         final Layers[] layersHolder = new Layers[1];
         final Layer layer = firstLayer(ScratchLayer::new,
-                layers -> layersHolder[0] = layers);
-        layer.put("A", ofBoth(3, mostRecent("A")));
-        final Layers layers = layersHolder[0];
+                layers -> layersHolder[0] = layers).
+                put("A", sumAll("A")).
+                saveAndNext(ScratchLayer::new).
+                put("A", ofBoth(3, mostRecent("A")));
         layer.saveAndNext(ScratchLayer::new);
 
-        assertEquals(layers.whatIfWithout(layer).get("A"),
+        assertEquals(layersHolder[0].whatIfWithout(layer).get("A"),
                 layer.whatIfWithout().get("A"));
     }
 

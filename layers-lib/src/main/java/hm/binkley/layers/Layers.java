@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -68,7 +69,9 @@ public final class Layers {
     /** @todo Rethink tradeoff of no type token in arg vs safety */
     @SuppressWarnings({"TypeParameterUnusedInFormals", "unchecked"})
     public <T> T get(final Object key) {
-        return (T) cache.get(key);
+        return (T) cache.computeIfAbsent(key, k -> {
+            throw new NoSuchElementException(key.toString());
+        });
     }
 
     public Map<Object, Object> toMap() {
