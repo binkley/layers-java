@@ -130,7 +130,8 @@ public final class Layers {
     @Override
     public String toString() {
         final int size = layers.size();
-        return "All: " + BRACES.display(cache) + "\n" + range(0, size).
+        return "All (" + layers.size() + "): " + BRACES.display(cache) + "\n"
+                + range(0, size).
                 mapToObj(i -> (size - i) + ": " + layers.get(i)).
                 collect(joining("\n"));
     }
