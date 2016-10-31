@@ -8,6 +8,31 @@ This software is in the Public Domain.  Please see [LICENSE.md](LICENSE.md).
 [![Build Status](https://circleci.com/gh/binkley/layers-java.svg?style=shield&circle-token=d86febce0a23cfc4f2aca122d5f5d78b9d177e47)](https://circleci.com/gh/binkley/layers-java)
 [![Issues](https://img.shields.io/github/issues/binkley/layers-java.svg)](https://github.com/binkley/layers-java/issues)
 
+## Styles
+
+Throughout focus is given to these styles, though practicality or taste 
+occasionally intrudes:
+
+* Immutability
+* Avoidance of `null`
+* Functional, especially Java 8 features
+* Limited API surface area
+
+## Techniques
+
+These include:
+
+* Instance factory methods, chaining layer construction
+* When possible, use constructors for simple lambdas
+* Streams as preferred model for collections
+* Log-structured history
+* Cache of current values
+
+## Drawbacks
+
+* Data structures with cyclic references
+* Lack of setters complicates coding style
+
 ## `Layers`
 
 High-level container of layers with single view of entries (key-value pairs,
