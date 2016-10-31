@@ -27,9 +27,7 @@ public final class Layers {
         updateCache();
     }
 
-    /** @todo Should update for one key, not all? */
     private void updateCache() {
-        // TODO: Test to show compute-then-update works
         // This ensures 1) rules see a complete cache, not partially updated
         // 2) rules relying on other values work against prior cache
         final Map<Object, Object> updated = new LinkedHashMap<>();
