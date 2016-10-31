@@ -7,10 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.rules.Rule.layerSet;
 import static hm.binkley.layers.set.FullnessFunction.max;
 import static hm.binkley.layers.set.FullnessFunction.named;
-import static hm.binkley.layers.values.Value.ofBoth;
+import static hm.binkley.layers.values.Value.layerSet;
 import static hm.binkley.layers.values.Value.ofRule;
 import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.singleton;
@@ -31,7 +30,7 @@ class LayerSetRuleTest {
     @Test
     void shouldUseLayerSet() {
         firstLayer.
-                put("A", ofRule(layerSet("A", max(1)))).
+                put("A", ofRule(Rule.layerSet("A", max(1)))).
                 saveAndNext(ScratchLayer::new).
                 put("A", ofValue(firstLayer)).
                 saveAndNext(ScratchLayer::new);
@@ -42,7 +41,7 @@ class LayerSetRuleTest {
     @Test
     void shouldCapOutLayerSet() {
         final ScratchLayer secondLayer = firstLayer.
-                put("A", ofBoth(firstLayer, layerSet("A", max(1)))).
+                put("A", layerSet("A", firstLayer, max(1))).
                 saveAndNext(ScratchLayer::new);
         secondLayer.
                 put("A", ofValue(secondLayer));
@@ -54,8 +53,7 @@ class LayerSetRuleTest {
     @Test
     void shouldDisplayRuleNameWhenAvailable() {
         firstLayer.
-                put("A", ofBoth(firstLayer,
-                        layerSet("A", named(max(1), "Bob!")))).
+                put("A", layerSet("A", firstLayer, named(max(1), "Bob!"))).
                 saveAndNext(ScratchLayer::new);
 
         assertTrue(firstLayer.toString().contains("Bob!"));

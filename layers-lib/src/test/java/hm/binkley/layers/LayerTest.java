@@ -7,8 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.rules.Rule.mostRecent;
-import static hm.binkley.layers.values.Value.ofBoth;
+import static hm.binkley.layers.values.Value.mostRecent;
 import static hm.binkley.layers.values.Value.ofValue;
 import static hm.binkley.layers.values.Value.sumAll;
 import static java.util.stream.Collectors.toList;
@@ -146,7 +145,7 @@ class LayerTest {
                 layers -> layersHolder[0] = layers).
                 put("A", sumAll("A")).
                 saveAndNext(ScratchLayer::new).
-                put("A", ofBoth(3, mostRecent("A")));
+                put("A", mostRecent("A", 3));
         layer.saveAndNext(ScratchLayer::new);
 
         assertEquals(layersHolder[0].whatIfWithout(layer).get("A"),
@@ -158,7 +157,7 @@ class LayerTest {
         final Layers[] layersHolder = new Layers[1];
         final Layer layer = firstLayer(ScratchLayer::new,
                 layers -> layersHolder[0] = layers);
-        layer.put("A", ofBoth(3, mostRecent("A")));
+        layer.put("A", mostRecent("A", 3));
         final Layers layers = layersHolder[0];
 
         assertEquals(layers.whatIfWith(layer).get("A"),

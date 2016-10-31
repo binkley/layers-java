@@ -13,7 +13,7 @@ public final class LayerSetRule<L extends Layer>
         extends KeyRule<L, Set<L>> {
     private final FullnessFunction<L> full;
 
-    LayerSetRule(final Object key, final FullnessFunction<L> full) {
+    public LayerSetRule(final Object key, final FullnessFunction<L> full) {
         super(full.toString(), key);
         this.full = full;
     }

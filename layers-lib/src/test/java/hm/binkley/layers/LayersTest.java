@@ -1,7 +1,7 @@
 package hm.binkley.layers;
 
 import hm.binkley.layers.Layers.Surface;
-import hm.binkley.layers.values.Value;
+import hm.binkley.layers.rules.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,12 +11,10 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.rules.Rule.mostRecent;
-import static hm.binkley.layers.rules.Rule.sumAll;
-import static hm.binkley.layers.values.Value.floor;
-import static hm.binkley.layers.values.Value.ofBoth;
+import static hm.binkley.layers.values.Value.mostRecent;
 import static hm.binkley.layers.values.Value.ofRule;
 import static hm.binkley.layers.values.Value.ofValue;
+import static hm.binkley.layers.values.Value.sumAll;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
@@ -71,7 +69,7 @@ class LayersTest {
     @Test
     void shouldContainKey() {
         firstLayer.
-                put("FOO", ofBoth("BAR", mostRecent("FOO"))).
+                put("FOO", mostRecent("FOO", "BAR")).
                 saveAndNext(ScratchLayer::new);
 
         assertTrue(layers.containsKey("FOO"));
@@ -80,7 +78,7 @@ class LayersTest {
     @Test
     void shouldHaveKeys() {
         firstLayer.
-                put("FOO", ofBoth(3, sumAll("FOO"))).
+                put("FOO", sumAll("FOO", 3)).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals(singleton("FOO"), layers.keys());
@@ -89,7 +87,7 @@ class LayersTest {
     @Test
     void shouldHaveView() {
         firstLayer.
-                put("BOB", ofBoth(17, mostRecent("BOB"))).
+                put("BOB", mostRecent("BOB", 17)).
                 saveAndNext(ScratchLayer::new);
 
         final List<Map<Object, Object>> view = layers.
@@ -104,7 +102,7 @@ class LayersTest {
     @Test
     void shouldHaveFilteredView() {
         firstLayer.
-                put("BOB", ofBoth(17, mostRecent("BOB"))).
+                put("BOB", mostRecent("BOB", 17)).
                 saveAndNext(EgLayer::new).
                 put("BOB", ofValue(18)).
                 saveAndNext(ScratchLayer::new);
@@ -121,7 +119,7 @@ class LayersTest {
     @Test
     void shouldHaveWhatIfWithLayer() {
         firstLayer.
-                put("BOB", ofBoth(32, mostRecent("BOB")));
+                put("BOB", mostRecent("BOB", 32));
 
         assertTrue(firstLayer.whatIfWith().containsKey("BOB"));
     }
@@ -129,7 +127,7 @@ class LayersTest {
     @Test
     void shouldHaveWhatIfWithoutLayer() {
         firstLayer.
-                put("BOB", ofBoth(31, sumAll("BOB"))).
+                put("BOB", sumAll("BOB", 31)).
                 saveAndNext(ScratchLayer::new);
 
         assertFalse(firstLayer.whatIfWithout().containsKey("BOB"));
@@ -138,7 +136,7 @@ class LayersTest {
     @Test
     void shouldProjectToMap() {
         firstLayer.
-                put("FOO", ofRule(sumAll("FOO"))).
+                put("FOO", ofRule(Rule.sumAll("FOO"))).
                 saveAndNext(ScratchLayer::new).
                 put("FOO", ofValue(3)).
                 saveAndNext(ScratchLayer::new);
@@ -155,8 +153,7 @@ class LayersTest {
 
     @Test
     void shouldComplainIfKeyNull() {
-        assertThrows(NullPointerException.class,
-                () -> layers.get(null));
+        assertThrows(NullPointerException.class, () -> layers.get(null));
     }
 
     @Test

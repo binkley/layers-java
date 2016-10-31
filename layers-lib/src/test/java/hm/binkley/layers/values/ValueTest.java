@@ -37,12 +37,12 @@ class ValueTest {
     @Test
     void shouldHaveValueForOfBoth() {
         assertEquals((Integer) 3,
-                ofBoth(3, Rule.doubling(null)).value().get());
+                ofBoth(3, new IdentityRule<>()).value().get());
     }
 
     @Test
     void shouldHaveRuleForOfBoth() {
-        final Rule<Integer, Integer> rule = Rule.doubling(null);
+        final Rule<Integer, Integer> rule = new IdentityRule<>();
 
         assertEquals(rule, ofBoth(3, rule).rule().get());
     }
@@ -64,14 +64,12 @@ class ValueTest {
 
     @Test
     void shouldEqualsAllInstancesForRuleOnly() {
-        assertEquals(ofRule(Rule.doubling("BOB")),
-                ofRule(Rule.doubling("BOB")));
+        assertEquals(doubling("BOB"), doubling("BOB"));
     }
 
     @Test
     void shouldEqualsAllInstancesForBoth() {
-        assertEquals(ofBoth(3, Rule.doubling("BOB")),
-                ofBoth(3, Rule.doubling("BOB")));
+        assertEquals(doubling("BOB", 3), doubling("BOB", 3));
     }
 
     @Test
@@ -87,8 +85,8 @@ class ValueTest {
 
     @Test
     void shouldHashCodeSameAllInstancesForBoth() {
-        assertEquals(ofBoth(3, Rule.doubling("BOB")).hashCode(),
-                ofBoth(3, Rule.doubling("BOB")).hashCode());
+        assertEquals(doubling("BOB", 3).hashCode(),
+                doubling("BOB", 3).hashCode());
     }
 
     /**
@@ -154,5 +152,16 @@ class ValueTest {
 
         assertAll(() -> assertTrue(display.contains("Floor")),
                 () -> assertTrue(display.contains("212")));
+    }
+
+    private static final class IdentityRule<T>
+            extends Rule<T, T> {
+        private IdentityRule() {super("Identity");}
+
+        @Override
+        public T apply(final Layers layers, final Layer layer,
+                final T value) {
+            return value;
+        }
     }
 }
