@@ -53,7 +53,7 @@ public class Numbers
         @Override
         public Layer apply(final Surface layers) {
             final Layer layer = new Layer(layers, "Base rules for numbers");
-            for (final Numbers key : Numbers.values())
+            for (final Numbers key : values())
                 layer.put(key, 0, Rule::sumAll);
             return layer;
         }

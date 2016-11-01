@@ -50,7 +50,7 @@ public abstract class XEnum<E extends XEnum<E>>
         return self.ordinal - ((XEnum<?>) that).ordinal;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "WeakerAccess"})
     public final Class<E> getDeclaringClass() {
         final Class<?> clazz = getClass();
         final Class<?> zuper = clazz.getSuperclass();

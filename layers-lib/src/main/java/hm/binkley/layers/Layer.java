@@ -96,7 +96,6 @@ public class Layer
 
     /** @todo Immutable? */
     @Override
-    @SuppressWarnings("WeakerAccess")
     public Stream<Entry<Object, Object>> stream() {
         return values.entrySet().stream().
                 filter(pair -> pair.getValue().value().isPresent()).
@@ -105,14 +104,12 @@ public class Layer
     }
 
     @Override
-    @SuppressWarnings("WeakerAccess")
     public Map<Object, Object> toMap() {
         return stream().
                 collect(Collectors.toMap(Entry::getKey, Entry::getValue,
                         throwingMerger(), LinkedHashMap::new));
     }
 
-    @SuppressWarnings("WeakerAccess")
     public Layers whatIfWith() {
         return layers.whatIfWith(this);
     }
@@ -123,7 +120,6 @@ public class Layer
     }
 
     @Override
-    @SuppressWarnings("WeakerAccess")
     public Map<Object, Object> details() {
         return details;
     }

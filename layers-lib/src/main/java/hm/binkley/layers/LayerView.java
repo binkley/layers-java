@@ -3,6 +3,7 @@ package hm.binkley.layers;
 import hm.binkley.layers.values.Value;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -19,7 +20,7 @@ public interface LayerView {
 
     <T, R> Value<T, R> get(final Object key);
 
-    Stream<Map.Entry<Object, Object>> stream();
+    Stream<Entry<Object, Object>> stream();
 
     Map<Object, Object> toMap(); // TODO: Unmodifiable
 

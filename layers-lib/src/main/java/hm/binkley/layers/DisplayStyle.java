@@ -1,6 +1,7 @@
 package hm.binkley.layers;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.joining;
@@ -27,10 +28,10 @@ public enum DisplayStyle {
                 collect(joining(delimiter, prefix, suffix));
     }
 
-    private final static class ToString
-            implements Function<Map.Entry<?, ?>, String> {
+    private static final class ToString
+            implements Function<Entry<?, ?>, String> {
         @Override
-        public String apply(final Map.Entry<?, ?> e) {
+        public String apply(final Entry<?, ?> e) {
             final Object key = e.getKey();
             final String k;
             if (key instanceof Class)
@@ -42,7 +43,7 @@ public enum DisplayStyle {
             final Object value = e.getValue();
             final String v;
             if (value instanceof String)
-                v = ("\"" + value + '"');
+                v = "\"" + value + '"';
             else
                 v = value.toString();
             return k + "=" + v;

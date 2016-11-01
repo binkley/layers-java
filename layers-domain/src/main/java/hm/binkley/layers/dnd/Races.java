@@ -36,7 +36,7 @@ public final class Races {
             return new WithSTR();
         }
 
-        public static class WithSTR {
+        public static final class WithSTR {
             public LayerMaker<Layer> withDEX() {
                 return withDoubleAbilities(STR, DEX);
             }

@@ -26,7 +26,7 @@ import static java.lang.System.out;
  * @todo Annoying, cannot inline with {@link Layers} because Jacoco does not
  * support excluding methods, and #main blows up coverage
  */
-public class DndMain {
+public final class DndMain {
     public static void main(final String... args) {
         final Layers[] layersHolder = new Layers[1];
         final Layer firstLayer = firstLayer(BaseRule::baseRules,

@@ -1,7 +1,8 @@
 package hm.binkley.layers.set;
 
-import hm.binkley.layers.Layers;
+import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.ScratchLayer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static hm.binkley.layers.set.FullnessFunction.max;
@@ -11,7 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LayerSetTest {
-    private LayerSet<EgLayer> set = new LayerSet<>(max(2));
+    private LayerSet<EgLayer> set;
+
+    @BeforeEach
+    void setUpSet() {
+        set = new LayerSet<>(max(2));
+    }
 
     @Test
     void shouldComplainWhenOverfull() {
@@ -52,12 +58,15 @@ class LayerSetTest {
 
     private static final class EgLayer
             extends ScratchLayer {
-        private EgLayer(final Layers.Surface layers) {
+        private final int i;
+
+        private EgLayer(final Surface layers) {
             super(layers);
+            i = 1;
         }
 
         private int foo() {
-            return 1;
+            return i;
         }
     }
 }

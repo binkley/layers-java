@@ -42,7 +42,7 @@ public class Texts
         @Override
         public Layer apply(final Surface layers) {
             final Layer layer = new Layer(layers, "Base rules for text");
-            for (final Texts key : Texts.values())
+            for (final Texts key : values())
                 layer.put(key, "", Rule::mostRecent);
             return layer;
         }

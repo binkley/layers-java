@@ -18,7 +18,6 @@ import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.IntStream.range;
 
-@SuppressWarnings("WeakerAccess")
 public final class Layers {
     private final transient Map<Object, Object> cache = new LinkedHashMap<>();
     private final List<Layer> layers;
@@ -50,18 +49,22 @@ public final class Layers {
         return ctor.apply(layers.new Surface());
     }
 
+    @SuppressWarnings("WeakerAccess")
     public boolean isEmpty() {
         return cache.isEmpty();
     }
 
+    @SuppressWarnings("WeakerAccess")
     public int size() {
         return cache.size();
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Set<Object> keys() {
         return unmodifiableSet(cache.keySet());
     }
 
+    @SuppressWarnings("WeakerAccess")
     public boolean containsKey(final Object key) {
         return cache.containsKey(key);
     }
@@ -74,10 +77,12 @@ public final class Layers {
         });
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Map<Object, Object> toMap() {
         return unmodifiableMap(cache);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Stream<LayerView> view() {
         return layers.stream().
                 map(Layer::view);
@@ -97,6 +102,7 @@ public final class Layers {
                 map(Optional::get);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Layers whatIfWith(final Layer layer) {
         final List<Layer> scenario = new ArrayList<>();
         scenario.addAll(layers);
@@ -119,10 +125,12 @@ public final class Layers {
             return next.apply(this);
         }
 
+        @SuppressWarnings("WeakerAccess")
         public Layers whatIfWith(final Layer layer) {
             return Layers.this.whatIfWith(layer);
         }
 
+        @SuppressWarnings("WeakerAccess")
         public Layers whatIfWithout(final Layer layer) {
             return Layers.this.whatIfWithout(layer);
         }
