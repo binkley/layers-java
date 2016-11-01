@@ -1,6 +1,8 @@
 package hm.binkley.layers;
 
 import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.rules.Rule;
+import hm.binkley.layers.set.FullnessFunction;
 import hm.binkley.layers.values.Value;
 import lombok.RequiredArgsConstructor;
 
@@ -10,11 +12,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static hm.binkley.layers.DisplayStyle.BRACES;
 import static hm.binkley.layers.DisplayStyle.BRACKETS;
+import static hm.binkley.layers.rules.Rule.layerSet;
 import static java.lang.String.format;
 
 /**
@@ -64,6 +68,16 @@ public class Layer
     public <T, R> Layer put(final Object key, final Value<T, R> value) {
         values.put(key, value);
         return this;
+    }
+
+    public <T, R> Layer put(final Object key, final T initialValue,
+            final Function<Object, Rule<T, R>> ctor) {
+        return put(key, Value.ofBoth(initialValue, ctor.apply(key)));
+    }
+
+    public <L extends Layer> Layer put(final Object key, final L initialValue,
+            final FullnessFunction<L> full) {
+        return put(key, Value.ofBoth(initialValue, layerSet(key, full)));
     }
 
     public Layer blend(final Layer that) {

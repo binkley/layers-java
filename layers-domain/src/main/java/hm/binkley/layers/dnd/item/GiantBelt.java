@@ -1,7 +1,7 @@
 package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layers.Surface;
-import hm.binkley.layers.values.Value;
+import hm.binkley.layers.rules.Rule;
 
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.item.Attunement.ATTUNED;
@@ -28,6 +28,6 @@ public abstract class GiantBelt
                         + "strength and the belt of frost giant strength "
                         + "look different, but they have the same effect.",
                 WONDROUS_ITEM, rarity, ATTUNED);
-        put(STR, Value.floor(STR, strength));
+        put(STR, strength, Rule::floor);
     }
 }

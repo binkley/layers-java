@@ -1,6 +1,8 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.rules.BaseRule;
+import hm.binkley.layers.rules.Rule;
 import org.kohsuke.MetaInfServices;
 
 import java.util.ArrayList;
@@ -8,7 +10,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static hm.binkley.layers.values.Value.ofValue;
-import static hm.binkley.layers.values.Value.sumAll;
 import static java.util.Collections.unmodifiableList;
 
 public class Numbers
@@ -50,10 +51,10 @@ public class Numbers
     public static final class AbilitiesBaseRules
             implements BaseRule {
         @Override
-        public Layer apply(final Layers.Surface layers) {
+        public Layer apply(final Surface layers) {
             final Layer layer = new Layer(layers, "Base rules for numbers");
             for (final Numbers key : Numbers.values())
-                layer.put(key, sumAll(key));
+                layer.put(key, 0, Rule::sumAll);
             return layer;
         }
     }

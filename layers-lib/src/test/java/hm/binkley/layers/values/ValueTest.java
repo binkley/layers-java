@@ -9,13 +9,10 @@ import org.junit.jupiter.api.Test;
 import java.util.Objects;
 
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.values.Value.doubling;
-import static hm.binkley.layers.values.Value.floor;
-import static hm.binkley.layers.values.Value.mostRecent;
 import static hm.binkley.layers.values.Value.ofBoth;
 import static hm.binkley.layers.values.Value.ofRule;
 import static hm.binkley.layers.values.Value.ofValue;
-import static hm.binkley.layers.values.Value.sumAll;
+import static hm.binkley.layers.values.ValueTest.IdentityRule.IDENTITY_RULE;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -36,13 +33,12 @@ class ValueTest {
 
     @Test
     void shouldHaveValueForOfBoth() {
-        assertEquals((Integer) 3,
-                ofBoth(3, new IdentityRule<>()).value().get());
+        assertEquals((Integer) 3, ofBoth(3, IDENTITY_RULE).value().get());
     }
 
     @Test
     void shouldHaveRuleForOfBoth() {
-        final Rule<Integer, Integer> rule = new IdentityRule<>();
+        final Rule<Integer, Integer> rule = IDENTITY_RULE;
 
         assertEquals(rule, ofBoth(3, rule).rule().get());
     }
@@ -64,12 +60,12 @@ class ValueTest {
 
     @Test
     void shouldEqualsAllInstancesForRuleOnly() {
-        assertEquals(doubling("BOB"), doubling("BOB"));
+        assertEquals(ofRule(IDENTITY_RULE), ofRule(IDENTITY_RULE));
     }
 
     @Test
     void shouldEqualsAllInstancesForBoth() {
-        assertEquals(doubling("BOB", 3), doubling("BOB", 3));
+        assertEquals(ofBoth(3, IDENTITY_RULE), ofBoth(3, IDENTITY_RULE));
     }
 
     @Test
@@ -85,8 +81,8 @@ class ValueTest {
 
     @Test
     void shouldHashCodeSameAllInstancesForBoth() {
-        assertEquals(doubling("BOB", 3).hashCode(),
-                doubling("BOB", 3).hashCode());
+        assertEquals(ofBoth(3, IDENTITY_RULE).hashCode(),
+                ofBoth(3, IDENTITY_RULE).hashCode());
     }
 
     /**
@@ -125,37 +121,11 @@ class ValueTest {
                 () -> assertTrue(both.toString().contains(ruleString)));
     }
 
-    @Test
-    void shouldHaveToStringForMostRecent() {
-        final String display = mostRecent("A", "xxx").toString();
-
-        assertTrue(display.contains("Most recent"));
-    }
-
-    @Test
-    void shouldHaveToStringForSumAll() {
-        final String display = sumAll("A").toString();
-
-        assertTrue(display.contains("Sum all"));
-    }
-
-    @Test
-    void shouldHaveToStringForDoubling() {
-        final String display = doubling("A").toString();
-
-        assertTrue(display.contains("Doubling"));
-    }
-
-    @Test
-    void shouldHaveToStringForFloor() {
-        final String display = floor("A", 212).toString();
-
-        assertAll(() -> assertTrue(display.contains("Floor")),
-                () -> assertTrue(display.contains("212")));
-    }
-
-    private static final class IdentityRule<T>
+    static final class IdentityRule<T>
             extends Rule<T, T> {
+        static final IdentityRule<Integer> IDENTITY_RULE
+                = new IdentityRule<>();
+
         private IdentityRule() {super("Identity");}
 
         @Override

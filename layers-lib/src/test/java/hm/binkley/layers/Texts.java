@@ -1,13 +1,14 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.rules.BaseRule;
+import hm.binkley.layers.rules.Rule;
 import org.kohsuke.MetaInfServices;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static hm.binkley.layers.values.Value.mostRecent;
 import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.unmodifiableList;
 
@@ -39,10 +40,10 @@ public class Texts
     public static final class TextsBaseRules
             implements BaseRule {
         @Override
-        public Layer apply(final Layers.Surface layers) {
+        public Layer apply(final Surface layers) {
             final Layer layer = new Layer(layers, "Base rules for text");
             for (final Texts key : Texts.values())
-                layer.put(key, mostRecent(key, ""));
+                layer.put(key, "", Rule::mostRecent);
             return layer;
         }
     }
