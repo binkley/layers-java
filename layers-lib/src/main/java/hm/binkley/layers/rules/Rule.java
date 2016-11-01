@@ -2,6 +2,7 @@ package hm.binkley.layers.rules;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.set.FullnessFunction;
+import hm.binkley.layers.set.LayerSetRule;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
