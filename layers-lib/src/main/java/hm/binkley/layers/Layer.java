@@ -3,6 +3,7 @@ package hm.binkley.layers;
 import hm.binkley.layers.Layers.Surface;
 import hm.binkley.layers.rules.Rule;
 import hm.binkley.layers.set.FullnessFunction;
+import hm.binkley.layers.set.LayerSetCommand;
 import hm.binkley.layers.values.Value;
 import lombok.RequiredArgsConstructor;
 
@@ -75,7 +76,8 @@ public class Layer
         return put(key, Value.ofBoth(initialValue, ctor.apply(key)));
     }
 
-    public <L extends Layer> Layer put(final Object key, final L initialValue,
+    public <L extends Layer> Layer put(final Object key,
+            final LayerSetCommand<L> initialValue,
             final FullnessFunction<L> full) {
         return put(key, Value.ofBoth(initialValue, layerSet(key, full)));
     }

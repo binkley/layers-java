@@ -6,10 +6,8 @@ import hm.binkley.layers.rules.KeyRule;
 
 import java.util.Set;
 
-import static java.util.stream.Collectors.toCollection;
-
 public final class LayerSetRule<L extends Layer>
-        extends KeyRule<L, Set<L>> {
+        extends KeyRule<LayerSetCommand<L>, Set<L>> {
     private final FullnessFunction<L> full;
 
     public LayerSetRule(final Object key, final FullnessFunction<L> full) {
@@ -19,9 +17,10 @@ public final class LayerSetRule<L extends Layer>
 
     @Override
     public Set<L> apply(final Layers layers, final Layer layer,
-            final L value) {
+            final LayerSetCommand<L> value) {
         final LayerSet<L> set = new LayerSet<>(full);
-        return layers.<L, Set<L>>plainValuesFor(key).
-                collect(toCollection(() -> set));
+        layers.<LayerSetCommand<L>, Set<L>>plainValuesFor(key).
+                forEach(command -> command.accept(set));
+        return set;
     }
 }

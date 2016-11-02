@@ -6,6 +6,8 @@ import hm.binkley.layers.Layers.Surface;
 
 import java.util.Map;
 
+import static hm.binkley.layers.set.LayerSetCommand.add;
+
 /** @todo Real values for weight/volume */
 public class MagicItem
         extends Item {
@@ -26,6 +28,7 @@ public class MagicItem
     }
 
     public <L extends Layer> L attuneAndNext(final LayerMaker<L> next) {
-        return layers.saveAndNext(new Attuned(layers, this), next);
+        return layers.saveAndNext(
+                new Attuned(layers, add("Attune " + name(), this)), next);
     }
 }

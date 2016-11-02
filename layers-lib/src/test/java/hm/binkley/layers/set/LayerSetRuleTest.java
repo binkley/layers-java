@@ -3,13 +3,14 @@ package hm.binkley.layers.set;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
-import hm.binkley.layers.rules.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static hm.binkley.layers.Layers.firstLayer;
+import static hm.binkley.layers.rules.Rule.layerSet;
 import static hm.binkley.layers.set.FullnessFunction.max;
 import static hm.binkley.layers.set.FullnessFunction.named;
+import static hm.binkley.layers.set.LayerSetCommand.add;
 import static hm.binkley.layers.values.Value.ofRule;
 import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.singleton;
@@ -30,10 +31,10 @@ class LayerSetRuleTest {
     @Test
     void shouldUseLayerSet() {
         firstLayer.
-                put("A", ofRule(Rule.layerSet("A", max(1)))).
+                put("A", ofRule(layerSet("A", max(1)))).
                 saveAndNext(ScratchLayer::new).
-                put("A", ofValue(firstLayer)).
-                saveAndNext(ScratchLayer::new);
+                put("A", ofValue(add("Add " + firstLayer.name(), firstLayer))).
+                        saveAndNext(ScratchLayer::new);
 
         assertEquals(singleton(firstLayer), layers.get("A"));
     }
@@ -41,10 +42,10 @@ class LayerSetRuleTest {
     @Test
     void shouldCapOutLayerSet() {
         final ScratchLayer secondLayer = firstLayer.
-                put("A", firstLayer, max(1)).
+                put("A", add("Add " + firstLayer.name(), firstLayer), max(1)).
                 saveAndNext(ScratchLayer::new);
         secondLayer.
-                put("A", ofValue(secondLayer));
+                put("A", ofValue(add("Add " + secondLayer.name(), secondLayer)));
 
         assertThrows(IllegalStateException.class,
                 () -> secondLayer.saveAndNext(ScratchLayer::new));
@@ -53,7 +54,7 @@ class LayerSetRuleTest {
     @Test
     void shouldDisplayRuleNameWhenAvailable() {
         firstLayer.
-                put("A", firstLayer, named(max(1), "Bob!")).
+                put("A", add("Add " + firstLayer.name(), firstLayer), named(max(1), "Bob!")).
                 saveAndNext(ScratchLayer::new);
 
         assertTrue(firstLayer.toString().contains("Bob!"));

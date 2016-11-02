@@ -3,6 +3,7 @@ package hm.binkley.layers.values;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.rules.Rule;
+import hm.binkley.layers.set.LayerSetCommand;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
@@ -33,8 +34,8 @@ public final class Both<T, R>
     @Override
     public String toString() {
         final String v;
-        if (value instanceof Layer)
-            v = ((Layer) value).name();
+        if (value instanceof LayerSetCommand)
+            v = ((LayerSetCommand) value).name();
         else
             v = value.toString();
         return "{" + v + ", " + rule + "}";

@@ -143,7 +143,7 @@ class MagicItemsTest {
         final MagicItem amuletOfHealth = firstLayer.
                 saveAndNext(AmuletOfHealth::new);
         final Layer attunement = amuletOfHealth.
-                saveAndNext(layers -> new Attuned(layers, amuletOfHealth));
+                saveAndNext(attune(amuletOfHealth));
         attunement.
                 saveAndNext(ScratchLayer::new);
         final String display = attunement.toString();
@@ -156,7 +156,7 @@ class MagicItemsTest {
         final MagicItem amuletOfHealth = firstLayer.
                 saveAndNext(AmuletOfHealth::new);
         final Layer attunement = amuletOfHealth.
-                saveAndNext(layers -> new Attuned(layers, amuletOfHealth));
+                saveAndNext(attune(amuletOfHealth));
         attunement.
                 saveAndNext(ScratchLayer::new);
         final String display = attunement.toString();

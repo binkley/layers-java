@@ -2,6 +2,7 @@ package hm.binkley.layers.rules;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.set.FullnessFunction;
+import hm.binkley.layers.set.LayerSetCommand;
 import hm.binkley.layers.set.LayerSetRule;
 import lombok.RequiredArgsConstructor;
 
@@ -33,8 +34,8 @@ public abstract class Rule<T, R>
         return new FloorRule(key);
     }
 
-    public static <L extends Layer> Rule<L, Set<L>> layerSet(final Object key,
-            final FullnessFunction<L> full) {
+    public static <L extends Layer> Rule<LayerSetCommand<L>, Set<L>> layerSet(
+            final Object key, final FullnessFunction<L> full) {
         return new LayerSetRule<>(key, full);
     }
 }
