@@ -6,11 +6,14 @@ import hm.binkley.layers.ScratchLayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
+
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.rules.Rule.layerSet;
 import static hm.binkley.layers.set.FullnessFunction.max;
 import static hm.binkley.layers.set.FullnessFunction.named;
 import static hm.binkley.layers.set.LayerSetCommand.add;
+import static hm.binkley.layers.set.LayerSetCommand.remove;
 import static hm.binkley.layers.values.Value.ofRule;
 import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.singleton;
@@ -41,20 +44,46 @@ class LayerSetRuleTest {
 
     @Test
     void shouldCapOutLayerSet() {
-        final ScratchLayer secondLayer = firstLayer.
+        final Layer secondLayer = firstLayer.
                 put("A", add("Add " + firstLayer.name(), firstLayer), max(1)).
                 saveAndNext(ScratchLayer::new);
         secondLayer.
-                put("A", ofValue(add("Add " + secondLayer.name(), secondLayer)));
+                put("A", ofValue(add("Add " + secondLayer.name(),
+                        secondLayer)));
 
         assertThrows(IllegalStateException.class,
                 () -> secondLayer.saveAndNext(ScratchLayer::new));
     }
 
     @Test
+    void shouldRemoveMembers() {
+        final Layer secondLayer = firstLayer.
+                put("A", ofRule(layerSet("A", max(1)))).
+                saveAndNext(ScratchLayer::new).
+                put("A", ofValue(
+                        remove("Remove " + firstLayer.name(), firstLayer)));
+        secondLayer.
+                put("A", ofValue(add("Add " + secondLayer.name(),
+                        secondLayer))).
+                // Will throw if test fails
+                        saveAndNext(ScratchLayer::new);
+    }
+
+    @Test
+    void shouldComplainWhenRemovingNonMember() {
+        assertThrows(NoSuchElementException.class, () -> firstLayer.
+                put("A", ofRule(layerSet("A", max(1)))).
+                saveAndNext(ScratchLayer::new).
+                put("A", ofValue(remove("Remove " + firstLayer.name(),
+                        firstLayer))).
+                saveAndNext(ScratchLayer::new));
+    }
+
+    @Test
     void shouldDisplayRuleNameWhenAvailable() {
         firstLayer.
-                put("A", add("Add " + firstLayer.name(), firstLayer), named(max(1), "Bob!")).
+                put("A", add("Add " + firstLayer.name(), firstLayer),
+                        named(max(1), "Bob!")).
                 saveAndNext(ScratchLayer::new);
 
         assertTrue(firstLayer.toString().contains("Bob!"));
