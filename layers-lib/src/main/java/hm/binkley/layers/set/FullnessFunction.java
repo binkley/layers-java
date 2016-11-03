@@ -19,4 +19,8 @@ public abstract class FullnessFunction<L extends Layer>
     public static <L extends Layer> FullnessFunction<L> max(final int max) {
         return named((layers, layer) -> max == layers.size(), "Max " + max);
     }
+
+    public static <L extends Layer> FullnessFunction<L> unlimited() {
+        return named((layers, layer) -> false, "Unlimited");
+    }
 }
