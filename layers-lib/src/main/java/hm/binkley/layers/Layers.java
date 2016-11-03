@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static hm.binkley.layers.DisplayStyle.BRACES;
@@ -95,11 +96,14 @@ public final class Layers {
                 map(Layer::view);
     }
 
-    public <T, R> Stream<T> plainValuesFor(final Object key) {
-        return this.<T, R>streamFor(key).
-                map(Value::value).
-                filter(Optional::isPresent).
-                map(Optional::get);
+    public <T, R> Stream<T> plainValuesLastToFirstFor(final Object key) {
+        return plainValuesFor(layers.stream(), key);
+    }
+
+    public <T, R> Stream<T> plainValuesFirstToLastFor(final Object key) {
+        final int size = layers.size();
+        return plainValuesFor(IntStream.range(1, size).
+                mapToObj(i -> layers.get(size - i)), key);
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -145,9 +149,13 @@ public final class Layers {
                 collect(joining("\n"));
     }
 
-    private <T, R> Stream<Value<T, R>> streamFor(final Object key) {
-        return layers.stream().
+    private static <T, R> Stream<T> plainValuesFor(final Stream<Layer> layers,
+            final Object key) {
+        return layers.
                 filter(layer -> layer.containsKey(key)).
-                map(layer -> layer.<T, R>get(key));
+                map(layer -> layer.<T, R>get(key)).
+                map(Value::value).
+                filter(Optional::isPresent).
+                map(Optional::get);
     }
 }
