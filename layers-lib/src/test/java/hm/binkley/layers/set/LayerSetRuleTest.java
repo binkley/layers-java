@@ -15,7 +15,6 @@ import static hm.binkley.layers.set.FullnessFunction.max;
 import static hm.binkley.layers.set.FullnessFunction.named;
 import static hm.binkley.layers.set.LayerSetCommand.add;
 import static hm.binkley.layers.set.LayerSetCommand.remove;
-import static hm.binkley.layers.values.Value.ofRule;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,7 +34,7 @@ class LayerSetRuleTest {
     @Test
     void shouldUseLayerSet() {
         firstLayer.
-                put("A", ofRule(layerSet("A", max(1)))).
+                put("A", layerSet("A", max(1))).
                 saveAndNext(ScratchLayer::new).
                 put("A", add("Add " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new);
@@ -59,7 +58,7 @@ class LayerSetRuleTest {
     @Test
     void shouldRemoveMembers() {
         firstLayer.
-                put("A", ofRule(layerSet("A", max(1)))).
+                put("A", layerSet("A", max(1))).
                 saveAndNext(ScratchLayer::new).
                 put("A", add("Add " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new).
@@ -72,7 +71,7 @@ class LayerSetRuleTest {
     @Test
     void shouldComplainWhenRemovingNonMember() {
         assertThrows(NoSuchElementException.class, () -> firstLayer.
-                put("A", ofRule(layerSet("A", max(1)))).
+                put("A", layerSet("A", max(1))).
                 saveAndNext(ScratchLayer::new).
                 put("A", remove("Remove " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new));

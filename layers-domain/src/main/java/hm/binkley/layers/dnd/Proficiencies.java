@@ -3,13 +3,12 @@ package hm.binkley.layers.dnd;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.XEnum;
-import hm.binkley.layers.rules.Rule;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static hm.binkley.layers.values.Value.ofRule;
+import static hm.binkley.layers.rules.Rule.doubling;
 import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.unmodifiableList;
 
@@ -53,7 +52,7 @@ public class Proficiencies
         return layers -> {
             final Layer layer = new Layer(layers,
                     "Proficiency bonus doubling");
-            layer.put(proficiency, ofRule(Rule.doubling(proficiency)));
+            layer.put(proficiency, doubling(proficiency));
             return layer;
         };
     }

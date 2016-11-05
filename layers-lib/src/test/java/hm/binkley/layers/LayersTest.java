@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.values.Value.ofRule;
+import static hm.binkley.layers.rules.Rule.sumAll;
 import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
@@ -134,7 +134,7 @@ class LayersTest {
     @Test
     void shouldProjectToMap() {
         firstLayer.
-                put("FOO", ofRule(Rule.sumAll("FOO"))).
+                put("FOO", sumAll("FOO")).
                 saveAndNext(ScratchLayer::new).
                 put("FOO", ofValue(3)).
                 saveAndNext(ScratchLayer::new);

@@ -7,7 +7,6 @@ import org.kohsuke.MetaInfServices;
 
 import static hm.binkley.layers.rules.Rule.layerSet;
 import static hm.binkley.layers.set.FullnessFunction.max;
-import static hm.binkley.layers.values.Value.ofRule;
 
 @MetaInfServices
 public final class MagicItemsBaseRules
@@ -15,7 +14,7 @@ public final class MagicItemsBaseRules
     @Override
     public Layer apply(final Surface layers) {
         final Layer layer = new Layer(layers, "Base rules for magic items");
-        layer.put(Attuned.class, ofRule(layerSet(Attuned.class, max(3))));
+        layer.put(Attuned.class, layerSet(Attuned.class, max(3)));
         return layer;
     }
 }

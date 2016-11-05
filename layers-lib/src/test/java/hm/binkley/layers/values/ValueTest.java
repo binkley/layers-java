@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Objects;
 
 import static hm.binkley.layers.Layers.firstLayer;
+import static hm.binkley.layers.rules.Rule.doubling;
 import static hm.binkley.layers.values.Value.ofBoth;
 import static hm.binkley.layers.values.Value.ofRule;
 import static hm.binkley.layers.values.Value.ofValue;
@@ -26,7 +27,7 @@ class ValueTest {
 
     @Test
     void shouldHaveRuleForOfRule() {
-        final Rule<Integer, Integer> rule = Rule.doubling(null);
+        final Rule<Integer, Integer> rule = doubling(null);
 
         assertEquals(rule, ofRule(rule).rule().get());
     }
@@ -75,8 +76,8 @@ class ValueTest {
 
     @Test
     void shouldHashCodeSameAllInstancesForRuleOnly() {
-        assertEquals(ofRule(Rule.doubling("BOB")).hashCode(),
-                ofRule(Rule.doubling("BOB")).hashCode());
+        assertEquals(ofRule(doubling("BOB")).hashCode(),
+                ofRule(doubling("BOB")).hashCode());
     }
 
     @Test
@@ -100,7 +101,7 @@ class ValueTest {
      */
     @Test
     void shouldHaveToStringForRuleOnly() {
-        final Rule<Integer, Integer> rule = Rule.doubling(null);
+        final Rule<Integer, Integer> rule = doubling(null);
 
         assertTrue(ofRule(rule).toString().contains(rule.toString()));
     }
@@ -111,7 +112,7 @@ class ValueTest {
      */
     @Test
     void shouldHaveToStringForBoth() {
-        final Rule<Integer, Integer> rule = Rule.doubling(null);
+        final Rule<Integer, Integer> rule = doubling(null);
         final String valueString = Objects.toString(3);
         final String ruleString = rule.toString();
 

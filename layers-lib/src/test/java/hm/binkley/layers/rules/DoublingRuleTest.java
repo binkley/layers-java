@@ -7,10 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.values.Value.ofRule;
-import static hm.binkley.layers.values.Value.ofValue;
 import static hm.binkley.layers.rules.Rule.doubling;
 import static hm.binkley.layers.rules.Rule.sumAll;
+import static hm.binkley.layers.values.Value.ofValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DoublingRuleTest {
@@ -26,13 +25,13 @@ class DoublingRuleTest {
     @Test
     void shouldUseDoubling() {
         firstLayer.
-                put("A", ofRule(sumAll("A"))).
+                put("A", sumAll("A")).
                 saveAndNext(ScratchLayer::new).
                 put("A", ofValue(1)).
                 saveAndNext(ScratchLayer::new).
                 put("A", ofValue(2)).
                 saveAndNext(ScratchLayer::new).
-                put("A", ofRule(doubling("A"))).
+                put("A", doubling("A")).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 6, layers.get("A"));
