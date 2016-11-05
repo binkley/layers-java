@@ -25,6 +25,7 @@ These include:
 * Instance factory methods, chaining layer construction
 * When possible, use constructors for simple lambdas
 * Curry more complex constructors and functions: aim for uniform syntax
+* Convenience functions to capture common use patterns
 * Streams as preferred model for collections
 * Log-structured history
 * Cache of current values
