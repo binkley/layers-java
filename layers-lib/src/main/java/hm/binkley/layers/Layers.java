@@ -10,7 +10,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static hm.binkley.layers.DisplayStyle.BRACES;
@@ -96,13 +95,13 @@ public final class Layers {
                 map(Layer::view);
     }
 
-    public <T, R> Stream<T> plainValuesLastToFirstFor(final Object key) {
+    public <T> Stream<T> plainValuesLastToFirstFor(final Object key) {
         return plainValuesFor(layers.stream(), key);
     }
 
-    public <T, R> Stream<T> plainValuesFirstToLastFor(final Object key) {
+    public <T> Stream<T> plainValuesFirstToLastFor(final Object key) {
         final int size = layers.size();
-        return plainValuesFor(IntStream.range(1, size).
+        return plainValuesFor(range(1, size).
                 mapToObj(i -> layers.get(size - i)), key);
     }
 

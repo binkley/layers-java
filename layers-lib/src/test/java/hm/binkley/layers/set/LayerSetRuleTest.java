@@ -4,6 +4,7 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
@@ -15,7 +16,7 @@ import static hm.binkley.layers.set.FullnessFunction.named;
 import static hm.binkley.layers.set.LayerSetCommand.add;
 import static hm.binkley.layers.set.LayerSetCommand.remove;
 import static hm.binkley.layers.values.Value.ofRule;
-import static hm.binkley.layers.values.Value.ofValue;
+import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -36,8 +37,8 @@ class LayerSetRuleTest {
         firstLayer.
                 put("A", ofRule(layerSet("A", max(1)))).
                 saveAndNext(ScratchLayer::new).
-                put("A", ofValue(add("Add " + firstLayer.name(), firstLayer))).
-                        saveAndNext(ScratchLayer::new);
+                put("A", add("Add " + firstLayer.name(), firstLayer)).
+                saveAndNext(ScratchLayer::new);
 
         assertEquals(singleton(firstLayer), layers.get("A"));
     }
@@ -48,25 +49,24 @@ class LayerSetRuleTest {
                 put("A", add("Add " + firstLayer.name(), firstLayer), max(1)).
                 saveAndNext(ScratchLayer::new);
         secondLayer.
-                put("A", ofValue(add("Add " + secondLayer.name(),
-                        secondLayer)));
+                put("A", add("Add " + secondLayer.name(), secondLayer));
 
         assertThrows(IllegalStateException.class,
                 () -> secondLayer.saveAndNext(ScratchLayer::new));
     }
 
+    @Disabled("WIP")
     @Test
     void shouldRemoveMembers() {
-        final Layer secondLayer = firstLayer.
+        firstLayer.
                 put("A", ofRule(layerSet("A", max(1)))).
                 saveAndNext(ScratchLayer::new).
-                put("A", ofValue(
-                        remove("Remove " + firstLayer.name(), firstLayer)));
-        secondLayer.
-                put("A", ofValue(add("Add " + secondLayer.name(),
-                        secondLayer))).
-                // Will throw if test fails
-                        saveAndNext(ScratchLayer::new);
+                put("A", add("Add " + firstLayer.name(), firstLayer)).
+                saveAndNext(ScratchLayer::new).
+                put("A", remove("Remove " + firstLayer.name(), firstLayer)).
+                saveAndNext(ScratchLayer::new);
+
+        assertEquals(emptySet(), layers.get("A"));
     }
 
     @Test
@@ -74,8 +74,7 @@ class LayerSetRuleTest {
         assertThrows(NoSuchElementException.class, () -> firstLayer.
                 put("A", ofRule(layerSet("A", max(1)))).
                 saveAndNext(ScratchLayer::new).
-                put("A", ofValue(remove("Remove " + firstLayer.name(),
-                        firstLayer))).
+                put("A", remove("Remove " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new));
     }
 

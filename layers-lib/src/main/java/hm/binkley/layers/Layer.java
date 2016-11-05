@@ -77,6 +77,11 @@ public class Layer
     }
 
     public <L extends Layer> Layer put(final Object key,
+            final LayerSetCommand<L> value) {
+        return put(key, Value.ofValue(value));
+    }
+
+    public <L extends Layer> Layer put(final Object key,
             final LayerSetCommand<L> initialValue,
             final FullnessFunction<L> full) {
         return put(key, Value.ofBoth(initialValue, layerSet(key, full)));

@@ -41,4 +41,9 @@ public final class LayerSetCommand<L extends Layer>
     public void accept(final LayerSet<L> set) {
         command.accept(set, layer);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
