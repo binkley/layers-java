@@ -17,6 +17,7 @@ import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.IntStream.range;
+import static java.util.stream.IntStream.rangeClosed;
 
 public final class Layers {
     private final transient Map<Object, Object> cache = new LinkedHashMap<>();
@@ -31,7 +32,10 @@ public final class Layers {
         // This ensures 1) rules see a complete cache, not partially updated
         // 2) rules relying on other values work against prior cache
         final Map<Object, Object> updated = new LinkedHashMap<>();
-        layers.forEach(layer -> layer.keys().forEach(key -> {
+        final int size = layers.size();
+        rangeClosed(1, size).
+                mapToObj(i -> layers.get(size - i)).
+                forEach(layer -> layer.keys().forEach(key -> {
             final Value<Object, Object> value = layer.get(key);
             value.rule().
                     map(rule -> value.apply(this, layer)).
@@ -90,18 +94,20 @@ public final class Layers {
 
     /** @todo filter can call mutators */
     public Stream<LayerView> view(final LayerFilter filter) {
-        return layers.stream().
+        final int size = layers.size();
+        return rangeClosed(1, size).
+                mapToObj(i -> layers.get(size - i)).
                 filter(filter).
                 map(Layer::view);
     }
 
-    public <T> Stream<T> plainValuesLastToFirstFor(final Object key) {
+    public <T> Stream<T> plainValuesFirstToLastFor(final Object key) {
         return plainValuesFor(layers.stream(), key);
     }
 
-    public <T> Stream<T> plainValuesFirstToLastFor(final Object key) {
+    public <T> Stream<T> plainValuesLastToFirstFor(final Object key) {
         final int size = layers.size();
-        return plainValuesFor(range(1, size).
+        return plainValuesFor(rangeClosed(1, size).
                 mapToObj(i -> layers.get(size - i)), key);
     }
 
@@ -109,7 +115,7 @@ public final class Layers {
     public Layers whatIfWith(final Layer layer) {
         final List<Layer> scenario = new ArrayList<>();
         scenario.addAll(layers);
-        scenario.add(0, layer);
+        scenario.add(layer);
         return new Layers(scenario);
     }
 
@@ -123,7 +129,7 @@ public final class Layers {
     public final class Surface {
         public <L extends Layer> L saveAndNext(final Layer layer,
                 final LayerMaker<L> next) {
-            layers.add(0, layer);
+            layers.add(layer);
             updateCache();
             return next.apply(this);
         }
@@ -144,7 +150,7 @@ public final class Layers {
         final int size = layers.size();
         return "All (" + layers.size() + "): " + BRACES.display(cache) + "\n"
                 + range(0, size).
-                mapToObj(i -> (size - i) + ": " + layers.get(i)).
+                mapToObj(i -> i + ": " + layers.get(size - i - 1)).
                 collect(joining("\n"));
     }
 
