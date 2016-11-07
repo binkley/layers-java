@@ -34,6 +34,15 @@ These include:
 
 * Data structures with cyclic references
 * Lack of setters complicates coding style
+* Density of code a challenge
+
+## Caching
+
+1. Walk layers from oldest to newest.
+2. If a key is already cached, do not recompute.
+3. For a given new key, find all its values, for example, to sum them.
+4. For a given new key, find it's most recent (applicable) rule.
+5. Some rules may be complex, and be interested in the whole layers.
 
 ## `Layers`
 
