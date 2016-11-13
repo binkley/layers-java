@@ -4,4 +4,4 @@ import java.util.function.Predicate;
 
 @FunctionalInterface
 public interface LayerFilter
-        extends Predicate<Layer> {}
+        extends Predicate<LayerView> {}

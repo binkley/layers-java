@@ -92,7 +92,6 @@ public final class Layers {
                 map(Layer::view);
     }
 
-    /** @todo filter can call mutators */
     public Stream<LayerView> view(final LayerFilter filter) {
         final int size = layers.size();
         return rangeClosed(1, size).
