@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Stream;
 
+/** @todo Unable to specifiy unmodifiable with plain JDK. */
 public interface LayerView {
     String name();
 
@@ -14,7 +15,7 @@ public interface LayerView {
 
     int size();
 
-    Set<Object> keys(); // TODO: Unmodifiable
+    Set<Object> keys();
 
     boolean containsKey(final Object key);
 
@@ -22,7 +23,7 @@ public interface LayerView {
 
     Stream<Entry<Object, Object>> stream();
 
-    Map<Object, Object> toMap(); // TODO: Unmodifiable
+    Map<Object, Object> toMap();
 
-    Map<Object, Object> details(); // TODO: Unmodifiable
+    Map<Object, Object> details();
 }

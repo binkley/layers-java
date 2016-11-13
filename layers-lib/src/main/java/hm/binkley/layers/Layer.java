@@ -108,7 +108,6 @@ public class Layer
         return blend(that.apply(layers));
     }
 
-    /** @todo Immutable? */
     @Override
     public Stream<Entry<Object, Object>> stream() {
         return values.entrySet().stream().
@@ -157,7 +156,7 @@ public class Layer
         return toString + " " + BRACKETS.display(details);
     }
 
-    /** @todo Hidden away in {@link Collectors}. */
+    /** Annoying: JDK hides this away in {@link Collectors}. */
     private static <T> BinaryOperator<T> throwingMerger() {
         return (u, v) -> {
             throw new IllegalStateException(format("Duplicate key %s", u));
