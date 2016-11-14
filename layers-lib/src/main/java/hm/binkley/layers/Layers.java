@@ -4,6 +4,7 @@ import hm.binkley.layers.rules.Rule;
 import hm.binkley.layers.values.Value;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,20 +48,19 @@ public final class Layers {
     /**
      * Strategy: <ol> <li>Update {@link Rule} to take stream of values.</li>
      * <li>Teach rules using their value to not do that.</li> <li>Get rid of
-     * {@link Value#ofBoth(Object, Rule)}.</li> <li>Rewrite {@link
-     * #updateCache()}.</li> <li>Simplify (if possible) {@link Rule} to not
-     * need a {@code Layers}.</li> </ol>
+     * {@link Value#ofBoth(Object, Rule)}.</li> <li>Simplify (if possible)
+     * {@link Rule} to not need a {@code Layers}.</li> </ol>
      */
     private void updateCache() {
         final Map<Object, Object> updated = new LinkedHashMap<>();
         layers.stream().
-                flatMap(layer -> layer.keys().stream()).
-                filter(key -> !updated.containsKey(key)).
+                map(Layer::keys).
+                flatMap(Collection::stream).
+                distinct().
                 forEach(key -> {
                     final Layer layer = ruleLayersFor(key).findFirst().get();
-                    final Value<Object, Object> value = layer.get(key);
                     final Stream<Layer> values = valueLayersFor(key);
-                    updated.put(key, value.apply(this, layer));
+                    updated.put(key, layer.get(key).apply(this, layer));
                 });
         cache.clear();
         cache.putAll(updated);
