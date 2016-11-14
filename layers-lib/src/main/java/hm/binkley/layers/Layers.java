@@ -1,5 +1,6 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.rules.Rule;
 import hm.binkley.layers.values.Value;
 
 import java.util.ArrayList;
@@ -28,20 +29,39 @@ public final class Layers {
         updateCache();
     }
 
-    private void updateCache() {
-        // This ensures 1) rules see a complete cache, not partially updated
-        // 2) rules relying on other values work against prior cache
-        final Map<Object, Object> updated = new LinkedHashMap<>();
+    private Stream<Layer> ruleLayersFor(final Object key) {
         final int size = layers.size();
-        rangeClosed(1, size).
-                mapToObj(i -> layers.get(size - i)).
-                forEach(layer -> layer.keys().forEach(key -> {
-            final Value<Object, Object> value = layer.get(key);
-            value.rule().
-                    map(rule -> value.apply(this, layer)).
-                    map(result -> updated.putIfAbsent(key, result)).
-                    isPresent();
-        }));
+        return range(0, size).
+                map(i -> size - i - 1).
+                mapToObj(layers::get).
+                filter(layer -> layer.containsKey(key)).
+                filter(layer -> layer.get(key).rule().isPresent());
+    }
+
+    private Stream<Layer> valueLayersFor(final Object key) {
+        return layers.stream().
+                filter(layer -> layer.containsKey(key)).
+                filter(layer -> layer.get(key).value().isPresent());
+    }
+
+    /**
+     * Strategy: <ol> <li>Update {@link Rule} to take stream of values.</li>
+     * <li>Teach rules using their value to not do that.</li> <li>Get rid of
+     * {@link Value#ofBoth(Object, Rule)}.</li> <li>Rewrite {@link
+     * #updateCache()}.</li> <li>Simplify (if possible) {@link Rule} to not
+     * need a {@code Layers}.</li> </ol>
+     */
+    private void updateCache() {
+        final Map<Object, Object> updated = new LinkedHashMap<>();
+        layers.stream().
+                flatMap(layer -> layer.keys().stream()).
+                filter(key -> !updated.containsKey(key)).
+                forEach(key -> {
+                    final Layer layer = ruleLayersFor(key).findFirst().get();
+                    final Value<Object, Object> value = layer.get(key);
+                    final Stream<Layer> values = valueLayersFor(key);
+                    updated.put(key, value.apply(this, layer));
+                });
         cache.clear();
         cache.putAll(updated);
     }
