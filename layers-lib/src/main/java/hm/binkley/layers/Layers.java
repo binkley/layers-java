@@ -30,21 +30,6 @@ public final class Layers {
         updateCache();
     }
 
-    private Stream<Layer> ruleLayersFor(final Object key) {
-        final int size = layers.size();
-        return range(0, size).
-                map(i -> size - i - 1).
-                mapToObj(layers::get).
-                filter(layer -> layer.containsKey(key)).
-                filter(layer -> layer.get(key).rule().isPresent());
-    }
-
-    private Stream<Layer> valueLayersFor(final Object key) {
-        return layers.stream().
-                filter(layer -> layer.containsKey(key)).
-                filter(layer -> layer.get(key).value().isPresent());
-    }
-
     /**
      * Strategy: <ol> <li>Update {@link Rule} to take stream of values.</li>
      * <li>Teach rules using their value to not do that.</li> <li>Get rid of
@@ -171,6 +156,21 @@ public final class Layers {
                 + range(0, size).
                 mapToObj(i -> i + ": " + layers.get(size - i - 1)).
                 collect(joining("\n"));
+    }
+
+    private Stream<Layer> ruleLayersFor(final Object key) {
+        final int size = layers.size();
+        return range(0, size).
+                map(i -> size - i - 1).
+                mapToObj(layers::get).
+                filter(layer -> layer.containsKey(key)).
+                filter(layer -> layer.get(key).rule().isPresent());
+    }
+
+    private Stream<Layer> valueLayersFor(final Object key) {
+        return layers.stream().
+                filter(layer -> layer.containsKey(key)).
+                filter(layer -> layer.get(key).value().isPresent());
     }
 
     private static <T, R> Stream<T> plainValuesFor(final Stream<Layer> layers,

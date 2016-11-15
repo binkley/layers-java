@@ -19,7 +19,7 @@ public final class LayerSetRule<L extends Layer>
     public Set<L> apply(final Layers layers, final Layer layer,
             final LayerSetCommand<L> value) {
         final LayerSet<L> set = new LayerSet<>(full);
-        layers.<LayerSetCommand<L>>plainValuesLastToFirstFor(key).
+        layers.<LayerSetCommand<L>>plainValuesFirstToLastFor(key).
                 forEach(command -> command.accept(set));
         return set;
     }
