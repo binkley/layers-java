@@ -67,7 +67,7 @@ class LayersTest {
     @Test
     void shouldContainKey() {
         firstLayer.
-                put("FOO", "BAR", Rule::mostRecent).
+                put("FOO", "BAR", (key) -> Rule.mostRecent()).
                 saveAndNext(ScratchLayer::new);
 
         assertTrue(layers.containsKey("FOO"));
@@ -76,7 +76,7 @@ class LayersTest {
     @Test
     void shouldHaveKeys() {
         firstLayer.
-                put("FOO", 3, Rule::sumAll).
+                put("FOO", 3, (key) -> Rule.sumAll()).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals(singleton("FOO"), layers.keys());
@@ -85,7 +85,7 @@ class LayersTest {
     @Test
     void shouldHaveView() {
         firstLayer.
-                put("BOB", 17, Rule::mostRecent).
+                put("BOB", 17, (key) -> Rule.mostRecent()).
                 saveAndNext(ScratchLayer::new);
 
         final List<Map<Object, Object>> view = layers.
@@ -100,7 +100,7 @@ class LayersTest {
     @Test
     void shouldHaveFilteredView() {
         firstLayer.
-                put("BOB", 17, Rule::mostRecent).
+                put("BOB", 17, (key) -> Rule.mostRecent()).
                 saveAndNext(EgLayer::new).
                 put("BOB", ofValue(18)).
                 saveAndNext(ScratchLayer::new);
@@ -117,24 +117,24 @@ class LayersTest {
     @Test
     void shouldHaveWhatIfWithLayer() {
         firstLayer.
-                put("BOB", 32, Rule::mostRecent);
+                put("BOB", 32, (key) -> Rule.mostRecent());
 
-        assertTrue(firstLayer.whatIfWith().containsKey("BOB"));
+        assertTrue(layers.whatIfWith(firstLayer).containsKey("BOB"));
     }
 
     @Test
     void shouldHaveWhatIfWithoutLayer() {
         firstLayer.
-                put("BOB", 31, Rule::sumAll).
+                put("BOB", 31, (key) -> Rule.sumAll()).
                 saveAndNext(ScratchLayer::new);
 
-        assertFalse(firstLayer.whatIfWithout().containsKey("BOB"));
+        assertFalse(layers.whatIfWithout(firstLayer).containsKey("BOB"));
     }
 
     @Test
     void shouldProjectToMap() {
         firstLayer.
-                put("FOO", sumAll("FOO")).
+                put("FOO", sumAll()).
                 saveAndNext(ScratchLayer::new).
                 put("FOO", ofValue(3)).
                 saveAndNext(ScratchLayer::new);

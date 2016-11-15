@@ -1,19 +1,18 @@
 package hm.binkley.layers.rules;
 
-import hm.binkley.layers.Layer;
-import hm.binkley.layers.Layers;
+import hm.binkley.layers.Layers.RuleSurface;
 
 import static java.lang.Integer.max;
 
 public class FloorRule
-        extends KeyRule<Integer, Integer> {
-    protected FloorRule(final Object key) {
-        super("Floor", key);
+        extends Rule<Integer, Integer> {
+    FloorRule() {
+        super("Floor");
     }
 
     @Override
-    public Integer apply(final Layers layers, final Layer layer,
-            final Integer value) {
-        return max(value, layers.whatIfWithout(layer).get(key));
+    public Integer apply(final RuleSurface<Integer> layers) {
+        return max(layers.currentValue(),
+                layers.whatIfWithout().get(layers.key()));
     }
 }

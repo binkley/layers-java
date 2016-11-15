@@ -23,11 +23,11 @@ class FloorRuleTest {
     @Test
     void shouldUseFloor() {
         firstLayer.
-                put("A", 0, Rule::sumAll).
+                put("A", 0, (key) -> Rule.sumAll()).
                 saveAndNext(ScratchLayer::new).
                 put("A", ofValue(3)).
                 saveAndNext(ScratchLayer::new).
-                put("A", 12, Rule::floor).
+                put("A", 12, (key1) -> Rule.floor()).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 12, layers.get("A"));
@@ -36,11 +36,11 @@ class FloorRuleTest {
     @Test
     void shouldIgnoreFloor() {
         firstLayer.
-                put("A", 0, Rule::sumAll).
+                put("A", 0, (key) -> Rule.sumAll()).
                 saveAndNext(ScratchLayer::new).
                 put("A", ofValue(12)).
                 saveAndNext(ScratchLayer::new).
-                put("A", 0, Rule::floor).
+                put("A", 0, (key1) -> Rule.floor()).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 12, layers.get("A"));

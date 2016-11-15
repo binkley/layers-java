@@ -1,13 +1,11 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.rules.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -135,31 +133,5 @@ class LayerTest {
         layer.details().put("apple", "cart");
 
         assertEquals(layer.details(), layer.view().details());
-    }
-
-    @Test
-    void shouldDelegateWhatIfWithoutToLayers() {
-        final Layers[] layersHolder = new Layers[1];
-        final Layer layer = firstLayer(ScratchLayer::new,
-                layers -> layersHolder[0] = layers).
-                put("A", 0, Rule::sumAll).
-                saveAndNext(ScratchLayer::new).
-                put("A", 3, Rule::mostRecent);
-        layer.saveAndNext(ScratchLayer::new);
-
-        assertEquals(layersHolder[0].whatIfWithout(layer).get("A"),
-                layer.whatIfWithout().get("A"));
-    }
-
-    @Test
-    void shouldDelegateWhatIfWithToLayers() {
-        final Layers[] layersHolder = new Layers[1];
-        final Layer layer = firstLayer(ScratchLayer::new,
-                layers -> layersHolder[0] = layers);
-        layer.put("A", 3, Rule::mostRecent);
-        final Layers layers = layersHolder[0];
-
-        assertEquals(layers.whatIfWith(layer).get("A"),
-                layer.whatIfWith().get("A"));
     }
 }

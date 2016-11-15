@@ -28,6 +28,6 @@ public abstract class GiantBelt
                         + "strength and the belt of frost giant strength "
                         + "look different, but they have the same effect.",
                 WONDROUS_ITEM, rarity, ATTUNED);
-        put(STR, strength, Rule::floor);
+        put(STR, strength, (key) -> Rule.floor());
     }
 }

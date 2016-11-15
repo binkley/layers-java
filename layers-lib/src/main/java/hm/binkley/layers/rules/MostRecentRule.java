@@ -1,18 +1,27 @@
 package hm.binkley.layers.rules;
 
-import hm.binkley.layers.Layer;
-import hm.binkley.layers.Layers;
+import hm.binkley.layers.Layers.RuleSurface;
+
+import java.util.NoSuchElementException;
+import java.util.function.Supplier;
 
 public class MostRecentRule<T>
-        extends KeyRule<T, T> {
-    protected MostRecentRule(final Object key) {
-        super("Most recent", key);
+        extends Rule<T, T> {
+    MostRecentRule() {
+        super("Most recent");
     }
 
     @Override
-    public T apply(final Layers layers, final Layer layer, final T value) {
+    public T apply(final RuleSurface<T> layers) {
+        final Object key = layers.key();
         return layers.<T>plainValuesLastToFirstFor(key).
                 findFirst().
-                orElseThrow(noValueForKey());
+                orElseThrow(noValueForKey(key));
+    }
+
+    private static Supplier<NoSuchElementException> noValueForKey(
+            final Object key) {
+        return () -> new NoSuchElementException(
+                "No value present for key: " + key);
     }
 }

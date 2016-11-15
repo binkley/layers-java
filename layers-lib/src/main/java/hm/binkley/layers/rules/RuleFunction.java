@@ -1,9 +1,9 @@
 package hm.binkley.layers.rules;
 
-import hm.binkley.layers.Layer;
-import hm.binkley.layers.Layers;
+import hm.binkley.layers.Layers.RuleSurface;
+
+import java.util.function.Function;
 
 @FunctionalInterface
-public interface RuleFunction<T, R> {
-    R apply(final Layers layers, final Layer layer, final T value);
-}
+public interface RuleFunction<T, R>
+        extends Function<RuleSurface<T>, R> {}

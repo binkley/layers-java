@@ -1,8 +1,8 @@
 package hm.binkley.layers.dnd;
 
-import hm.binkley.layers.rules.BaseRule;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
+import hm.binkley.layers.rules.BaseRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,12 +25,12 @@ class ProficienciesTest {
 
     @Test
     void shouldDoubleProficiencies() {
-        assertEquals((Integer) 2, firstLayer.
+        final Layer layer = firstLayer.
                 saveAndNext(BaseRule::baseRules).
                 saveAndNext(proficiencyBonus(ACROBATICS, 1)).
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
-                saveAndNext(doubleProficiency(ACROBATICS)).
-                whatIfWith().
-                get(ACROBATICS));
+                saveAndNext(doubleProficiency(ACROBATICS));
+
+        assertEquals((Integer) 2, layers.whatIfWith(layer).get(ACROBATICS));
     }
 }

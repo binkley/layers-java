@@ -1,18 +1,16 @@
 package hm.binkley.layers.rules;
 
-import hm.binkley.layers.Layer;
-import hm.binkley.layers.Layers;
+import hm.binkley.layers.Layers.RuleSurface;
 
 public class SumAllRule
-        extends KeyRule<Integer, Integer> {
-    protected SumAllRule(final Object key) {
-        super("Sum all", key);
+        extends Rule<Integer, Integer> {
+    SumAllRule() {
+        super("Sum all");
     }
 
     @Override
-    public Integer apply(final Layers layers, final Layer layer,
-            final Integer value) {
-        return layers.<Integer>plainValuesLastToFirstFor(key).
+    public Integer apply(final RuleSurface<Integer> layers) {
+        return layers.<Integer>plainValuesLastToFirstFor(layers.key()).
                 mapToInt(Integer::intValue).
                 sum();
     }

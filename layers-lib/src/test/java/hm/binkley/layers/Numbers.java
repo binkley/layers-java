@@ -54,7 +54,7 @@ public class Numbers
         public Layer apply(final LayerSurface layers) {
             final Layer layer = new Layer(layers, "Base rules for numbers");
             for (final Numbers key : values())
-                layer.put(key, 0, Rule::sumAll);
+                layer.put(key, 0, (key1) -> Rule.sumAll());
             return layer;
         }
     }

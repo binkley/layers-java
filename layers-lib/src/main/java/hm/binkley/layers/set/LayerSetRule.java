@@ -1,25 +1,24 @@
 package hm.binkley.layers.set;
 
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.Layers;
-import hm.binkley.layers.rules.KeyRule;
+import hm.binkley.layers.Layers.RuleSurface;
+import hm.binkley.layers.rules.Rule;
 
 import java.util.Set;
 
 public final class LayerSetRule<L extends Layer>
-        extends KeyRule<LayerSetCommand<L>, Set<L>> {
+        extends Rule<LayerSetCommand<L>, Set<L>> {
     private final FullnessFunction<L> full;
 
-    public LayerSetRule(final Object key, final FullnessFunction<L> full) {
-        super(full.toString(), key);
+    public LayerSetRule(final FullnessFunction<L> full) {
+        super(full.toString());
         this.full = full;
     }
 
     @Override
-    public Set<L> apply(final Layers layers, final Layer layer,
-            final LayerSetCommand<L> value) {
+    public Set<L> apply(final RuleSurface<LayerSetCommand<L>> layers) {
         final LayerSet<L> set = new LayerSet<>(full);
-        layers.<LayerSetCommand<L>>plainValuesFirstToLastFor(key).
+        layers.<LayerSetCommand<L>>plainValuesFirstToLastFor(layers.key()).
                 forEach(command -> command.accept(set));
         return set;
     }

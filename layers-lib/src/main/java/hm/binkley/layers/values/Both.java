@@ -1,7 +1,6 @@
 package hm.binkley.layers.values;
 
-import hm.binkley.layers.Layer;
-import hm.binkley.layers.Layers;
+import hm.binkley.layers.Layers.RuleSurface;
 import hm.binkley.layers.rules.Rule;
 import hm.binkley.layers.set.LayerSetCommand;
 import lombok.EqualsAndHashCode;
@@ -27,8 +26,8 @@ public final class Both<T, R>
     }
 
     @Override
-    public R apply(final Layers layers, final Layer layer) {
-        return rule.apply(layers, layer, value);
+    public R apply(final RuleSurface<T> layers) {
+        return rule.apply(layers);
     }
 
     @Override

@@ -52,7 +52,7 @@ public class Proficiencies
         return layers -> {
             final Layer layer = new Layer(layers,
                     "Proficiency bonus doubling");
-            layer.put(proficiency, doubling(proficiency));
+            layer.put(proficiency, doubling());
             return layer;
         };
     }

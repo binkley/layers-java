@@ -4,10 +4,12 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.set.FullnessFunction;
 import hm.binkley.layers.set.LayerSetCommand;
 import hm.binkley.layers.set.LayerSetRule;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 
+@EqualsAndHashCode
 @RequiredArgsConstructor
 public abstract class Rule<T, R>
         implements RuleFunction<T, R> {
@@ -18,24 +20,24 @@ public abstract class Rule<T, R>
         return "Rule: " + name;
     }
 
-    public static <T> Rule<T, T> mostRecent(final Object key) {
-        return new MostRecentRule<>(key);
+    public static <T> Rule<T, T> mostRecent() {
+        return new MostRecentRule<>();
     }
 
-    public static Rule<Integer, Integer> sumAll(final Object key) {
-        return new SumAllRule(key);
+    public static Rule<Integer, Integer> sumAll() {
+        return new SumAllRule();
     }
 
-    public static Rule<Integer, Integer> doubling(final Object key) {
-        return new DoublingRule(key);
+    public static Rule<Integer, Integer> doubling() {
+        return new DoublingRule();
     }
 
-    public static Rule<Integer, Integer> floor(final Object key) {
-        return new FloorRule(key);
+    public static Rule<Integer, Integer> floor() {
+        return new FloorRule();
     }
 
     public static <L extends Layer> Rule<LayerSetCommand<L>, Set<L>> layerSet(
-            final Object key, final FullnessFunction<L> full) {
-        return new LayerSetRule<>(key, full);
+            final FullnessFunction<L> full) {
+        return new LayerSetRule<>(full);
     }
 }

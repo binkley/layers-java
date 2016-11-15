@@ -13,7 +13,7 @@ public final class ProficienciesBaseRules
     public Layer apply(final LayerSurface layers) {
         final Layer layer = new Layer(layers, "Base rules for proficiency");
         for (final Proficiencies key : Proficiencies.values())
-            layer.put(key, 0, Rule::sumAll);
+            layer.put(key, 0, (key1) -> Rule.sumAll());
         return layer;
     }
 }

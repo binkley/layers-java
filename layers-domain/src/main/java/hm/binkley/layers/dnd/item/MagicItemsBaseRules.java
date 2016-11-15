@@ -14,7 +14,7 @@ public final class MagicItemsBaseRules
     @Override
     public Layer apply(final LayerSurface layers) {
         final Layer layer = new Layer(layers, "Base rules for magic items");
-        layer.put(Attuned.class, layerSet(Attuned.class, max(3)));
+        layer.put(Attuned.class, layerSet(max(3)));
         return layer;
     }
 }

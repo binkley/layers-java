@@ -25,13 +25,13 @@ class DoublingRuleTest {
     @Test
     void shouldUseDoubling() {
         firstLayer.
-                put("A", sumAll("A")).
+                put("A", sumAll()).
                 saveAndNext(ScratchLayer::new).
                 put("A", ofValue(1)).
                 saveAndNext(ScratchLayer::new).
                 put("A", ofValue(2)).
                 saveAndNext(ScratchLayer::new).
-                put("A", doubling("A")).
+                put("A", doubling()).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 6, layers.get("A"));

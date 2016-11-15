@@ -91,7 +91,7 @@ public class Layer
     public <L extends Layer> Layer put(final Object key,
             final LayerSetCommand<L> initialValue,
             final FullnessFunction<L> full) {
-        return put(key, ofBoth(initialValue, layerSet(key, full)));
+        return put(key, ofBoth(initialValue, layerSet(full)));
     }
 
     public Layer blend(final Layer that) {
@@ -121,15 +121,6 @@ public class Layer
         return stream().
                 collect(Collectors.toMap(Entry::getKey, Entry::getValue,
                         throwingMerger(), LinkedHashMap::new));
-    }
-
-    public Layers whatIfWith() {
-        return layers.whatIfWith(this);
-    }
-
-    @SuppressWarnings("WeakerAccess")
-    public Layers whatIfWithout() {
-        return layers.whatIfWithout(this);
     }
 
     @Override

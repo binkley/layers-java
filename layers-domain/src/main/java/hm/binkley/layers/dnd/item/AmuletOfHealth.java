@@ -16,6 +16,6 @@ public final class AmuletOfHealth
                         + "It has no effect on you if your Constitution is "
                         + "already 19 or higher.", WONDROUS_ITEM, RARE,
                 ATTUNED);
-        put(CON, 19, Rule::floor);
+        put(CON, 19, (key) -> Rule.floor());
     }
 }

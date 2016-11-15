@@ -2,6 +2,9 @@ package hm.binkley.layers;
 
 import hm.binkley.layers.rules.Rule;
 import hm.binkley.layers.values.Value;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,8 +47,9 @@ public final class Layers {
                 distinct().
                 forEach(key -> {
                     final Layer layer = ruleLayersFor(key).findFirst().get();
-                    final Stream<Layer> values = valueLayersFor(key);
-                    updated.put(key, layer.get(key).apply(this, layer));
+                    updated.put(key, layer.
+                            get(key).
+                            apply(new RuleSurface<>(key, layer)));
                 });
         cache.clear();
         cache.putAll(updated);
@@ -105,16 +109,6 @@ public final class Layers {
                 map(Layer::view);
     }
 
-    public <T> Stream<T> plainValuesFirstToLastFor(final Object key) {
-        return plainValuesFor(layers.stream(), key);
-    }
-
-    public <T> Stream<T> plainValuesLastToFirstFor(final Object key) {
-        final int size = layers.size();
-        return plainValuesFor(rangeClosed(1, size).
-                mapToObj(i -> layers.get(size - i)), key);
-    }
-
     @SuppressWarnings("WeakerAccess")
     public Layers whatIfWith(final Layer layer) {
         final List<Layer> scenario = new ArrayList<>();
@@ -123,6 +117,7 @@ public final class Layers {
         return new Layers(scenario);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Layers whatIfWithout(final Layer layer) {
         final List<Layer> scenario = new ArrayList<>();
         scenario.addAll(layers);
@@ -137,15 +132,33 @@ public final class Layers {
             updateCache();
             return next.apply(this);
         }
+    }
 
-        @SuppressWarnings("WeakerAccess")
-        public Layers whatIfWith(final Layer layer) {
-            return Layers.this.whatIfWith(layer);
+    /** @todo Hide constructor from public */
+    @Accessors(fluent = true)
+    @Getter
+    @RequiredArgsConstructor
+    @SuppressWarnings("unused")
+    public final class RuleSurface<T> {
+        private final Object key;
+        private final Layer currentLayer;
+
+        public Stream<T> plainValuesFirstToLastFor(final Object key) {
+            return plainValuesFor(layers.stream(), key);
         }
 
-        @SuppressWarnings("WeakerAccess")
-        public Layers whatIfWithout(final Layer layer) {
-            return Layers.this.whatIfWithout(layer);
+        public Stream<T> plainValuesLastToFirstFor(final Object key) {
+            final int size = layers.size();
+            return plainValuesFor(rangeClosed(1, size).
+                    mapToObj(i -> layers.get(size - i)), key);
+        }
+
+        public T currentValue() {
+            return currentLayer.<T, Object>get(key).value().get();
+        }
+
+        public Layers whatIfWithout() {
+            return Layers.this.whatIfWithout(currentLayer);
         }
     }
 
@@ -165,12 +178,6 @@ public final class Layers {
                 mapToObj(layers::get).
                 filter(layer -> layer.containsKey(key)).
                 filter(layer -> layer.get(key).rule().isPresent());
-    }
-
-    private Stream<Layer> valueLayersFor(final Object key) {
-        return layers.stream().
-                filter(layer -> layer.containsKey(key)).
-                filter(layer -> layer.get(key).value().isPresent());
     }
 
     private static <T, R> Stream<T> plainValuesFor(final Stream<Layer> layers,

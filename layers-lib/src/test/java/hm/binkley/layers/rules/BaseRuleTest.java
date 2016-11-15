@@ -19,27 +19,25 @@ class BaseRuleTest {
 
     @BeforeEach
     void setUpLayers() {
-        firstLayer = firstLayer(ScratchLayer::new,
+        firstLayer = firstLayer(BaseRule::baseRules,
                 layers -> this.layers = layers);
     }
 
     @Test
     void shouldHaveMostRecentTexts() {
-        assertEquals("Nancy", firstLayer.
-                saveAndNext(BaseRule::baseRules).
+        firstLayer.
                 saveAndNext(texts("Bob")).
                 saveAndNext(texts("Nancy")).
-                whatIfWith().
-                get(NAME));
+                saveAndNext(ScratchLayer::new);
+        assertEquals("Nancy", layers.get(NAME));
     }
 
     @Test
     void shouldHaveSumAllNumbers() {
-        assertEquals((Integer) 3, firstLayer.
-                saveAndNext(BaseRule::baseRules).
+        firstLayer.
                 saveAndNext(numbers(1, 2)).
                 saveAndNext(numbers(2, 0)).
-                whatIfWith().
-                get(FIRST));
+                saveAndNext(ScratchLayer::new);
+        assertEquals((Integer) 3, layers.get(FIRST));
     }
 }

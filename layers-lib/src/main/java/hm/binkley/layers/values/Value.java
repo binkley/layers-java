@@ -1,14 +1,13 @@
 package hm.binkley.layers.values;
 
-import hm.binkley.layers.Layer;
-import hm.binkley.layers.Layers;
+import hm.binkley.layers.Layers.RuleSurface;
 import hm.binkley.layers.rules.Rule;
 
 import java.util.Optional;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public interface Value<T, R>
-        extends BiFunction<Layers, Layer, R> {
+        extends Function<RuleSurface<T>, R> {
     static <T, R> Value<T, R> ofValue(final T value) {
         return new ValueOnly<>(value);
     }

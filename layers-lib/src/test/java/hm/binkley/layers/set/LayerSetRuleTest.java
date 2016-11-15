@@ -34,7 +34,7 @@ class LayerSetRuleTest {
     @Test
     void shouldUseLayerSet() {
         firstLayer.
-                put("A", layerSet("A", max(1))).
+                put("A", layerSet(max(1))).
                 saveAndNext(ScratchLayer::new).
                 put("A", add("Add " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new);
@@ -58,7 +58,7 @@ class LayerSetRuleTest {
     @Test
     void shouldRemoveMembers() {
         firstLayer.
-                put("A", layerSet("A", max(1))).
+                put("A", layerSet(max(1))).
                 saveAndNext(ScratchLayer::new).
                 put("A", add("Add " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new).
@@ -71,7 +71,7 @@ class LayerSetRuleTest {
     @Test
     void shouldComplainWhenRemovingNonMember() {
         assertThrows(NoSuchElementException.class, () -> firstLayer.
-                put("A", layerSet("A", max(1))).
+                put("A", layerSet(max(1))).
                 saveAndNext(ScratchLayer::new).
                 put("A", remove("Remove " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new));

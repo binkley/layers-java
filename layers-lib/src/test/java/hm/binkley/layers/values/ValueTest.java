@@ -2,6 +2,7 @@ package hm.binkley.layers.values;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
+import hm.binkley.layers.Layers.RuleSurface;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.rules.Rule;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ class ValueTest {
 
     @Test
     void shouldHaveRuleForOfRule() {
-        final Rule<Integer, Integer> rule = doubling(null);
+        final Rule<Integer, Integer> rule = doubling();
 
         assertEquals(rule, ofRule(rule).rule().get());
     }
@@ -50,8 +51,8 @@ class ValueTest {
         final Layer layer = firstLayer(ScratchLayer::new,
                 layers -> layersHolder[0] = layers);
 
-        assertThrows(NullPointerException.class,
-                () -> ofValue(3).apply(layersHolder[0], layer));
+        assertThrows(NullPointerException.class, () -> ofValue(3).
+                apply(layersHolder[0].new RuleSurface<>(layer, null)));
     }
 
     @Test
@@ -76,8 +77,8 @@ class ValueTest {
 
     @Test
     void shouldHashCodeSameAllInstancesForRuleOnly() {
-        assertEquals(ofRule(doubling("BOB")).hashCode(),
-                ofRule(doubling("BOB")).hashCode());
+        assertEquals(ofRule(doubling()).hashCode(),
+                ofRule(doubling()).hashCode());
     }
 
     @Test
@@ -101,7 +102,7 @@ class ValueTest {
      */
     @Test
     void shouldHaveToStringForRuleOnly() {
-        final Rule<Integer, Integer> rule = doubling(null);
+        final Rule<Integer, Integer> rule = doubling();
 
         assertTrue(ofRule(rule).toString().contains(rule.toString()));
     }
@@ -112,7 +113,7 @@ class ValueTest {
      */
     @Test
     void shouldHaveToStringForBoth() {
-        final Rule<Integer, Integer> rule = doubling(null);
+        final Rule<Integer, Integer> rule = doubling();
         final String valueString = Objects.toString(3);
         final String ruleString = rule.toString();
 
@@ -130,9 +131,8 @@ class ValueTest {
         private IdentityRule() {super("Identity");}
 
         @Override
-        public T apply(final Layers layers, final Layer layer,
-                final T value) {
-            return value;
+        public T apply(final RuleSurface<T> layers) {
+            return layers.currentValue();
         }
     }
 }
