@@ -12,7 +12,6 @@ public class FloorRule
 
     @Override
     public Integer apply(final RuleSurface<Integer> layers) {
-        return max(layers.currentValue(),
-                layers.whatIfWithout().get(layers.key()));
+        return max(layers.currentValue(), layers.valueWithout());
     }
 }

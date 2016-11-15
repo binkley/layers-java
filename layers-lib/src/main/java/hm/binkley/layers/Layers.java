@@ -2,9 +2,7 @@ package hm.binkley.layers;
 
 import hm.binkley.layers.rules.Rule;
 import hm.binkley.layers.values.Value;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -135,8 +133,6 @@ public final class Layers {
     }
 
     /** @todo Hide constructor from public */
-    @Accessors(fluent = true)
-    @Getter
     @RequiredArgsConstructor
     @SuppressWarnings("unused")
     public final class RuleSurface<T> {
@@ -153,12 +149,16 @@ public final class Layers {
                     mapToObj(i -> layers.get(size - i)), key);
         }
 
+        public Object key() {
+            return key;
+        }
+
         public T currentValue() {
             return currentLayer.<T, Object>get(key).value().get();
         }
 
-        public Layers whatIfWithout() {
-            return Layers.this.whatIfWithout(currentLayer);
+        public T valueWithout() {
+            return whatIfWithout(currentLayer).get(key);
         }
     }
 
