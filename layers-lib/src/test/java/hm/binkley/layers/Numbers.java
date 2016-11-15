@@ -2,13 +2,13 @@ package hm.binkley.layers;
 
 import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.rules.BaseRule;
-import hm.binkley.layers.rules.Rule;
 import org.kohsuke.MetaInfServices;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static hm.binkley.layers.rules.Rule.sumAll;
 import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.unmodifiableList;
 
@@ -54,7 +54,7 @@ public class Numbers
         public Layer apply(final LayerSurface layers) {
             final Layer layer = new Layer(layers, "Base rules for numbers");
             for (final Numbers key : values())
-                layer.put(key, 0, (key1) -> Rule.sumAll());
+                layer.put(key, 0, k -> sumAll());
             return layer;
         }
     }

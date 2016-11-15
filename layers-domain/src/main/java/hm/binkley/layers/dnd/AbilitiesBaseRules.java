@@ -3,8 +3,9 @@ package hm.binkley.layers.dnd;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.rules.BaseRule;
-import hm.binkley.layers.rules.Rule;
 import org.kohsuke.MetaInfServices;
+
+import static hm.binkley.layers.rules.Rule.sumAll;
 
 @MetaInfServices
 public final class AbilitiesBaseRules
@@ -14,7 +15,7 @@ public final class AbilitiesBaseRules
         final Layer layer = new Layer(layers,
                 "Base rules for ability scores");
         for (final Abilities key : Abilities.values())
-            layer.put(key, 0, (key1) -> Rule.sumAll());
+            layer.put(key, 0, k -> sumAll());
         return layer;
     }
 }
