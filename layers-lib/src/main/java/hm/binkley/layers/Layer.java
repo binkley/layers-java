@@ -1,6 +1,6 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.rules.Rule;
 import hm.binkley.layers.set.FullnessFunction;
 import hm.binkley.layers.set.LayerSetCommand;
@@ -35,7 +35,7 @@ public class Layer
         implements LayerView {
     private final Map<Object, Value<?, ?>> values = new LinkedHashMap<>();
     private final Map<Object, Object> details = new LinkedHashMap<>();
-    protected final Surface layers;
+    protected final LayerSurface layers;
     private final String name;
 
     @Override

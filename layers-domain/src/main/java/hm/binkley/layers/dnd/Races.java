@@ -2,7 +2,7 @@ package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
-import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.Layers.LayerSurface;
 
 import static hm.binkley.layers.values.Value.ofValue;
 import static hm.binkley.layers.dnd.Abilities.CHA;
@@ -16,7 +16,7 @@ import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 public final class Races {
     private Races() {}
 
-    public static Layer plainHuman(final Surface layers) {
+    public static Layer plainHuman(final LayerSurface layers) {
         final Layer layer = new Layer(layers, "Human");
         layer.put(STR, ofValue(1));
         layer.put(DEX, ofValue(1));

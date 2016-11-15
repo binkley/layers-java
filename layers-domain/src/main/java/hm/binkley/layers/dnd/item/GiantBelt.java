@@ -1,6 +1,6 @@
 package hm.binkley.layers.dnd.item;
 
-import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.rules.Rule;
 
 import static hm.binkley.layers.dnd.Abilities.STR;
@@ -15,7 +15,7 @@ import static hm.binkley.layers.dnd.item.Type.WONDROUS_ITEM;
  */
 public abstract class GiantBelt
         extends MagicItem {
-    protected GiantBelt(final Surface layers, final String giantKind,
+    protected GiantBelt(final LayerSurface layers, final String giantKind,
             final Rarity rarity, final int strength) {
         super(layers, "Belt of " + giantKind + " Giant Strength",
                 "While wearing this belt, your Strength score changes to a "

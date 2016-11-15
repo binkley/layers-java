@@ -1,6 +1,6 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.rules.BaseRule;
 import hm.binkley.layers.rules.Rule;
 import org.kohsuke.MetaInfServices;
@@ -40,7 +40,7 @@ public class Texts
     public static final class TextsBaseRules
             implements BaseRule {
         @Override
-        public Layer apply(final Surface layers) {
+        public Layer apply(final LayerSurface layers) {
             final Layer layer = new Layer(layers, "Base rules for text");
             for (final Texts key : values())
                 layer.put(key, "", Rule::mostRecent);

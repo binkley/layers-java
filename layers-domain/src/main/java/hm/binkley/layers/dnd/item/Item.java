@@ -1,14 +1,14 @@
 package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.Layers.LayerSurface;
 
 import java.util.Map;
 
 /** @todo Figure out how to use types for height/weight */
 public class Item
         extends Layer {
-    public Item(final Surface layers, final String name,
+    public Item(final LayerSurface layers, final String name,
             final String description, final Type type, final Rarity rarity,
             final Weight weight, final Volume volume, final String notes) {
         super(layers, name);

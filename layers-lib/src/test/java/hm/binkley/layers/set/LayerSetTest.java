@@ -1,6 +1,6 @@
 package hm.binkley.layers.set;
 
-import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.ScratchLayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -86,7 +86,7 @@ class LayerSetTest {
             extends ScratchLayer {
         private final int i;
 
-        private EgLayer(final Surface layers, final int i) {
+        private EgLayer(final LayerSurface layers, final int i) {
             super(layers);
             this.i = i;
         }

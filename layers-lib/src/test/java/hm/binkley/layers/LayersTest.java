@@ -1,6 +1,6 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.rules.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -162,7 +162,7 @@ class LayersTest {
 
     private static final class EgLayer
             extends Layer {
-        private EgLayer(final Surface layers) {
+        private EgLayer(final LayerSurface layers) {
             super(layers, "Eg");
         }
     }

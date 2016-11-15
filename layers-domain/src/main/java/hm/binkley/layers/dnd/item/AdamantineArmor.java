@@ -1,6 +1,6 @@
 package hm.binkley.layers.dnd.item;
 
-import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.Layers.LayerSurface;
 
 import static hm.binkley.layers.dnd.item.Attunement.UNATTUNED;
 import static hm.binkley.layers.dnd.item.Rarity.UNCOMMON;
@@ -8,7 +8,7 @@ import static hm.binkley.layers.dnd.item.Type.ARMOR;
 
 class AdamantineArmor
         extends MagicItem {
-    AdamantineArmor(final Surface layers) {
+    AdamantineArmor(final LayerSurface layers) {
         super(layers, "Adamantine Armor",
                 "This suit of armor is reinforced with adamantine, one of "
                         + "the hardest substances in existence. While "

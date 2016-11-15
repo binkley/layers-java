@@ -55,7 +55,7 @@ public final class Layers {
             final Consumer<Layers> layersHolder) {
         final Layers layers = new Layers(new ArrayList<>());
         layersHolder.accept(layers);
-        return ctor.apply(layers.new Surface());
+        return ctor.apply(layers.new LayerSurface());
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -130,7 +130,7 @@ public final class Layers {
         return new Layers(scenario);
     }
 
-    public final class Surface {
+    public final class LayerSurface {
         public <L extends Layer> L saveAndNext(final Layer layer,
                 final LayerMaker<L> next) {
             layers.add(layer);

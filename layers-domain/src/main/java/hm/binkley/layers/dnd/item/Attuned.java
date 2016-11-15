@@ -2,7 +2,7 @@ package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
-import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.set.LayerSetCommand;
 
 import java.util.Set;
@@ -17,7 +17,7 @@ public class Attuned
                 add("Attune " + layer.name(), layer));
     }
 
-    public Attuned(final Surface layers,
+    public Attuned(final LayerSurface layers,
             final LayerSetCommand<MagicItem> magicItem) {
         super(layers, "Attuned");
         put(Attuned.class, ofValue(magicItem));

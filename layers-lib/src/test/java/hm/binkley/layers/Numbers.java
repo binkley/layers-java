@@ -1,6 +1,6 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.Layers.Surface;
+import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.rules.BaseRule;
 import hm.binkley.layers.rules.Rule;
 import org.kohsuke.MetaInfServices;
@@ -51,7 +51,7 @@ public class Numbers
     public static final class AbilitiesBaseRules
             implements BaseRule {
         @Override
-        public Layer apply(final Surface layers) {
+        public Layer apply(final LayerSurface layers) {
             final Layer layer = new Layer(layers, "Base rules for numbers");
             for (final Numbers key : values())
                 layer.put(key, 0, Rule::sumAll);
