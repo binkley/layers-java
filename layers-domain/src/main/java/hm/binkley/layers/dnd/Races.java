@@ -4,26 +4,19 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.LayerSurface;
 
-import static hm.binkley.layers.values.Value.ofValue;
-import static hm.binkley.layers.dnd.Abilities.CHA;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.DEX;
-import static hm.binkley.layers.dnd.Abilities.INT;
 import static hm.binkley.layers.dnd.Abilities.STR;
-import static hm.binkley.layers.dnd.Abilities.WIS;
 import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
+import static hm.binkley.layers.values.Value.ofValue;
 
 public final class Races {
     private Races() {}
 
     public static Layer plainHuman(final LayerSurface layers) {
         final Layer layer = new Layer(layers, "Human");
-        layer.put(STR, ofValue(1));
-        layer.put(DEX, ofValue(1));
-        layer.put(CON, ofValue(1));
-        layer.put(INT, ofValue(1));
-        layer.put(WIS, ofValue(1));
-        layer.put(CHA, ofValue(1));
+        Abilities.values().
+                forEach(score -> layer.put(score, ofValue(1)));
         return layer;
     }
 
