@@ -78,6 +78,11 @@ public class Layer
         return put(key, ofRule(rule));
     }
 
+    public <T, R> Layer put(final Object key,
+            final Function<Object, Rule<T, R>> ctor) {
+        return put(key, ofRule(ctor.apply(key)));
+    }
+
     public <T, R> Layer put(final Object key, final T initialValue,
             final Function<Object, Rule<T, R>> ctor) {
         return put(key, ofBoth(initialValue, ctor.apply(key)));

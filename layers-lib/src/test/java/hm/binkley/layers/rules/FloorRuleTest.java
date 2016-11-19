@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static hm.binkley.layers.Layers.firstLayer;
+import static hm.binkley.layers.rules.Rule.floor;
+import static hm.binkley.layers.rules.Rule.sumAll;
 import static hm.binkley.layers.values.Value.ofValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,11 +25,11 @@ class FloorRuleTest {
     @Test
     void shouldUseFloor() {
         firstLayer.
-                put("A", 0, (key) -> Rule.sumAll()).
+                put("A", key -> sumAll()).
                 saveAndNext(ScratchLayer::new).
                 put("A", ofValue(3)).
                 saveAndNext(ScratchLayer::new).
-                put("A", 12, (key1) -> Rule.floor()).
+                put("A", key -> floor(12)).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 12, layers.get("A"));
@@ -36,11 +38,11 @@ class FloorRuleTest {
     @Test
     void shouldIgnoreFloor() {
         firstLayer.
-                put("A", 0, (key) -> Rule.sumAll()).
+                put("A", key -> sumAll()).
                 saveAndNext(ScratchLayer::new).
                 put("A", ofValue(12)).
                 saveAndNext(ScratchLayer::new).
-                put("A", 0, (key1) -> Rule.floor()).
+                put("A", key -> floor(0)).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 12, layers.get("A"));

@@ -1,7 +1,6 @@
 package hm.binkley.layers;
 
 import hm.binkley.layers.Layers.LayerSurface;
-import hm.binkley.layers.rules.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
 import static hm.binkley.layers.Layers.firstLayer;
+import static hm.binkley.layers.rules.Rule.mostRecent;
 import static hm.binkley.layers.rules.Rule.sumAll;
 import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.singleton;
@@ -67,7 +67,7 @@ class LayersTest {
     @Test
     void shouldContainKey() {
         firstLayer.
-                put("FOO", "BAR", (key) -> Rule.mostRecent()).
+                put("FOO", "BAR", key -> mostRecent()).
                 saveAndNext(ScratchLayer::new);
 
         assertTrue(layers.containsKey("FOO"));
@@ -76,7 +76,7 @@ class LayersTest {
     @Test
     void shouldHaveKeys() {
         firstLayer.
-                put("FOO", 3, (key) -> Rule.sumAll()).
+                put("FOO", 3, key -> sumAll()).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals(singleton("FOO"), layers.keys());
@@ -85,7 +85,7 @@ class LayersTest {
     @Test
     void shouldHaveView() {
         firstLayer.
-                put("BOB", 17, (key) -> Rule.mostRecent()).
+                put("BOB", 17, key -> mostRecent()).
                 saveAndNext(ScratchLayer::new);
 
         final List<Map<Object, Object>> view = layers.
@@ -100,7 +100,7 @@ class LayersTest {
     @Test
     void shouldHaveFilteredView() {
         firstLayer.
-                put("BOB", 17, (key) -> Rule.mostRecent()).
+                put("BOB", 17, key -> mostRecent()).
                 saveAndNext(EgLayer::new).
                 put("BOB", ofValue(18)).
                 saveAndNext(ScratchLayer::new);
@@ -117,7 +117,7 @@ class LayersTest {
     @Test
     void shouldHaveWhatIfWithLayer() {
         firstLayer.
-                put("BOB", 32, (key) -> Rule.mostRecent());
+                put("BOB", 32, key -> mostRecent());
 
         assertTrue(layers.whatIfWith(firstLayer).containsKey("BOB"));
     }
@@ -125,7 +125,7 @@ class LayersTest {
     @Test
     void shouldHaveWhatIfWithoutLayer() {
         firstLayer.
-                put("BOB", 31, (key) -> Rule.sumAll()).
+                put("BOB", 31, key -> sumAll()).
                 saveAndNext(ScratchLayer::new);
 
         assertFalse(layers.whatIfWithout(firstLayer).containsKey("BOB"));

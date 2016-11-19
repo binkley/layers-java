@@ -15,7 +15,7 @@ public final class AbilitiesBaseRules
         final Layer layer = new Layer(layers,
                 "Base rules for ability scores");
         for (final Abilities key : Abilities.values())
-            layer.put(key, 0, k -> sumAll());
+            layer.put(key, k -> sumAll());
         return layer;
     }
 }

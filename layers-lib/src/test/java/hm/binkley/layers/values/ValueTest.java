@@ -14,7 +14,7 @@ import static hm.binkley.layers.rules.Rule.doubling;
 import static hm.binkley.layers.values.Value.ofBoth;
 import static hm.binkley.layers.values.Value.ofRule;
 import static hm.binkley.layers.values.Value.ofValue;
-import static hm.binkley.layers.values.ValueTest.IdentityRule.IDENTITY_RULE;
+import static hm.binkley.layers.values.ValueTest.IdentityRule.identityRule;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,18 +34,6 @@ class ValueTest {
     }
 
     @Test
-    void shouldHaveValueForOfBoth() {
-        assertEquals((Integer) 3, ofBoth(3, IDENTITY_RULE).value().get());
-    }
-
-    @Test
-    void shouldHaveRuleForOfBoth() {
-        final Rule<Integer, Integer> rule = IDENTITY_RULE;
-
-        assertEquals(rule, ofBoth(3, rule).rule().get());
-    }
-
-    @Test
     void shouldYellWhenApplyingValueOnly() {
         final Layers[] layersHolder = new Layers[1];
         final Layer layer = firstLayer(ScratchLayer::new,
@@ -61,16 +49,6 @@ class ValueTest {
     }
 
     @Test
-    void shouldEqualsAllInstancesForRuleOnly() {
-        assertEquals(ofRule(IDENTITY_RULE), ofRule(IDENTITY_RULE));
-    }
-
-    @Test
-    void shouldEqualsAllInstancesForBoth() {
-        assertEquals(ofBoth(3, IDENTITY_RULE), ofBoth(3, IDENTITY_RULE));
-    }
-
-    @Test
     void shouldHashCodeSameAllInstancesForValueOnly() {
         assertEquals(ofValue(3).hashCode(), ofValue(3).hashCode());
     }
@@ -83,8 +61,8 @@ class ValueTest {
 
     @Test
     void shouldHashCodeSameAllInstancesForBoth() {
-        assertEquals(ofBoth(3, IDENTITY_RULE).hashCode(),
-                ofBoth(3, IDENTITY_RULE).hashCode());
+        assertEquals(ofBoth(3, identityRule(3)).hashCode(),
+                ofBoth(3, identityRule(3)).hashCode());
     }
 
     /**
@@ -125,14 +103,20 @@ class ValueTest {
 
     static final class IdentityRule<T>
             extends Rule<T, T> {
-        static final IdentityRule<Integer> IDENTITY_RULE
-                = new IdentityRule<>();
+        private final T value;
 
-        private IdentityRule() {super("Identity");}
+        static <T> IdentityRule<T> identityRule(final T value) {
+            return new IdentityRule<>(value);
+        }
+
+        private IdentityRule(final T value) {
+            super("Identity");
+            this.value = value;
+        }
 
         @Override
         public T apply(final RuleSurface<T> layers) {
-            return layers.currentValue();
+            return value;
         }
     }
 }

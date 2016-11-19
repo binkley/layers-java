@@ -1,11 +1,11 @@
 package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layers.LayerSurface;
-import hm.binkley.layers.rules.Rule;
 
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.item.Attunement.ATTUNED;
 import static hm.binkley.layers.dnd.item.Type.WONDROUS_ITEM;
+import static hm.binkley.layers.rules.Rule.floor;
 
 /**
  * {@code GiantBelt} <b>needs documentation</b>.
@@ -28,6 +28,6 @@ public abstract class GiantBelt
                         + "strength and the belt of frost giant strength "
                         + "look different, but they have the same effect.",
                 WONDROUS_ITEM, rarity, ATTUNED);
-        put(STR, strength, (key) -> Rule.floor());
+        put(STR, key -> floor(strength));
     }
 }

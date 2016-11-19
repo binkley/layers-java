@@ -6,12 +6,15 @@ import static java.lang.Integer.max;
 
 public class FloorRule
         extends Rule<Integer, Integer> {
-    FloorRule() {
-        super("Floor");
+    private final int floor;
+
+    FloorRule(final int floor) {
+        super("Floor: " + floor);
+        this.floor = floor;
     }
 
     @Override
     public Integer apply(final RuleSurface<Integer> layers) {
-        return max(layers.currentValue(), layers.valueWithout());
+        return max(floor, layers.valueWithout());
     }
 }

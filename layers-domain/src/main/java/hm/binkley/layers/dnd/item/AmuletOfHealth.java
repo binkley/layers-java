@@ -1,12 +1,12 @@
 package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layers.LayerSurface;
-import hm.binkley.layers.rules.Rule;
 
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.item.Attunement.ATTUNED;
 import static hm.binkley.layers.dnd.item.Rarity.RARE;
 import static hm.binkley.layers.dnd.item.Type.WONDROUS_ITEM;
+import static hm.binkley.layers.rules.Rule.floor;
 
 public final class AmuletOfHealth
         extends MagicItem {
@@ -16,6 +16,6 @@ public final class AmuletOfHealth
                         + "It has no effect on you if your Constitution is "
                         + "already 19 or higher.", WONDROUS_ITEM, RARE,
                 ATTUNED);
-        put(CON, 19, (key) -> Rule.floor());
+        put(CON, key -> floor(19));
     }
 }

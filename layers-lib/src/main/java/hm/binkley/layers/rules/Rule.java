@@ -32,8 +32,8 @@ public abstract class Rule<T, R>
         return new DoublingRule();
     }
 
-    public static Rule<Integer, Integer> floor() {
-        return new FloorRule();
+    public static Rule<Integer, Integer> floor(final int floor) {
+        return new FloorRule(floor);
     }
 
     public static <L extends Layer> Rule<LayerSetCommand<L>, Set<L>> layerSet(

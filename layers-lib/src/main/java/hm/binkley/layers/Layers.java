@@ -153,10 +153,6 @@ public final class Layers {
             return key;
         }
 
-        public T currentValue() {
-            return currentLayer.<T, Object>get(key).value().get();
-        }
-
         public T valueWithout() {
             return whatIfWithout(currentLayer).get(key);
         }
