@@ -123,6 +123,7 @@ public class Layer
                         throwingMerger(), LinkedHashMap::new));
     }
 
+    /** @todo Leaks mutability in {@link #view()} */
     @Override
     public Map<Object, Object> details() {
         return details;
