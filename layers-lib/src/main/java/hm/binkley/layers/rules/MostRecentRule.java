@@ -14,7 +14,7 @@ public class MostRecentRule<T>
     @Override
     public T apply(final RuleSurface<T> layers) {
         final Object key = layers.key();
-        return layers.<T>plainValuesLastToFirstFor(key).
+        return layers.plainValuesLastToFirstFor(key).
                 findFirst().
                 orElse(defaultValue);
     }
