@@ -1,5 +1,6 @@
 package hm.binkley.layers.values;
 
+import hm.binkley.layers.Bug;
 import hm.binkley.layers.Layers.RuleSurface;
 import hm.binkley.layers.rules.Rule;
 import lombok.EqualsAndHashCode;
@@ -25,7 +26,7 @@ public final class ValueOnly<T, R>
 
     @Override
     public R apply(final RuleSurface<T> layers) {
-        throw new NullPointerException("Missing rule for value: " + this);
+        throw new Bug("Should never apply a value-only element");
     }
 
     @Override

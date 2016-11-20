@@ -20,7 +20,7 @@ import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.IntStream.range;
 import static java.util.stream.IntStream.rangeClosed;
-import static lombok.AccessLevel.PUBLIC;
+import static lombok.AccessLevel.PRIVATE;
 
 public final class Layers {
     private final transient Map<Object, Object> cache = new LinkedHashMap<>();
@@ -38,7 +38,10 @@ public final class Layers {
                 flatMap(Collection::stream).
                 distinct().
                 forEach(key -> {
-                    final Layer layer = ruleLayersFor(key).findFirst().get();
+                    final Layer layer = ruleLayersFor(key).
+                            findFirst().
+                            orElseThrow(() -> new NoSuchElementException(
+                                    "No rule for key: " + key));
                     updated.put(key, layer.
                             get(key).
                             apply(new RuleSurface<>(key, layer)));
@@ -126,8 +129,7 @@ public final class Layers {
         }
     }
 
-    /** @todo Hide constructor from public - tests use this */
-    @RequiredArgsConstructor(access = PUBLIC)
+    @RequiredArgsConstructor(access = PRIVATE)
     public final class RuleSurface<T> {
         private final Object key;
         private final Layer currentLayer;

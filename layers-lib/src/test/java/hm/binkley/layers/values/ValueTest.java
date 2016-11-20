@@ -1,11 +1,11 @@
 package hm.binkley.layers.values;
 
-import hm.binkley.layers.Layer;
-import hm.binkley.layers.Layers;
+import hm.binkley.layers.Bug;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.rules.Rule;
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import static hm.binkley.layers.Layers.firstLayer;
@@ -15,6 +15,7 @@ import static hm.binkley.layers.values.Value.ofValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.expectThrows;
 
 class ValueTest {
     @Test
@@ -30,13 +31,19 @@ class ValueTest {
     }
 
     @Test
-    void shouldYellWhenApplyingValueOnly() {
-        final Layers[] layersHolder = new Layers[1];
-        final Layer layer = firstLayer(ScratchLayer::new,
-                layers -> layersHolder[0] = layers);
+    void shouldYellWhenApplyingValueWithoutRule() {
+        final String key = "Complicated key";
 
-        assertThrows(NullPointerException.class, () -> ofValue(3).
-                apply(layersHolder[0].new RuleSurface<>(layer, null)));
+        final Exception e = expectThrows(NoSuchElementException.class,
+                () -> firstLayer(ScratchLayer::new, layers -> {}).
+                        put(key, ofValue(3)).
+                        saveAndNext(ScratchLayer::new));
+        assertTrue(e.getMessage().contains(key));
+    }
+
+    @Test
+    void shouldYellBugWhenApplyingValueOnly() {
+        assertThrows(Bug.class, () -> Value.ofValue("a").apply(null));
     }
 
     @Test
