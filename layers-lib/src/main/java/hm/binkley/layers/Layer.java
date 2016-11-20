@@ -3,8 +3,6 @@ package hm.binkley.layers;
 import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.rules.Rule;
 import hm.binkley.layers.set.FullnessFunction;
-import hm.binkley.layers.set.LayerSetCommand;
-import hm.binkley.layers.values.Value;
 import lombok.RequiredArgsConstructor;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -20,8 +18,6 @@ import java.util.stream.Stream;
 import static hm.binkley.layers.DisplayStyle.BRACES;
 import static hm.binkley.layers.DisplayStyle.BRACKETS;
 import static hm.binkley.layers.rules.Rule.layerSet;
-import static hm.binkley.layers.values.Value.ofRule;
-import static hm.binkley.layers.values.Value.ofValue;
 import static java.lang.String.format;
 
 /**
@@ -32,7 +28,7 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public class Layer
         implements LayerView {
-    private final Map<Object, Value<?, ?>> values = new LinkedHashMap<>();
+    private final Map<Object, Object> values = new LinkedHashMap<>();
     private final Map<Object, Object> details = new LinkedHashMap<>();
     protected final LayerSurface layers;
     private final String name;
@@ -63,33 +59,24 @@ public class Layer
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T, R> Value<T, R> get(final Object key) {
-        return (Value<T, R>) values.get(key);
+    @SuppressWarnings({"unchecked", "TypeParameterUnusedInFormals"})
+    public <T> T get(final Object key) {
+        return (T) values.get(key);
     }
 
-    public <T, R> Layer put(final Object key, final Value<T, R> value) {
+    public <T> Layer put(final Object key, final T value) {
         values.put(key, value);
         return this;
     }
 
-    public <T, R> Layer put(final Object key, final Rule<T, R> rule) {
-        return put(key, ofRule(rule));
-    }
-
     public <T, R> Layer put(final Object key,
             final Function<Object, Rule<T, R>> ctor) {
-        return put(key, ofRule(ctor.apply(key)));
-    }
-
-    public <L extends Layer> Layer put(final Object key,
-            final LayerSetCommand<L> value) {
-        return put(key, ofValue(value));
+        return put(key, ctor.apply(key));
     }
 
     public <L extends Layer> Layer put(final Object key,
             final FullnessFunction<L> full) {
-        return put(key, ofRule(layerSet(full)));
+        return put(key, layerSet(full));
     }
 
     public Layer blend(final Layer that) {
@@ -109,9 +96,9 @@ public class Layer
     @Override
     public Stream<Entry<Object, Object>> stream() {
         return values.entrySet().stream().
-                filter(pair -> pair.getValue().value().isPresent()).
+                filter(pair -> !(pair.getValue() instanceof Rule)).
                 map(pair -> new SimpleImmutableEntry<>(pair.getKey(),
-                        pair.getValue().value().get()));
+                        pair.getValue()));
     }
 
     @Override

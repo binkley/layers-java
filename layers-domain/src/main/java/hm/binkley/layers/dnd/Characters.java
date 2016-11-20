@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.unmodifiableList;
 
 public class Characters
@@ -30,7 +29,7 @@ public class Characters
     public static LayerMaker<Layer> characterDescription(final String name) {
         return layers -> {
             final Layer layer = new Layer(layers, "Character description");
-            layer.put(NAME, ofValue(name));
+            layer.put(NAME, name);
             return layer;
         };
     }

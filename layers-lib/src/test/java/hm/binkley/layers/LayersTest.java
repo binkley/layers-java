@@ -12,7 +12,6 @@ import java.util.NoSuchElementException;
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.rules.Rule.mostRecent;
 import static hm.binkley.layers.rules.Rule.sumAll;
-import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singleton;
@@ -89,7 +88,7 @@ class LayersTest {
         firstLayer.
                 put("BOB", key -> mostRecent(17)).
                 saveAndNext(ScratchLayer::new).
-                put("BOB", ofValue(18)).
+                put("BOB", 18).
                 saveAndNext(ScratchLayer::new);
 
         final List<Map<Object, Object>> view = layers.
@@ -106,7 +105,7 @@ class LayersTest {
         firstLayer.
                 put("BOB", key -> mostRecent(17)).
                 saveAndNext(EgLayer::new).
-                put("BOB", ofValue(18)).
+                put("BOB", 18).
                 saveAndNext(ScratchLayer::new);
 
         final List<Map<Object, Object>> view = layers.
@@ -140,7 +139,7 @@ class LayersTest {
         firstLayer.
                 put("FOO", sumAll()).
                 saveAndNext(ScratchLayer::new).
-                put("FOO", ofValue(3)).
+                put("FOO", 3).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals(singletonMap("FOO", 3), layers.toMap());

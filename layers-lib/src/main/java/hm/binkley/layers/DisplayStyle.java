@@ -1,7 +1,5 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.set.LayerSetCommand;
-
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,8 +19,8 @@ class LayerTest {
     @BeforeEach
     void setUpLayer() {
         layer = new Layer(null, "Eg");
-        layer.put("A", ofValue("P"));
-        layer.put("B", ofValue(4));
+        layer.put("A", "P");
+        layer.put("B", 4);
     }
 
     @Test
@@ -46,16 +45,16 @@ class LayerTest {
     @Test
     void shouldBlendLayer() {
         final Layer other = new ScratchLayer(null);
-        other.put("C", ofValue(42));
+        other.put("C", 42);
         layer.blend(other);
 
-        assertEquals(42, layer.get("C").value().get());
+        assertEquals((Integer) 42, layer.get("C"));
     }
 
     @Test
     void shouldCryIfBlendingDuplicateKey() {
         final Layer other = new ScratchLayer(null);
-        other.put("A", ofValue(42));
+        other.put("A", 42);
 
         assertThrows(IllegalStateException.class, () -> layer.blend(other));
     }
@@ -63,7 +62,7 @@ class LayerTest {
     @Test
     void shouldCryIfBlendingDuplicateKeyTheOtherWay() {
         final Layer other = new ScratchLayer(null);
-        other.put("A", ofValue(42));
+        other.put("A", 42);
 
         assertThrows(IllegalStateException.class,
                 () -> layer.blend(layers -> other));
@@ -71,7 +70,7 @@ class LayerTest {
 
     @Test
     void shouldPrintClassKeysNicelyForLayer() {
-        layer.put(String.class, ofValue("FOO"));
+        layer.put(String.class, "FOO");
 
         final String display = layer.toString();
         assertAll(() -> assertTrue(display.contains("String")),
@@ -80,7 +79,7 @@ class LayerTest {
 
     @Test
     void shouldPrintClassKeysNicelyForDetails() {
-        layer.details().put(String.class, ofValue("FOO"));
+        layer.details().put(String.class, "FOO");
 
         final String display = layer.toString();
         assertAll(() -> assertTrue(display.contains("String")),

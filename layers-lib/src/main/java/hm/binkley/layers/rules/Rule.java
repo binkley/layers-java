@@ -4,12 +4,10 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.set.FullnessFunction;
 import hm.binkley.layers.set.LayerSetCommand;
 import hm.binkley.layers.set.LayerSetRule;
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 
-@EqualsAndHashCode
 @RequiredArgsConstructor
 public abstract class Rule<T, R>
         implements RuleFunction<T, R> {

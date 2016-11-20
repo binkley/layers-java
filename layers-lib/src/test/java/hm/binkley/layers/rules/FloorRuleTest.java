@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.rules.Rule.floor;
 import static hm.binkley.layers.rules.Rule.sumAll;
-import static hm.binkley.layers.values.Value.ofValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FloorRuleTest {
@@ -27,7 +26,7 @@ class FloorRuleTest {
         firstLayer.
                 put("A", key -> sumAll()).
                 saveAndNext(ScratchLayer::new).
-                put("A", ofValue(3)).
+                put("A", 3).
                 saveAndNext(ScratchLayer::new).
                 put("A", key -> floor(12)).
                 saveAndNext(ScratchLayer::new);
@@ -40,7 +39,7 @@ class FloorRuleTest {
         firstLayer.
                 put("A", key -> sumAll()).
                 saveAndNext(ScratchLayer::new).
-                put("A", ofValue(12)).
+                put("A", 12).
                 saveAndNext(ScratchLayer::new).
                 put("A", key -> floor(0)).
                 saveAndNext(ScratchLayer::new);

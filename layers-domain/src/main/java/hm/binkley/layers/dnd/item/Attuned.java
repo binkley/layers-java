@@ -5,10 +5,7 @@ import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.set.LayerSetCommand;
 
-import java.util.Set;
-
 import static hm.binkley.layers.set.LayerSetCommand.add;
-import static hm.binkley.layers.values.Value.ofValue;
 
 public class Attuned
         extends Layer {
@@ -20,15 +17,12 @@ public class Attuned
     public Attuned(final LayerSurface layers,
             final LayerSetCommand<MagicItem> magicItem) {
         super(layers, "Attuned");
-        put(Attuned.class, ofValue(magicItem));
+        put(Attuned.class, magicItem);
     }
 
     @Override
     public String toString() {
-        return name() + ": " + this.<LayerSetCommand<Layer>, Set<Layer>>get(
-                Attuned.class).
-                value().
-                get().
+        return name() + ": " + this.<LayerSetCommand<Layer>>get(Attuned.class).
                 name();
     }
 }

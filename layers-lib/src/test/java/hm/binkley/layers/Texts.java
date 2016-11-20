@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static hm.binkley.layers.rules.Rule.mostRecent;
-import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.unmodifiableList;
 
 public class Texts
@@ -31,7 +30,7 @@ public class Texts
     public static LayerMaker<Layer> texts(final String name) {
         return layers -> {
             final Layer layer = new Layer(layers, "Textual matters");
-            layer.put(NAME, ofValue(name));
+            layer.put(NAME, name);
             return layer;
         };
     }

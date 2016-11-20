@@ -1,6 +1,6 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.values.Value;
+import hm.binkley.layers.rules.Rule;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -31,6 +30,7 @@ public final class Layers {
         updateCache();
     }
 
+    @SuppressWarnings("unchecked")
     private void updateCache() {
         final Map<Object, Object> updated = new LinkedHashMap<>();
         layers.stream().
@@ -42,8 +42,7 @@ public final class Layers {
                             findFirst().
                             orElseThrow(() -> new NoSuchElementException(
                                     "No rule for key: " + key));
-                    updated.put(key, layer.
-                            get(key).
+                    updated.put(key, layer.<Rule<?, ?>>get(key).
                             apply(new RuleSurface<>(key, layer)));
                 });
         cache.clear();
@@ -169,16 +168,16 @@ public final class Layers {
                 map(i -> size - i - 1).
                 mapToObj(layers::get).
                 filter(layer -> layer.containsKey(key)).
-                filter(layer -> layer.get(key).rule().isPresent());
+                filter(layer -> layer.get(key) instanceof Rule);
     }
 
-    private static <T, R> Stream<T> plainValuesFor(final Stream<Layer> layers,
+    @SuppressWarnings("unchecked")
+    private static <T> Stream<T> plainValuesFor(final Stream<Layer> layers,
             final Object key) {
         return layers.
                 filter(layer -> layer.containsKey(key)).
-                map(layer -> layer.<T, R>get(key)).
-                map(Value::value).
-                filter(Optional::isPresent).
-                map(Optional::get);
+                map(layer -> layer.get(key)).
+                filter(value -> !(value instanceof Rule)).
+                map(value -> (T) value);
     }
 }

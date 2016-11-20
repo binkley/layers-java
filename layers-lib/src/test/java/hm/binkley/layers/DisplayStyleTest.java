@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static hm.binkley.layers.DisplayStyle.BRACES;
-import static hm.binkley.layers.values.Value.ofValue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -15,7 +14,7 @@ class DisplayStyleTest {
     void shouldNotExpandLayerAsKey() {
         final Map<?, ?> map = new LinkedHashMap<Object, Object>() {{
             final Layer layer = new ScratchLayer(null);
-            layer.put("Bob", ofValue("Fred"));
+            layer.put("Bob", "Fred");
             put(layer, 3);
         }};
 

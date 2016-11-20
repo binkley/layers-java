@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static hm.binkley.layers.rules.Rule.sumAll;
-import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.unmodifiableList;
 
 public class Numbers
@@ -33,8 +32,8 @@ public class Numbers
             final int second) {
         return layers -> {
             final Layer layer = new Layer(layers, "Base numbers");
-            layer.put(FIRST, ofValue(first));
-            layer.put(SECOND, ofValue(second));
+            layer.put(FIRST, first);
+            layer.put(SECOND, second);
             return layer;
         };
     }
@@ -42,7 +41,7 @@ public class Numbers
     public static LayerMaker<Layer> numberIncrease(final Numbers number) {
         return layers -> {
             final Layer layer = new Layer(layers, "Numeric increase");
-            layer.put(number, ofValue(1));
+            layer.put(number, 1);
             return layer;
         };
     }

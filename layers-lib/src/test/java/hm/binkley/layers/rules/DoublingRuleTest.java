@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.rules.Rule.doubling;
 import static hm.binkley.layers.rules.Rule.sumAll;
-import static hm.binkley.layers.values.Value.ofValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DoublingRuleTest {
@@ -27,9 +26,9 @@ class DoublingRuleTest {
         firstLayer.
                 put("A", sumAll()).
                 saveAndNext(ScratchLayer::new).
-                put("A", ofValue(1)).
+                put("A", 1).
                 saveAndNext(ScratchLayer::new).
-                put("A", ofValue(2)).
+                put("A", 2).
                 saveAndNext(ScratchLayer::new).
                 put("A", doubling()).
                 saveAndNext(ScratchLayer::new);

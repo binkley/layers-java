@@ -1,7 +1,5 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.values.Value;
-
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -19,7 +17,8 @@ public interface LayerView {
 
     boolean containsKey(final Object key);
 
-    <T, R> Value<T, R> get(final Object key);
+    @SuppressWarnings("TypeParameterUnusedInFormals")
+    <T> T get(final Object key);
 
     Stream<Entry<Object, Object>> stream();
 

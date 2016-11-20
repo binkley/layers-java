@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.unmodifiableList;
 
 public class Abilities
@@ -37,12 +36,12 @@ public class Abilities
             final int intelligence, final int wisdom, final int charisma) {
         return layers -> {
             final Layer layer = new Layer(layers, "Base ability scores");
-            layer.put(STR, ofValue(strength));
-            layer.put(DEX, ofValue(dexterity));
-            layer.put(CON, ofValue(constitution));
-            layer.put(INT, ofValue(intelligence));
-            layer.put(WIS, ofValue(wisdom));
-            layer.put(CHA, ofValue(charisma));
+            layer.put(STR, strength);
+            layer.put(DEX, dexterity);
+            layer.put(CON, constitution);
+            layer.put(INT, intelligence);
+            layer.put(WIS, wisdom);
+            layer.put(CHA, charisma);
             return layer;
         };
     }
@@ -51,8 +50,8 @@ public class Abilities
             final Abilities doubleAbility) {
         return layers -> {
             final Layer layer = new Layer(layers,
-                    "Ability (1) score increase");
-            layer.put(doubleAbility, ofValue(2));
+                    "Ability (" + doubleAbility + ") score increase");
+            layer.put(doubleAbility, 2);
             return layer;
         };
     }
@@ -61,9 +60,10 @@ public class Abilities
             final Abilities firstAbility, final Abilities secondAbility) {
         return layers -> {
             final Layer layer = new Layer(layers,
-                    "Ability (2) score increases");
-            layer.put(firstAbility, ofValue(1));
-            layer.put(secondAbility, ofValue(1));
+                    "Ability (" + firstAbility + "," + secondAbility
+                            + ") score increases");
+            layer.put(firstAbility, 1);
+            layer.put(secondAbility, 1);
             return layer;
         };
     }

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static hm.binkley.layers.rules.Rule.doubling;
-import static hm.binkley.layers.values.Value.ofValue;
 import static java.util.Collections.unmodifiableList;
 
 public class Proficiencies
@@ -42,7 +41,7 @@ public class Proficiencies
             final Proficiencies proficiency, final int bonus) {
         return layers -> {
             final Layer layer = new Layer(layers, "Proficiency bonus(es)");
-            layer.put(proficiency, ofValue(bonus));
+            layer.put(proficiency, bonus);
             return layer;
         };
     }
