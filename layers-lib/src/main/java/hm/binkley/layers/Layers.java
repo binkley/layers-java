@@ -11,11 +11,13 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static hm.binkley.layers.DisplayStyle.BRACES;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
+import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.IntStream.range;
 import static java.util.stream.IntStream.rangeClosed;
@@ -32,20 +34,13 @@ public final class Layers {
 
     @SuppressWarnings("unchecked")
     private void updateCache() {
-        final Map<Object, Object> updated = new LinkedHashMap<>();
-        layers.stream().
+        final Map<Object, Object> updated = layers.stream().
                 map(Layer::keys).
                 flatMap(Collection::stream).
                 distinct().
-                forEach(key -> {
-                    final Layer layer = ruleLayersFor(key).
-                            findFirst().
-                            orElseThrow(() -> new NoSuchElementException(
-                                    "No rule for key: " + key));
-                    updated.put(key, layer.<Rule<?, ?>>get(key).
-                            apply(new RuleSurface<>(key, layer)));
-                });
+                collect(Collectors.toMap(identity(), this::value));
         cache.clear();
+        // Do not inline updated: fully compute updates before clearing cache
         cache.putAll(updated);
     }
 
@@ -131,16 +126,16 @@ public final class Layers {
 
     @RequiredArgsConstructor(access = PRIVATE)
     public final class RuleSurface<T> {
+        private final Layer layer;
         private final Object key;
-        private final Layer currentLayer;
 
         public Stream<T> values(final Object key) {
-            return plainValuesFor(layers.stream(), key);
+            return Layers.allValues(layers.stream(), key);
         }
 
         public Stream<T> reverseValues(final Object key) {
             final int size = layers.size();
-            return plainValuesFor(rangeClosed(1, size).
+            return Layers.allValues(rangeClosed(1, size).
                     mapToObj(i -> layers.get(size - i)), key);
         }
 
@@ -149,7 +144,7 @@ public final class Layers {
         }
 
         public T valueWithout() {
-            return whatIfWithout(currentLayer).get(key);
+            return whatIfWithout(layer).get(key);
         }
     }
 
@@ -162,7 +157,20 @@ public final class Layers {
                 collect(joining("\n"));
     }
 
-    private Stream<Layer> ruleLayersFor(final Object key) {
+    private Layer ruleLayer(final Object key) {
+        return allRuleLayers(key).
+                findFirst().
+                orElseThrow(() -> new NoSuchElementException(
+                        "No rule for key: " + key));
+    }
+
+    private <T> Object value(final Object key) {
+        final Layer layer = ruleLayer(key);
+        return layer.<Rule<T, ?>>get(key).
+                apply(new RuleSurface<>(layer, key));
+    }
+
+    private Stream<Layer> allRuleLayers(final Object key) {
         final int size = layers.size();
         return range(0, size).
                 map(i -> size - i - 1).
@@ -172,7 +180,7 @@ public final class Layers {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> Stream<T> plainValuesFor(final Stream<Layer> layers,
+    private static <T> Stream<T> allValues(final Stream<Layer> layers,
             final Object key) {
         return layers.
                 filter(layer -> layer.containsKey(key)).
