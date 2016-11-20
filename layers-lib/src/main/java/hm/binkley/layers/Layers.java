@@ -130,12 +130,12 @@ public final class Layers {
         private final Object key;
 
         public Stream<T> values(final Object key) {
-            return Layers.allValues(layers.stream(), key);
+            return allValues(layers.stream(), key);
         }
 
         public Stream<T> reverseValues(final Object key) {
             final int size = layers.size();
-            return Layers.allValues(rangeClosed(1, size).
+            return allValues(rangeClosed(1, size).
                     mapToObj(i -> layers.get(size - i)), key);
         }
 
