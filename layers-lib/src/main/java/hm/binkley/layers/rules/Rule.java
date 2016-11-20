@@ -20,8 +20,8 @@ public abstract class Rule<T, R>
         return "Rule: " + name;
     }
 
-    public static <T> Rule<T, T> mostRecent() {
-        return new MostRecentRule<>();
+    public static <T> Rule<T, T> mostRecent(final T defaultValue) {
+        return new MostRecentRule<>(defaultValue);
     }
 
     public static Rule<Integer, Integer> sumAll() {

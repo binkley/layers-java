@@ -45,7 +45,9 @@ class LayerSetRuleTest {
     @Test
     void shouldCapOutLayerSet() {
         final Layer secondLayer = firstLayer.
-                put("A", add("Add " + firstLayer.name(), firstLayer), max(1)).
+                put("A", max(1)).
+                saveAndNext(ScratchLayer::new).
+                put("A", add("Add " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new);
         secondLayer.
                 put("A", add("Add " + secondLayer.name(), secondLayer));
@@ -80,8 +82,9 @@ class LayerSetRuleTest {
     @Test
     void shouldDisplayRuleNameWhenAvailable() {
         firstLayer.
-                put("A", add("Add " + firstLayer.name(), firstLayer),
-                        named(max(1), "Bob!")).
+                put("A", named(max(1), "Bob!")).
+                saveAndNext(ScratchLayer::new).
+                put("A", add("Add " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new);
 
         assertTrue(firstLayer.toString().contains("Bob!"));

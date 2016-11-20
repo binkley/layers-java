@@ -2,13 +2,13 @@ package hm.binkley.layers.rules;
 
 import hm.binkley.layers.Layers.RuleSurface;
 
-import java.util.NoSuchElementException;
-import java.util.function.Supplier;
-
 public class MostRecentRule<T>
         extends Rule<T, T> {
-    MostRecentRule() {
+    private final T defaultValue;
+
+    MostRecentRule(final T defaultValue) {
         super("Most recent");
+        this.defaultValue = defaultValue;
     }
 
     @Override
@@ -16,12 +16,6 @@ public class MostRecentRule<T>
         final Object key = layers.key();
         return layers.<T>plainValuesLastToFirstFor(key).
                 findFirst().
-                orElseThrow(noValueForKey(key));
-    }
-
-    private static Supplier<NoSuchElementException> noValueForKey(
-            final Object key) {
-        return () -> new NoSuchElementException(
-                "No value present for key: " + key);
+                orElse(defaultValue);
     }
 }

@@ -16,11 +16,6 @@ public interface Value<T, R>
         return new RuleOnly<>(rule);
     }
 
-    /** @todo Get rid of {@code ofBoth}. */
-    static <T, R> Value<T, R> ofBoth(final T value, final Rule<T, R> rule) {
-        return new Both<>(value, rule);
-    }
-
     Optional<T> value();
 
     Optional<Rule<T, R>> rule();

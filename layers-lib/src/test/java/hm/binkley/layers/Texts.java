@@ -43,7 +43,7 @@ public class Texts
         public Layer apply(final LayerSurface layers) {
             final Layer layer = new Layer(layers, "Base rules for text");
             for (final Texts key : values())
-                layer.put(key, "", k -> mostRecent());
+                layer.put(key, k -> mostRecent(""));
             return layer;
         }
     }

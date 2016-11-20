@@ -20,7 +20,6 @@ import java.util.stream.Stream;
 import static hm.binkley.layers.DisplayStyle.BRACES;
 import static hm.binkley.layers.DisplayStyle.BRACKETS;
 import static hm.binkley.layers.rules.Rule.layerSet;
-import static hm.binkley.layers.values.Value.ofBoth;
 import static hm.binkley.layers.values.Value.ofRule;
 import static hm.binkley.layers.values.Value.ofValue;
 import static java.lang.String.format;
@@ -83,20 +82,14 @@ public class Layer
         return put(key, ofRule(ctor.apply(key)));
     }
 
-    public <T, R> Layer put(final Object key, final T initialValue,
-            final Function<Object, Rule<T, R>> ctor) {
-        return put(key, ofBoth(initialValue, ctor.apply(key)));
-    }
-
     public <L extends Layer> Layer put(final Object key,
             final LayerSetCommand<L> value) {
         return put(key, ofValue(value));
     }
 
     public <L extends Layer> Layer put(final Object key,
-            final LayerSetCommand<L> initialValue,
             final FullnessFunction<L> full) {
-        return put(key, ofBoth(initialValue, layerSet(full)));
+        return put(key, ofRule(layerSet(full)));
     }
 
     public Layer blend(final Layer that) {

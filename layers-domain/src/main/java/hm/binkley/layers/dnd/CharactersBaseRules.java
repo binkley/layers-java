@@ -15,7 +15,7 @@ public final class CharactersBaseRules
         final Layer layer = new Layer(layers,
                 "Base rules for character descriptions");
         for (final Characters key : Characters.values())
-            layer.put(key, "", k -> mostRecent());
+            layer.put(key, k -> mostRecent(""));
         return layer;
     }
 }

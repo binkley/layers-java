@@ -1,6 +1,5 @@
 package hm.binkley.layers;
 
-import hm.binkley.layers.rules.Rule;
 import hm.binkley.layers.values.Value;
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +20,7 @@ import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.IntStream.range;
 import static java.util.stream.IntStream.rangeClosed;
+import static lombok.AccessLevel.PUBLIC;
 
 public final class Layers {
     private final transient Map<Object, Object> cache = new LinkedHashMap<>();
@@ -31,12 +31,6 @@ public final class Layers {
         updateCache();
     }
 
-    /**
-     * Strategy: <ol> <li>Update {@link Rule} to take stream of values.</li>
-     * <li>Teach rules using their value to not do that.</li> <li>Get rid of
-     * {@link Value#ofBoth(Object, Rule)}.</li> <li>Simplify (if possible)
-     * {@link Rule} to not need a {@code Layers}.</li> </ol>
-     */
     private void updateCache() {
         final Map<Object, Object> updated = new LinkedHashMap<>();
         layers.stream().
@@ -132,9 +126,8 @@ public final class Layers {
         }
     }
 
-    /** @todo Hide constructor from public */
-    @RequiredArgsConstructor
-    @SuppressWarnings("unused")
+    /** @todo Hide constructor from public - tests use this */
+    @RequiredArgsConstructor(access = PUBLIC)
     public final class RuleSurface<T> {
         private final Object key;
         private final Layer currentLayer;
