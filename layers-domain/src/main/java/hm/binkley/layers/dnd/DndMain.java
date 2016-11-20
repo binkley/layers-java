@@ -47,6 +47,7 @@ public final class DndMain {
                 saveAndNext(AmuletOfHealth::new);
         amuletOfHealth.attuneAndNext(ScratchLayer::new);
         beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
+        amuletOfHealth.detuneAndNext(ScratchLayer::new);
 
         for (final Characters description : Characters.values())
             out.println(description + " = " + layers.get(description));

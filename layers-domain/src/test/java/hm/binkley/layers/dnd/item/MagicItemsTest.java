@@ -4,6 +4,7 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.rules.BaseRule;
+import hm.binkley.layers.set.LayerSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -202,5 +203,16 @@ class MagicItemsTest {
         assertThrows(IllegalStateException.class,
                 () -> beltOfFrostGiantStrength
                         .attuneAndNext(ScratchLayer::new));
+    }
+
+    @Test
+    void shouldBeAbleToDetuneAttunedItem() {
+        final MagicItem amuletOfHealth = firstLayer.
+                saveAndNext(AmuletOfHealth::new);
+
+        amuletOfHealth.attuneAndNext(ScratchLayer::new);
+        amuletOfHealth.detuneAndNext(ScratchLayer::new);
+
+        assertTrue(layers.<LayerSet<MagicItem>>get(Attuned.class).isEmpty());
     }
 }

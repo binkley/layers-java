@@ -5,6 +5,7 @@ import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.LayerSurface;
 
 import static hm.binkley.layers.set.LayerSetCommand.add;
+import static hm.binkley.layers.set.LayerSetCommand.remove;
 
 /** @todo Real values for weight/volume */
 public class MagicItem
@@ -24,8 +25,15 @@ public class MagicItem
         this(layers, name, description, type, rarity, attunement, "");
     }
 
+    /** @todo Contrast with {@link Attuned#attune(MagicItem)} and pick one */
     public <L extends Layer> L attuneAndNext(final LayerMaker<L> next) {
         return layers.saveAndNext(
                 new Attuned(layers, add("Attune " + name(), this)), next);
+    }
+
+    /** @todo Contrast with {@link Attuned#detune(MagicItem)} and pick one */
+    public <L extends Layer> L detuneAndNext(final LayerMaker<L> next) {
+        return layers.saveAndNext(
+                new Attuned(layers, remove("Detune " + name(), this)), next);
     }
 }

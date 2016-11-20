@@ -151,9 +151,9 @@ public final class Layers {
     @Override
     public String toString() {
         final int size = layers.size();
-        return "All (" + layers.size() + "): " + BRACES.display(cache) + "\n"
+        return "All (" + size + "): " + BRACES.display(cache) + "\n"
                 + range(0, size).
-                mapToObj(i -> i + ": " + layers.get(size - i - 1)).
+                mapToObj(i -> (size - i) + ": " + layers.get(size - i - 1)).
                 collect(joining("\n"));
     }
 
