@@ -23,7 +23,7 @@ occasionally intrudes:
 These include:
 
 * Instance factory methods, chaining layer construction
-* When possible, use constructors for simple lambdas
+* When possible, use constructors as simple lambdas
 * Curry more complex constructors and functions: aim for uniform syntax
 * Convenience functions to capture common use patterns
 * Streams as preferred model for collections
@@ -40,9 +40,9 @@ These include:
 
 1. Walk layers from oldest to newest.
 2. If a key is already cached, do not recompute.
-3. For a given new key, find all its values, for example, to sum them.
-4. For a given new key, find it's most recent (applicable) rule.
-5. Some rules may be complex, and be interested in the whole layers.
+3. For a given new key, find it's most recent (applicable) rule.
+4. For a given new key, find all its values, for example, to sum them.
+5. Some rules may be complex, and be interested in the all layers.
 
 ## `Layers`
 
@@ -59,10 +59,10 @@ Base key-value map, added to the owning layers with `saveAndNext()`; use `Scratc
 ## Rules
 
 * Key rules can see the entire layers to accommodate complex rules, e.g.,
-  ability scores sum values for STR key
+  ability scores sum values for `STR` key
 
-* If a key has no rule defined, default rule is to return the most recent
-  value for the key (e.g., "Character Name")
+* All keys must have a rule defined.  If a key has no values and the rule
+  requires some, the rule must have a default value.
   
 * If a key has more than rule defined, the most recent rule is applied (e.g.,
   "Belt of Giant Strength" sets STR and trumps usual STR calculation)
