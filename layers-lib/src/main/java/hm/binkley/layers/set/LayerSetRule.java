@@ -18,7 +18,7 @@ public final class LayerSetRule<L extends Layer>
     @Override
     public Set<L> apply(final RuleSurface<LayerSetCommand<L>> layers) {
         final LayerSet<L> set = new LayerSet<>(full);
-        layers.<LayerSetCommand<L>>plainValuesFirstToLastFor(layers.key()).
+        layers.<LayerSetCommand<L>>values(layers.key()).
                 forEach(command -> command.accept(set));
         return set;
     }

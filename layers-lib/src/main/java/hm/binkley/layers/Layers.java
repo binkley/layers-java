@@ -134,11 +134,11 @@ public final class Layers {
         private final Object key;
         private final Layer currentLayer;
 
-        public Stream<T> plainValuesFirstToLastFor(final Object key) {
+        public Stream<T> values(final Object key) {
             return plainValuesFor(layers.stream(), key);
         }
 
-        public Stream<T> plainValuesLastToFirstFor(final Object key) {
+        public Stream<T> reverseValues(final Object key) {
             final int size = layers.size();
             return plainValuesFor(rangeClosed(1, size).
                     mapToObj(i -> layers.get(size - i)), key);
