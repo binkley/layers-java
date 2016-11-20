@@ -120,6 +120,7 @@ public final class Layers {
         return new Layers(scenario);
     }
 
+    @RequiredArgsConstructor(access = PRIVATE)
     public final class LayerSurface {
         public <L extends Layer> L saveAndNext(final Layer layer,
                 final LayerMaker<L> next) {
