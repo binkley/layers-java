@@ -79,7 +79,7 @@ class LayerTest {
 
     @Test
     void shouldPrintClassKeysNicelyForDetails() {
-        layer.details().put(String.class, "FOO");
+        layer.putDetail(String.class, "FOO");
 
         final String display = layer.toString();
         assertAll(() -> assertTrue(display.contains("String")),
@@ -129,7 +129,7 @@ class LayerTest {
 
     @Test
     void shouldDelegateDetailsToLayerFromLayerView() {
-        layer.details().put("apple", "cart");
+        layer.putDetail("apple", "cart");
 
         assertEquals(layer.details(), layer.view().details());
     }

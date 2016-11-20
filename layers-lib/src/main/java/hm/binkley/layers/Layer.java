@@ -19,6 +19,7 @@ import static hm.binkley.layers.DisplayStyle.BRACES;
 import static hm.binkley.layers.DisplayStyle.BRACKETS;
 import static hm.binkley.layers.rules.Rule.layerSet;
 import static java.lang.String.format;
+import static java.util.Collections.unmodifiableMap;
 
 /**
  * @todo Trade-off between too many references (hard on GC) and ease of use
@@ -108,10 +109,14 @@ public class Layer
                         throwingMerger(), LinkedHashMap::new));
     }
 
-    /** @todo Leaks mutability in {@link #view()} */
     @Override
     public Map<Object, Object> details() {
-        return details;
+        return unmodifiableMap(details);
+    }
+
+    public Layer putDetail(final Object key, final Object value) {
+        details.put(key, value);
+        return this;
     }
 
     public <L extends Layer> L saveAndNext(final LayerMaker<L> ctor) {

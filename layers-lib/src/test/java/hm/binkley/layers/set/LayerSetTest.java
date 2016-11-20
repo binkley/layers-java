@@ -36,7 +36,7 @@ class LayerSetTest {
     @Test
     void shouldDisplayBriefly() {
         final EgLayer layer = new EgLayer(null, 1);
-        layer.details().put("Description", "Long, boring description");
+        layer.putDetail("Description", "Long, boring description");
         set.add(layer);
 
         assertTrue(set.toString().contains(layer.name()));
@@ -45,11 +45,11 @@ class LayerSetTest {
     @Test
     void shouldNotDisplayVerbosely() {
         final EgLayer layer = new EgLayer(null, 1);
-        layer.details().put("Description", "Long, boring description");
+        layer.putDetail("Description", "Long, boring description");
         set.add(layer);
 
-        assertFalse(set.toString()
-                .contains(layer.details().get("Description").toString()));
+        assertFalse(set.toString().
+                contains(layer.details().get("Description").toString()));
     }
 
     @Test

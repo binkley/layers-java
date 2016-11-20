@@ -4,8 +4,6 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.LayerSurface;
 
-import java.util.Map;
-
 import static hm.binkley.layers.set.LayerSetCommand.add;
 
 /** @todo Real values for weight/volume */
@@ -17,8 +15,7 @@ public class MagicItem
         // TODO: Why is static method imports not compiling here?s
         super(layers, name, description, type, rarity, Weight.inPounds(0),
                 Volume.inCuft(0), notes);
-        final Map<Object, Object> details = details();
-        details.put(Attuned.class, attunement);
+        putDetail(Attuned.class, attunement);
     }
 
     public MagicItem(final LayerSurface layers, final String name,

@@ -3,8 +3,6 @@ package hm.binkley.layers.dnd.item;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers.LayerSurface;
 
-import java.util.Map;
-
 /** @todo Figure out how to use types for height/weight */
 public class Item
         extends Layer {
@@ -12,13 +10,12 @@ public class Item
             final String description, final Type type, final Rarity rarity,
             final Weight weight, final Volume volume, final String notes) {
         super(layers, name);
-        final Map<Object, Object> details = details();
-        details.put("Description", description);
-        details.put(Type.class, type);
-        details.put(Rarity.class, rarity);
-        details.put(Weight.class, weight);
-        details.put(Volume.class, volume);
-        details().put("Notes", notes);
+        putDetail("Description", description);
+        putDetail(Type.class, type);
+        putDetail(Rarity.class, rarity);
+        putDetail(Weight.class, weight);
+        putDetail(Volume.class, volume);
+        putDetail("Notes", notes);
     }
 
     public Weight weight() {
