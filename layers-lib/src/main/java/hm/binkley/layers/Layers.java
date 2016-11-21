@@ -143,7 +143,7 @@ public final class Layers {
             return key;
         }
 
-        public T valueWithout() {
+        public R valueWithout() {
             return whatIfWithout(layer).get(key);
         }
     }
