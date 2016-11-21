@@ -1,6 +1,8 @@
 package hm.binkley.layers;
 
 import hm.binkley.layers.Layers.LayerSurface;
+import hm.binkley.layers.Layers.RuleSurface;
+import hm.binkley.layers.rules.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -163,10 +165,33 @@ class LayersTest {
                 () -> layers.get("No such key"));
     }
 
+    @Test
+    void shouldGetValueFromSurface() {
+        final EgLayer egLayer = firstLayer.
+                put("Other OK", mostRecent(true)).
+                saveAndNext(ScratchLayer::new).
+                put("OK", new Rule<EgLayer, Boolean, Boolean>("Fake OK") {
+                    @Override
+                    public Boolean apply(
+                            final RuleSurface<EgLayer, Boolean, Boolean>
+                                    layers) {
+                        return layers.get("Other OK");
+                    }
+                }).
+                saveAndNext(EgLayer::new);
+        egLayer.saveAndNext(ScratchLayer::new);
+
+        assertTrue(egLayer.isOk());
+    }
+
     private static final class EgLayer
             extends Layer {
         private EgLayer(final LayerSurface layers) {
             super(layers, "Eg");
+        }
+
+        boolean isOk() {
+            return layers.get("OK");
         }
     }
 }

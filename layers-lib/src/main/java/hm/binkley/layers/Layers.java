@@ -122,11 +122,16 @@ public final class Layers {
             updateCache();
             return next.apply(this);
         }
+
+        @SuppressWarnings("TypeParameterUnusedInFormals")
+        public <T> T get(final Object key) {
+            return Layers.this.get(key);
+        }
     }
 
     @RequiredArgsConstructor(access = PRIVATE)
-    public final class RuleSurface<T, R> {
-        private final Layer layer;
+    public final class RuleSurface<L extends Layer, T, R> {
+        private final L layer;
         private final Object key;
 
         public Stream<T> values(final Object key) {
@@ -143,7 +148,11 @@ public final class Layers {
             return key;
         }
 
-        public R valueWithout() {
+        public R get(final Object key) {
+            return Layers.this.get(key);
+        }
+
+        public R getWithout() {
             return whatIfWithout(layer).get(key);
         }
     }
@@ -157,26 +166,29 @@ public final class Layers {
                 collect(joining("\n"));
     }
 
-    private Layer ruleLayer(final Object key) {
-        return allRuleLayers(key).
+    @SuppressWarnings("TypeParameterUnusedInFormals")
+    private <L extends Layer> L ruleLayer(final Object key) {
+        return this.<L>allRuleLayers(key).
                 findFirst().
                 orElseThrow(() -> new NoSuchElementException(
                         "No rule for key: " + key));
     }
 
-    private <T, R> Object value(final Object key) {
-        final Layer layer = ruleLayer(key);
-        return layer.<Rule<T, R>>get(key).
+    private <L extends Layer, T, R> Object value(final Object key) {
+        final L layer = ruleLayer(key);
+        return layer.<Rule<L, T, R>>get(key).
                 apply(new RuleSurface<>(layer, key));
     }
 
-    private Stream<Layer> allRuleLayers(final Object key) {
+    @SuppressWarnings("unchecked")
+    private <L extends Layer> Stream<L> allRuleLayers(final Object key) {
         final int size = layers.size();
         return range(0, size).
                 map(i -> size - i - 1).
                 mapToObj(layers::get).
                 filter(layer -> layer.containsKey(key)).
-                filter(layer -> layer.get(key) instanceof Rule);
+                filter(layer -> layer.get(key) instanceof Rule).
+                map(layer -> (L) layer);
     }
 
     @SuppressWarnings("unchecked")

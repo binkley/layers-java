@@ -3,6 +3,7 @@ package hm.binkley.layers.dnd.item;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.LayerSurface;
+import hm.binkley.layers.set.LayerSet;
 
 import static hm.binkley.layers.set.LayerSetCommand.add;
 import static hm.binkley.layers.set.LayerSetCommand.remove;
@@ -23,6 +24,10 @@ public class MagicItem
             final String description, final Type type, final Rarity rarity,
             final Attunement attunement) {
         this(layers, name, description, type, rarity, attunement, "");
+    }
+
+    public boolean isAttuned() {
+        return layers.<LayerSet<MagicItem>>get(Attuned.class).contains(this);
     }
 
     /** @todo Contrast with {@link Attuned#attune(MagicItem)} and pick one */

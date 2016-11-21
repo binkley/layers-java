@@ -70,8 +70,8 @@ public class Layer
         return this;
     }
 
-    public <T, R> Layer put(final Object key,
-            final Function<Object, Rule<T, R>> ctor) {
+    public <L extends Layer, T, R> Layer put(final Object key,
+            final Function<Object, Rule<L, T, R>> ctor) {
         return put(key, ctor.apply(key));
     }
 

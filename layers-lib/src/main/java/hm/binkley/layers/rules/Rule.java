@@ -8,8 +8,8 @@ import hm.binkley.layers.set.LayerSetRule;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public abstract class Rule<T, R>
-        implements RuleFunction<T, R> {
+public abstract class Rule<L extends Layer, T, R>
+        implements RuleFunction<L, T, R> {
     private final String name;
 
     @Override
@@ -17,24 +17,26 @@ public abstract class Rule<T, R>
         return "Rule: " + name;
     }
 
-    public static <T> Rule<T, T> mostRecent(final T defaultValue) {
+    public static <L extends Layer, T> Rule<L, T, T> mostRecent(
+            final T defaultValue) {
         return new MostRecentRule<>(defaultValue);
     }
 
-    public static Rule<Integer, Integer> sumAll() {
-        return new SumAllRule();
+    public static <L extends Layer> Rule<L, Integer, Integer> sumAll() {
+        return new SumAllRule<>();
     }
 
-    public static Rule<Integer, Integer> doubling() {
-        return new DoublingRule();
+    public static <L extends Layer> Rule<L, Integer, Integer> doubling() {
+        return new DoublingRule<>();
     }
 
-    public static Rule<Integer, Integer> floor(final int floor) {
-        return new FloorRule(floor);
+    public static <L extends Layer> Rule<L, Integer, Integer> floor(
+            final int floor) {
+        return new FloorRule<>(floor);
     }
 
-    public static <L extends Layer> Rule<LayerSetCommand<L>, LayerSet<L>>
-    layerSet(
+    public static <L extends Layer> Rule<L, LayerSetCommand<L>,
+            LayerSet<L>> layerSet(
             final FullnessFunction<L> full) {
         return new LayerSetRule<>(full);
     }
