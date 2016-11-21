@@ -170,14 +170,7 @@ class LayersTest {
         final EgLayer egLayer = firstLayer.
                 put("Other OK", mostRecent(true)).
                 saveAndNext(ScratchLayer::new).
-                put("OK", new Rule<EgLayer, Boolean, Boolean>("Fake OK") {
-                    @Override
-                    public Boolean apply(
-                            final RuleSurface<EgLayer, Boolean, Boolean>
-                                    layers) {
-                        return layers.get("Other OK");
-                    }
-                }).
+                put("OK", new EgRule()).
                 saveAndNext(EgLayer::new);
         egLayer.saveAndNext(ScratchLayer::new);
 
@@ -192,6 +185,17 @@ class LayersTest {
 
         boolean isOk() {
             return layers.get("OK");
+        }
+    }
+
+    private static final class EgRule
+            extends Rule<EgLayer, Boolean, Boolean> {
+        private EgRule() {super("Fake OK");}
+
+        @Override
+        public Boolean apply(
+                final RuleSurface<EgLayer, Boolean, Boolean> layers) {
+            return layers.get("Other OK");
         }
     }
 }
