@@ -6,4 +6,4 @@ import java.util.function.Function;
 
 @FunctionalInterface
 public interface RuleFunction<T, R>
-        extends Function<RuleSurface<T>, R> {}
+        extends Function<RuleSurface<T, R>, R> {}

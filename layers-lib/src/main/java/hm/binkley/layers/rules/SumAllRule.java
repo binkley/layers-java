@@ -9,7 +9,7 @@ public class SumAllRule
     }
 
     @Override
-    public Integer apply(final RuleSurface<Integer> layers) {
+    public Integer apply(final RuleSurface<Integer, Integer> layers) {
         return layers.<Integer>values(layers.key()).
                 mapToInt(Integer::intValue).
                 sum();

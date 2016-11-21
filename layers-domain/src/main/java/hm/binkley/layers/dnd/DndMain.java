@@ -45,6 +45,7 @@ public final class DndMain {
                 saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(abilityScoreIncrease(CON, WIS)).
                 saveAndNext(AmuletOfHealth::new);
+        amuletOfHealth.saveAndNext(ScratchLayer::new);
         amuletOfHealth.attuneAndNext(ScratchLayer::new);
         beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
         amuletOfHealth.detuneAndNext(ScratchLayer::new);

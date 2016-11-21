@@ -12,7 +12,7 @@ public class MostRecentRule<T>
     }
 
     @Override
-    public T apply(final RuleSurface<T> layers) {
+    public T apply(final RuleSurface<T, T> layers) {
         final Object key = layers.key();
         return layers.reverseValues(key).
                 findFirst().

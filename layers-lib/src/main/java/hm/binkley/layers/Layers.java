@@ -125,7 +125,7 @@ public final class Layers {
     }
 
     @RequiredArgsConstructor(access = PRIVATE)
-    public final class RuleSurface<T> {
+    public final class RuleSurface<T, R> {
         private final Layer layer;
         private final Object key;
 
@@ -151,8 +151,8 @@ public final class Layers {
     @Override
     public String toString() {
         final int size = layers.size();
-        return "All (" + size + "): " + BRACES.display(cache) + "\n"
-                + range(0, size).
+        return "All (" + size + "): " + BRACES.display(cache) + "\n" + range(
+                0, size).
                 mapToObj(i -> (size - i) + ": " + layers.get(size - i - 1)).
                 collect(joining("\n"));
     }
@@ -164,9 +164,9 @@ public final class Layers {
                         "No rule for key: " + key));
     }
 
-    private <T> Object value(final Object key) {
+    private <T, R> Object value(final Object key) {
         final Layer layer = ruleLayer(key);
-        return layer.<Rule<T, ?>>get(key).
+        return layer.<Rule<T, R>>get(key).
                 apply(new RuleSurface<>(layer, key));
     }
 
