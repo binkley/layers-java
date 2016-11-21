@@ -189,12 +189,12 @@ class LayersTest {
     }
 
     private static final class EgRule
-            extends Rule<EgLayer, Boolean, Boolean> {
+            extends Rule<Boolean, Boolean> {
         private EgRule() {super("Fake OK");}
 
         @Override
         public Boolean apply(
-                final RuleSurface<EgLayer, Boolean, Boolean> layers) {
+                final RuleSurface<Boolean, Boolean> layers) {
             return layers.get("Other OK");
         }
     }

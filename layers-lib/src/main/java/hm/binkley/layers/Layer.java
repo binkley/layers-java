@@ -70,8 +70,8 @@ public class Layer
         return this;
     }
 
-    public <L extends Layer, T, R> Layer put(final Object key,
-            final Function<Object, Rule<L, T, R>> ctor) {
+    public <T, R> Layer put(final Object key,
+            final Function<Object, Rule<T, R>> ctor) {
         return put(key, ctor.apply(key));
     }
 
@@ -80,6 +80,7 @@ public class Layer
         return put(key, layerSet(full));
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Layer blend(final Layer that) {
         that.values.forEach(
                 (key, value) -> values.compute(key, (k, existing) -> {

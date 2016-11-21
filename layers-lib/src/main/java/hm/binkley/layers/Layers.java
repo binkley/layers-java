@@ -130,8 +130,8 @@ public final class Layers {
     }
 
     @RequiredArgsConstructor(access = PRIVATE)
-    public final class RuleSurface<L extends Layer, T, R> {
-        private final L layer;
+    public final class RuleSurface<T, R> {
+        private final Layer layer;
         private final Object key;
 
         public Stream<T> values(final Object key) {
@@ -176,7 +176,7 @@ public final class Layers {
 
     private <L extends Layer, T, R> Object value(final Object key) {
         final L layer = ruleLayer(key);
-        return layer.<Rule<L, T, R>>get(key).
+        return layer.<Rule<T, R>>get(key).
                 apply(new RuleSurface<>(layer, key));
     }
 
