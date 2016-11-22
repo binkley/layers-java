@@ -23,6 +23,7 @@ occasionally intrudes:
 These include:
 
 * Instance factory methods, chaining layer construction
+* Service discovery via `META-INF/services`
 * When possible, use constructors as simple lambdas
 * Curry more complex constructors and functions: aim for uniform syntax
 * Convenience functions to capture common use patterns
