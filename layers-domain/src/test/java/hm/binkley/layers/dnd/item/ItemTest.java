@@ -8,6 +8,7 @@ import static hm.binkley.layers.dnd.item.Volume.inCuft;
 import static hm.binkley.layers.dnd.item.Weight.inPounds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SuppressWarnings("rawtypes")
 class ItemTest {
     @Test
     void shouldHaveWeight() {

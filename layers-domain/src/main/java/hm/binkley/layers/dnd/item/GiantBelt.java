@@ -13,8 +13,8 @@ import static hm.binkley.layers.rules.Rule.floor;
  * @author <a href="mailto:binkley@alumni.rice.edu">B. K. Oxley (binkley)</a>
  * @todo Needs documentation.
  */
-public abstract class GiantBelt
-        extends MagicItem {
+public abstract class GiantBelt<L extends GiantBelt<L>>
+        extends MagicItem<L> {
     protected GiantBelt(final LayerSurface layers, final String giantKind,
             final Rarity rarity, final int strength) {
         super(layers, "Belt of " + giantKind + " Giant Strength",

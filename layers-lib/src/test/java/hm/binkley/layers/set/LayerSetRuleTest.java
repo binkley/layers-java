@@ -1,6 +1,5 @@
 package hm.binkley.layers.set;
 
-import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LayerSetRuleTest {
     private Layers layers;
-    private Layer firstLayer;
+    private ScratchLayer firstLayer;
 
     @BeforeEach
     void setUpLayers() {
@@ -34,7 +33,7 @@ class LayerSetRuleTest {
     @Test
     void shouldUseLayerSet() {
         firstLayer.
-                put("A", layerSet(max(1))).
+                put("A", layerSet(max1())).
                 saveAndNext(ScratchLayer::new).
                 put("A", add("Add " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new);
@@ -44,8 +43,8 @@ class LayerSetRuleTest {
 
     @Test
     void shouldCapOutLayerSet() {
-        final Layer secondLayer = firstLayer.
-                put("A", max(1)).
+        final ScratchLayer secondLayer = firstLayer.
+                put("A", max1()).
                 saveAndNext(ScratchLayer::new).
                 put("A", add("Add " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new);
@@ -60,7 +59,7 @@ class LayerSetRuleTest {
     @Test
     void shouldRemoveMembers() {
         firstLayer.
-                put("A", layerSet(max(1))).
+                put("A", layerSet(max1())).
                 saveAndNext(ScratchLayer::new).
                 put("A", add("Add " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new).
@@ -73,7 +72,7 @@ class LayerSetRuleTest {
     @Test
     void shouldComplainWhenRemovingNonMember() {
         assertThrows(NoSuchElementException.class, () -> firstLayer.
-                put("A", layerSet(max(1))).
+                put("A", layerSet(max1())).
                 saveAndNext(ScratchLayer::new).
                 put("A", remove("Remove " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new));
@@ -82,11 +81,15 @@ class LayerSetRuleTest {
     @Test
     void shouldDisplayRuleNameWhenAvailable() {
         firstLayer.
-                put("A", named(max(1), "Bob!")).
+                put("A", named(max1(), "Bob!")).
                 saveAndNext(ScratchLayer::new).
                 put("A", add("Add " + firstLayer.name(), firstLayer)).
                 saveAndNext(ScratchLayer::new);
 
         assertTrue(firstLayer.toString().contains("Bob!"));
+    }
+
+    private static FullnessFunction<ScratchLayer> max1() {
+        return max(1);
     }
 }

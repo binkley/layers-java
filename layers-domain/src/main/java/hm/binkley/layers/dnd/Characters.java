@@ -2,6 +2,7 @@ package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
+import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.XEnum;
 
 import java.util.ArrayList;
@@ -26,11 +27,19 @@ public class Characters
         values.add(this);
     }
 
-    public static LayerMaker<Layer> characterDescription(final String name) {
+    public static LayerMaker<CharactersLayer> characterDescription(
+            final String name) {
         return layers -> {
-            final Layer layer = new Layer(layers, "Character description");
+            final CharactersLayer layer = new CharactersLayer(layers);
             layer.put(NAME, name);
             return layer;
         };
+    }
+
+    public static final class CharactersLayer
+            extends Layer<CharactersLayer> {
+        private CharactersLayer(final LayerSurface layers) {
+            super(layers, "Character description");
+        }
     }
 }

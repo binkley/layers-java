@@ -1,12 +1,12 @@
 package hm.binkley.layers.dnd;
 
-import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.dnd.item.AmuletOfHealth;
 import hm.binkley.layers.dnd.item.BeltOfHillGiantStrength;
 import hm.binkley.layers.dnd.item.MagicItem;
 import hm.binkley.layers.rules.BaseRule;
+import hm.binkley.layers.rules.BaseRule.BaseRulesLayer;
 
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.CON;
@@ -29,11 +29,11 @@ import static java.lang.System.out;
 public final class DndMain {
     public static void main(final String... args) {
         final Layers[] layersHolder = new Layers[1];
-        final Layer firstLayer = firstLayer(BaseRule::baseRules,
+        final BaseRulesLayer firstLayer = firstLayer(BaseRule::baseRules,
                 layers -> layersHolder[0] = layers);
         final Layers layers = layersHolder[0];
 
-        final MagicItem beltOfHillGiantStrength = firstLayer.
+        final BeltOfHillGiantStrength beltOfHillGiantStrength = firstLayer.
                 saveAndNext(characterDescription("Bob")).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(humanVariant().withSTR().withDEX()).
@@ -41,7 +41,7 @@ public final class DndMain {
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
                 saveAndNext(doubleProficiency(ACROBATICS)).
                 saveAndNext(BeltOfHillGiantStrength::new);
-        final MagicItem amuletOfHealth = beltOfHillGiantStrength.
+        final AmuletOfHealth amuletOfHealth = beltOfHillGiantStrength.
                 saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(abilityScoreIncrease(CON, WIS)).
                 saveAndNext(AmuletOfHealth::new);

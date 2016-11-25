@@ -25,9 +25,9 @@ import static lombok.AccessLevel.PRIVATE;
 
 public final class Layers {
     private final transient Map<Object, Object> cache = new LinkedHashMap<>();
-    private final List<Layer> layers;
+    private final List<Layer<?>> layers;
 
-    private Layers(final List<Layer> layers) {
+    private Layers(final List<Layer<?>> layers) {
         this.layers = layers;
         updateCache();
     }
@@ -44,7 +44,7 @@ public final class Layers {
         cache.putAll(updated);
     }
 
-    public static <L extends Layer> L firstLayer(final LayerMaker<L> ctor,
+    public static <L extends Layer<L>> L firstLayer(final LayerMaker<L> ctor,
             final Consumer<Layers> layersHolder) {
         final Layers layers = new Layers(new ArrayList<>());
         layersHolder.accept(layers);
@@ -99,16 +99,16 @@ public final class Layers {
     }
 
     @SuppressWarnings("WeakerAccess")
-    public Layers whatIfWith(final Layer layer) {
-        final List<Layer> scenario = new ArrayList<>();
+    public Layers whatIfWith(final Layer<?> layer) {
+        final List<Layer<?>> scenario = new ArrayList<>();
         scenario.addAll(layers);
         scenario.add(layer);
         return new Layers(scenario);
     }
 
     @SuppressWarnings("WeakerAccess")
-    public Layers whatIfWithout(final Layer layer) {
-        final List<Layer> scenario = new ArrayList<>();
+    public Layers whatIfWithout(final Layer<?> layer) {
+        final List<Layer<?>> scenario = new ArrayList<>();
         scenario.addAll(layers);
         scenario.remove(layer);
         return new Layers(scenario);
@@ -116,7 +116,7 @@ public final class Layers {
 
     @RequiredArgsConstructor(access = PRIVATE)
     public final class LayerSurface {
-        public <L extends Layer> L saveAndNext(final Layer layer,
+        public <L extends Layer<L>> L saveAndNext(final Layer<?> layer,
                 final LayerMaker<L> next) {
             layers.add(layer);
             updateCache();
@@ -130,8 +130,8 @@ public final class Layers {
     }
 
     @RequiredArgsConstructor(access = PRIVATE)
-    public final class RuleSurface<T, R> {
-        private final Layer layer;
+    public final class RuleSurface<L extends Layer<L>, T, R> {
+        private final L layer;
         private final Object key;
 
         public Stream<T> values(final Object key) {
@@ -167,21 +167,21 @@ public final class Layers {
     }
 
     @SuppressWarnings("TypeParameterUnusedInFormals")
-    private <L extends Layer> L ruleLayer(final Object key) {
+    private <L extends Layer<L>> L ruleLayer(final Object key) {
         return this.<L>allRuleLayers(key).
                 findFirst().
                 orElseThrow(() -> new NoSuchElementException(
                         "No rule for key: " + key));
     }
 
-    private <L extends Layer, T, R> Object value(final Object key) {
+    private <L extends Layer<L>, T, R> Object value(final Object key) {
         final L layer = ruleLayer(key);
-        return layer.<Rule<T, R>>get(key).
+        return layer.<Rule<L, T, R>>get(key).
                 apply(new RuleSurface<>(layer, key));
     }
 
     @SuppressWarnings("unchecked")
-    private <L extends Layer> Stream<L> allRuleLayers(final Object key) {
+    private <L extends Layer<L>> Stream<L> allRuleLayers(final Object key) {
         final int size = layers.size();
         return range(0, size).
                 map(i -> size - i - 1).
@@ -192,7 +192,7 @@ public final class Layers {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> Stream<T> allValues(final Stream<Layer> layers,
+    private static <T> Stream<T> allValues(final Stream<Layer<?>> layers,
             final Object key) {
         return layers.
                 filter(layer -> layer.containsKey(key)).

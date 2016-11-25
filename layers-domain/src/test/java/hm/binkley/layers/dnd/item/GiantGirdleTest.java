@@ -1,6 +1,5 @@
 package hm.binkley.layers.dnd.item;
 
-import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.rules.BaseRule;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GiantGirdleTest {
     private Layers layers;
-    private Layer firstLayer;
+    private ScratchLayer firstLayer;
 
     @BeforeEach
     void setUpLayers() {
@@ -83,7 +82,7 @@ class GiantGirdleTest {
     @Test
     @Disabled("Pending issue #9")
     void shouldHaveNetStrengthAfterRemovingBelt() {
-        final Layer girdle = firstLayer.
+        final BeltOfFrostGiantStrength girdle = firstLayer.
                 saveAndNext(BaseRule::baseRules).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).

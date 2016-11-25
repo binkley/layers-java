@@ -1,15 +1,13 @@
 package hm.binkley.layers.set;
 
+import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers.LayerSurface;
-import hm.binkley.layers.ScratchLayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-import static hm.binkley.layers.set.FullnessFunction.max;
-import static hm.binkley.layers.set.FullnessFunction.unlimited;
 import static java.util.stream.IntStream.range;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -83,11 +81,11 @@ class LayerSetTest {
     }
 
     private static final class EgLayer
-            extends ScratchLayer {
+            extends Layer<EgLayer> {
         private final int i;
 
         private EgLayer(final LayerSurface layers, final int i) {
-            super(layers);
+            super(layers, "Example layer");
             this.i = i;
         }
 
@@ -109,5 +107,13 @@ class LayerSetTest {
         public int hashCode() {
             return Objects.hash(i);
         }
+    }
+
+    private static FullnessFunction<EgLayer> max(final int max) {
+        return FullnessFunction.max(max);
+    }
+
+    private static FullnessFunction<EgLayer> unlimited() {
+        return FullnessFunction.unlimited();
     }
 }

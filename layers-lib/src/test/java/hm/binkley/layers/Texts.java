@@ -27,20 +27,27 @@ public class Texts
         values.add(this);
     }
 
-    public static LayerMaker<Layer> texts(final String name) {
+    public static LayerMaker<TextsLayer> texts(final String name) {
         return layers -> {
-            final Layer layer = new Layer(layers, "Textual matters");
+            final TextsLayer layer = new TextsLayer(layers);
             layer.put(NAME, name);
             return layer;
         };
     }
 
+    public static final class TextsLayer
+            extends Layer<TextsLayer> {
+        public TextsLayer(final LayerSurface layers) {
+            super(layers, "Textual matters");
+        }
+    }
+
     @MetaInfServices
-    public static final class TextsBaseRules
+    public static final class TextsRules
             implements BaseRule {
         @Override
-        public Layer apply(final LayerSurface layers) {
-            final Layer layer = new Layer(layers, "Base rules for text");
+        public BaseRulesLayer apply(final LayerSurface layers) {
+            final BaseRulesLayer layer = new BaseRulesLayer(layers);
             for (final Texts key : values())
                 layer.put(key, k -> mostRecent(""));
             return layer;

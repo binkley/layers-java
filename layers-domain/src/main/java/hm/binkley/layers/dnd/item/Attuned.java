@@ -8,27 +8,29 @@ import hm.binkley.layers.set.LayerSetCommand;
 import static hm.binkley.layers.set.LayerSetCommand.add;
 import static hm.binkley.layers.set.LayerSetCommand.remove;
 
-public class Attuned
-        extends Layer {
-    public static LayerMaker<Attuned> attune(final MagicItem layer) {
-        return layers -> new Attuned(layers,
+public class Attuned<L extends MagicItem<L>>
+        extends Layer<Attuned<L>> {
+    public static <L extends MagicItem<L>> LayerMaker<Attuned<L>> attune(
+            final L layer) {
+        return layers -> new Attuned<>(layers,
                 add("Attune " + layer.name(), layer));
     }
 
-    public static LayerMaker<Attuned> detune(final MagicItem layer) {
-        return layers -> new Attuned(layers,
+    public static <L extends MagicItem<L>> LayerMaker<Attuned<L>> detune(
+            final L layer) {
+        return layers -> new Attuned<>(layers,
                 remove("Detune " + layer.name(), layer));
     }
 
     public Attuned(final LayerSurface layers,
-            final LayerSetCommand<MagicItem> command) {
+            final LayerSetCommand<L> command) {
         super(layers, "Attuned");
         put(Attuned.class, command);
     }
 
     @Override
     public String toString() {
-        return name() + ": " + this.<LayerSetCommand<Layer>>get(Attuned.class).
+        return name() + ": " + this.<LayerSetCommand<?>>get(Attuned.class).
                 name();
     }
 }

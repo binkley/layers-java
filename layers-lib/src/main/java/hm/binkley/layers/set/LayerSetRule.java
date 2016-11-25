@@ -4,8 +4,8 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers.RuleSurface;
 import hm.binkley.layers.rules.Rule;
 
-public final class LayerSetRule<L extends Layer>
-        extends Rule<LayerSetCommand<L>, LayerSet<L>> {
+public final class LayerSetRule<L extends Layer<L>>
+        extends Rule<L, LayerSetCommand<L>, LayerSet<L>> {
     private final FullnessFunction<L> full;
 
     public LayerSetRule(final FullnessFunction<L> full) {
@@ -15,7 +15,7 @@ public final class LayerSetRule<L extends Layer>
 
     @Override
     public LayerSet<L> apply(
-            final RuleSurface<LayerSetCommand<L>, LayerSet<L>> layers) {
+            final RuleSurface<L, LayerSetCommand<L>, LayerSet<L>> layers) {
         final LayerSet<L> set = new LayerSet<>(full);
         layers.<LayerSetCommand<L>>values(layers.key()).
                 forEach(command -> command.accept(set));

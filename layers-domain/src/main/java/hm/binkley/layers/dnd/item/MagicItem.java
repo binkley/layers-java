@@ -9,8 +9,8 @@ import static hm.binkley.layers.set.LayerSetCommand.add;
 import static hm.binkley.layers.set.LayerSetCommand.remove;
 
 /** @todo Real values for weight/volume */
-public class MagicItem
-        extends Item {
+public class MagicItem<L extends MagicItem<L>>
+        extends Item<L> {
     public MagicItem(final LayerSurface layers, final String name,
             final String description, final Type type, final Rarity rarity,
             final Attunement attunement, final String notes) {
@@ -27,18 +27,22 @@ public class MagicItem
     }
 
     public boolean isAttuned() {
-        return layers.<LayerSet<MagicItem>>get(Attuned.class).contains(this);
+        return layers.<LayerSet<?>>get(Attuned.class).contains(this);
     }
 
     /** @todo Contrast with {@link Attuned#attune(MagicItem)} and pick one */
-    public <L extends Layer> L attuneAndNext(final LayerMaker<L> next) {
+    @SuppressWarnings("unchecked")
+    public <K extends Layer<K>> K attuneAndNext(final LayerMaker<K> next) {
         return layers.saveAndNext(
-                new Attuned(layers, add("Attune " + name(), this)), next);
+                new Attuned<>(layers, add("Attune " + name(), (L) this)),
+                next);
     }
 
     /** @todo Contrast with {@link Attuned#detune(MagicItem)} and pick one */
-    public <L extends Layer> L detuneAndNext(final LayerMaker<L> next) {
+    @SuppressWarnings("unchecked")
+    public <K extends Layer<K>> K detuneAndNext(final LayerMaker<K> next) {
         return layers.saveAndNext(
-                new Attuned(layers, remove("Detune " + name(), this)), next);
+                new Attuned<>(layers, remove("Detune " + name(), (L) this)),
+                next);
     }
 }

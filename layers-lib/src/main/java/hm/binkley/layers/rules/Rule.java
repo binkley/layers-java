@@ -2,14 +2,12 @@ package hm.binkley.layers.rules;
 
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.set.FullnessFunction;
-import hm.binkley.layers.set.LayerSet;
-import hm.binkley.layers.set.LayerSetCommand;
 import hm.binkley.layers.set.LayerSetRule;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public abstract class Rule<T, R>
-        implements RuleFunction<T, R> {
+public abstract class Rule<L extends Layer<L>, T, R>
+        implements RuleFunction<L, T, R> {
     private final String name;
 
     @Override
@@ -17,24 +15,24 @@ public abstract class Rule<T, R>
         return "Rule: " + name;
     }
 
-    public static <T> Rule<T, T> mostRecent(final T defaultValue) {
+    public static <L extends Layer<L>, T> MostRecentRule<L, T> mostRecent(
+            final T defaultValue) {
         return new MostRecentRule<>(defaultValue);
     }
 
-    public static Rule<Integer, Integer> sumAll() {
-        return new SumAllRule();
+    public static <L extends Layer<L>> SumAllRule<L> sumAll() {
+        return new SumAllRule<>();
     }
 
-    public static Rule<Integer, Integer> doubling() {
-        return new DoublingRule();
+    public static <L extends Layer<L>> DoublingRule<L> doubling() {
+        return new DoublingRule<>();
     }
 
-    public static Rule<Integer, Integer> floor(final int floor) {
-        return new FloorRule(floor);
+    public static <L extends Layer<L>> FloorRule<L> floor(final int floor) {
+        return new FloorRule<>(floor);
     }
 
-    public static <L extends Layer> Rule<LayerSetCommand<L>, LayerSet<L>>
-    layerSet(
+    public static <L extends Layer<L>> LayerSetRule<L> layerSet(
             final FullnessFunction<L> full) {
         return new LayerSetRule<>(full);
     }

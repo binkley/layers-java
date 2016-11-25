@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LayersTest {
     private Layers layers;
-    private Layer firstLayer;
+    private Layer<?> firstLayer;
 
     @BeforeEach
     void setUpLayers() {
@@ -178,7 +178,7 @@ class LayersTest {
     }
 
     private static final class EgLayer
-            extends Layer {
+            extends Layer<EgLayer> {
         private EgLayer(final LayerSurface layers) {
             super(layers, "Eg");
         }
@@ -189,12 +189,12 @@ class LayersTest {
     }
 
     private static final class EgRule
-            extends Rule<Boolean, Boolean> {
+            extends Rule<EgLayer, Boolean, Boolean> {
         private EgRule() {super("Fake OK");}
 
         @Override
         public Boolean apply(
-                final RuleSurface<Boolean, Boolean> layers) {
+                final RuleSurface<EgLayer, Boolean, Boolean> layers) {
             return layers.get("Other OK");
         }
     }

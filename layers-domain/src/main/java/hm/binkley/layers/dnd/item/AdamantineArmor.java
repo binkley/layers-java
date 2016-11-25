@@ -7,7 +7,7 @@ import static hm.binkley.layers.dnd.item.Rarity.UNCOMMON;
 import static hm.binkley.layers.dnd.item.Type.ARMOR;
 
 class AdamantineArmor
-        extends MagicItem {
+        extends MagicItem<AdamantineArmor> {
     AdamantineArmor(final LayerSurface layers) {
         super(layers, "Adamantine Armor",
                 "This suit of armor is reinforced with adamantine, one of "

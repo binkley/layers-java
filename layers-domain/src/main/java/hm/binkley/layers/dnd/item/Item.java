@@ -4,8 +4,8 @@ import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers.LayerSurface;
 
 /** @todo Figure out how to use types for height/weight */
-public class Item
-        extends Layer {
+public class Item<L extends Item<L>>
+        extends Layer<L> {
     public Item(final LayerSurface layers, final String name,
             final String description, final Type type, final Rarity rarity,
             final Weight weight, final Volume volume, final String notes) {

@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LayerTest {
-    private Layer layer;
+    private Layer<?> layer;
 
     @BeforeEach
     void setUpLayer() {
-        layer = new Layer(null, "Eg");
+        layer = new Layer<>(null, "Eg");
         layer.put("A", "P");
         layer.put("B", 4);
     }
@@ -44,7 +44,7 @@ class LayerTest {
 
     @Test
     void shouldBlendLayer() {
-        final Layer other = new ScratchLayer(null);
+        final Layer<?> other = new ScratchLayer(null);
         other.put("C", 42);
         layer.blend(other);
 
@@ -53,7 +53,7 @@ class LayerTest {
 
     @Test
     void shouldCryIfBlendingDuplicateKey() {
-        final Layer other = new ScratchLayer(null);
+        final Layer<?> other = new ScratchLayer(null);
         other.put("A", 42);
 
         assertThrows(IllegalStateException.class, () -> layer.blend(other));
@@ -61,11 +61,11 @@ class LayerTest {
 
     @Test
     void shouldCryIfBlendingDuplicateKeyTheOtherWay() {
-        final Layer other = new ScratchLayer(null);
+        final ScratchLayer other = new ScratchLayer(null);
         other.put("A", 42);
 
-        assertThrows(IllegalStateException.class,
-                () -> layer.blend(layers -> other));
+        assertThrows(IllegalStateException.class, () -> layer.
+                blend(layers -> other));
     }
 
     @Test

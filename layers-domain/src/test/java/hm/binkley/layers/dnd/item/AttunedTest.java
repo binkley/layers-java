@@ -1,9 +1,9 @@
 package hm.binkley.layers.dnd.item;
 
-import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.rules.BaseRule;
+import hm.binkley.layers.rules.BaseRule.BaseRulesLayer;
 import hm.binkley.layers.set.LayerSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AttunedTest {
     private Layers layers;
-    private Layer firstLayer;
+    private BaseRulesLayer firstLayer;
 
     @BeforeEach
     void setUpLayers() {
@@ -28,6 +28,7 @@ class AttunedTest {
                 layers -> this.layers = layers);
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     void shouldDisplayNicely() {
         final String display = new Attuned(null, add("Attune Bob",
@@ -75,6 +76,6 @@ class AttunedTest {
                 saveAndNext(detune(amuletOfHealth)).
                 saveAndNext(ScratchLayer::new);
 
-        assertTrue(layers.<LayerSet<MagicItem>>get(Attuned.class).isEmpty());
+        assertTrue(layers.<LayerSet<?>>get(Attuned.class).isEmpty());
     }
 }

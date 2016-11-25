@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 import static java.util.stream.Collectors.joining;
 
 @RequiredArgsConstructor
-public class LayerSet<L extends Layer>
+public class LayerSet<L extends Layer<L>>
         extends LinkedHashSet<L> {
     private final FullnessFunction<L> full;
 
@@ -20,6 +20,7 @@ public class LayerSet<L extends Layer>
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public final String toString() {
         return stream().
                 map(Layer::name).

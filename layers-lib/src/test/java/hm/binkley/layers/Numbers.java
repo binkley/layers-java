@@ -28,30 +28,29 @@ public class Numbers
     }
 
     /** @todo Builder */
-    public static LayerMaker<Layer> numbers(final int first,
+    public static LayerMaker<NumbersLayer> numbers(final int first,
             final int second) {
         return layers -> {
-            final Layer layer = new Layer(layers, "Base numbers");
+            final NumbersLayer layer = new NumbersLayer(layers);
             layer.put(FIRST, first);
             layer.put(SECOND, second);
             return layer;
         };
     }
 
-    public static LayerMaker<Layer> numberIncrease(final Numbers number) {
-        return layers -> {
-            final Layer layer = new Layer(layers, "Numeric increase");
-            layer.put(number, 1);
-            return layer;
-        };
+    public static final class NumbersLayer
+            extends Layer<NumbersLayer> {
+        public NumbersLayer(final LayerSurface layers) {
+            super(layers, "Base numbers");
+        }
     }
 
     @MetaInfServices
-    public static final class AbilitiesBaseRules
+    public static final class NumbersRules
             implements BaseRule {
         @Override
-        public Layer apply(final LayerSurface layers) {
-            final Layer layer = new Layer(layers, "Base rules for numbers");
+        public BaseRulesLayer apply(final LayerSurface layers) {
+            final BaseRulesLayer layer = new BaseRulesLayer(layers);
             for (final Numbers key : values())
                 layer.put(key, k -> sumAll());
             return layer;

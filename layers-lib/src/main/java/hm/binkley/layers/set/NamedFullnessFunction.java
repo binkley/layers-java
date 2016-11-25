@@ -1,23 +1,20 @@
 package hm.binkley.layers.set;
 
 import hm.binkley.layers.Layer;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Set;
 import java.util.function.BiFunction;
 
-class NamedFullnessFunction<L extends Layer>
+import static lombok.AccessLevel.PACKAGE;
+
+@RequiredArgsConstructor(access = PACKAGE)
+class NamedFullnessFunction<L extends Layer<L>>
         extends FullnessFunction<L> {
-    private final BiFunction<Set<L>, L, Boolean> full;
+    private final BiFunction<LayerSet<L>, L, Boolean> full;
     private final String name;
 
-    NamedFullnessFunction(final BiFunction<Set<L>, L, Boolean> full,
-            final String name) {
-        this.full = full;
-        this.name = name;
-    }
-
     @Override
-    public Boolean apply(final Set<L> layers, final L layer) {
+    public Boolean apply(final LayerSet<L> layers, final L layer) {
         return full.apply(layers, layer);
     }
 

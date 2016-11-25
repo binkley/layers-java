@@ -24,10 +24,9 @@ import static java.util.Collections.unmodifiableMap;
 /**
  * @todo Trade-off between too many references (hard on GC) and ease of use
  * @todo Rethink immutable vs editable - not consistently expressed
- * @todo Consider immutable look-a-likes, ala Guava
  */
 @RequiredArgsConstructor
-public class Layer
+public class Layer<L extends Layer<L>>
         implements LayerView {
     private final Map<Object, Object> values = new LinkedHashMap<>();
     private final Map<Object, Object> details = new LinkedHashMap<>();
@@ -65,33 +64,34 @@ public class Layer
         return (T) values.get(key);
     }
 
-    public <T> Layer put(final Object key, final T value) {
+    @SuppressWarnings("unchecked")
+    public <T> L put(final Object key, final T value) {
         values.put(key, value);
-        return this;
+        return (L) this;
     }
 
-    public <T, R> Layer put(final Object key,
-            final Function<Object, Rule<T, R>> ctor) {
+    public <T, R> L put(final Object key,
+            final Function<Object, Rule<L, T, R>> ctor) {
         return put(key, ctor.apply(key));
     }
 
-    public <L extends Layer> Layer put(final Object key,
-            final FullnessFunction<L> full) {
+    public <K extends Layer<K>> L put(final Object key,
+            final FullnessFunction<K> full) {
         return put(key, layerSet(full));
     }
 
-    @SuppressWarnings("WeakerAccess")
-    public Layer blend(final Layer that) {
+    @SuppressWarnings({"WeakerAccess", "unchecked"})
+    public L blend(final Layer<?> that) {
         that.values.forEach(
                 (key, value) -> values.compute(key, (k, existing) -> {
-                    if (null != existing)
-                        throw new IllegalStateException("Duplicate key " + k);
-                    return value;
+                    if (null == existing)
+                        return value;
+                    throw new IllegalStateException("Duplicate key " + k);
                 }));
-        return this;
+        return (L) this;
     }
 
-    public Layer blend(final LayerMaker<? extends Layer> that) {
+    public <K extends Layer<K>> L blend(final LayerMaker<K> that) {
         return blend(that.apply(layers));
     }
 
@@ -115,12 +115,13 @@ public class Layer
         return unmodifiableMap(details);
     }
 
-    public Layer putDetail(final Object key, final Object value) {
+    @SuppressWarnings("unchecked")
+    public L putDetail(final Object key, final Object value) {
         details.put(key, value);
-        return this;
+        return (L) this;
     }
 
-    public <L extends Layer> L saveAndNext(final LayerMaker<L> ctor) {
+    public <L extends Layer<L>> L saveAndNext(final LayerMaker<L> ctor) {
         return layers.saveAndNext(this, ctor);
     }
 

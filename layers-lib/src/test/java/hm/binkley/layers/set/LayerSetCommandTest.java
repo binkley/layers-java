@@ -21,7 +21,8 @@ class LayerSetCommandTest {
     @Test
     void shouldAdd() {
         final LayerSet<ScratchLayer> set = new LayerSet<>(
-                new NamedFullnessFunction<>((s, layer) -> false, "Bounded"));
+                new NamedFullnessFunction<ScratchLayer>((s, layer) -> false,
+                        "Bounded"));
         final ScratchLayer layer = new ScratchLayer(null);
         add("Add Bob", layer).accept(set);
 
@@ -31,7 +32,8 @@ class LayerSetCommandTest {
     @Test
     void shouldRemove() {
         final LayerSet<ScratchLayer> set = new LayerSet<>(
-                new NamedFullnessFunction<>((s, layer) -> false, "Bounded"));
+                new NamedFullnessFunction<ScratchLayer>((s, layer) -> false,
+                        "Bounded"));
         final ScratchLayer layer = new ScratchLayer(null);
         add("Add Bob", layer).accept(set);
         remove("Remove Bob", layer).accept(set);
@@ -42,7 +44,8 @@ class LayerSetCommandTest {
     @Test
     void shouldComplainWhenRemovingAndEmpty() {
         final LayerSet<ScratchLayer> set = new LayerSet<>(
-                new NamedFullnessFunction<>((s, layer) -> false, "Bounded"));
+                new NamedFullnessFunction<ScratchLayer>((s, layer) -> false,
+                        "Bounded"));
         final ScratchLayer layer = new ScratchLayer(null);
 
         assertThrows(NoSuchElementException.class,

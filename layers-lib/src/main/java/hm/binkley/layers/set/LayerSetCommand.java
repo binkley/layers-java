@@ -8,18 +8,18 @@ import java.util.function.Consumer;
 
 import static java.lang.String.format;
 
-public final class LayerSetCommand<L extends Layer>
+public final class LayerSetCommand<L extends Layer<L>>
         implements Consumer<LayerSet<L>> {
     private final String name;
     private final BiConsumer<LayerSet<L>, L> command;
     private final L layer;
 
-    public static <L extends Layer> LayerSetCommand<L> add(final String name,
-            final L layer) {
+    public static <L extends Layer<L>> LayerSetCommand<L> add(
+            final String name, final L layer) {
         return new LayerSetCommand<>(name, LayerSet::add, layer);
     }
 
-    public static <L extends Layer> LayerSetCommand<L> remove(
+    public static <L extends Layer<L>> LayerSetCommand<L> remove(
             final String name, final L layer) {
         return new LayerSetCommand<>(name, (set, l) -> {
             if (!set.remove(l))

@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FloorRuleTest {
     private Layers layers;
-    private Layer firstLayer;
+    private Layer<?> firstLayer;
 
     @BeforeEach
     void setUpLayers() {

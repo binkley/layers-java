@@ -12,8 +12,8 @@ import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 public final class Races {
     private Races() {}
 
-    public static Layer plainHuman(final LayerSurface layers) {
-        final Layer layer = new Layer(layers, "Human");
+    public static HumanLayer plainHuman(final LayerSurface layers) {
+        final HumanLayer layer = new HumanLayer(layers, "Human");
         Abilities.values().
                 forEach(score -> layer.put(score, 1));
         return layer;
@@ -29,11 +29,11 @@ public final class Races {
         }
 
         public static final class WithSTR {
-            public LayerMaker<Layer> withDEX() {
+            public LayerMaker<HumanLayer> withDEX() {
                 return withDoubleAbilities(STR, DEX);
             }
 
-            public LayerMaker<Layer> withCON() {
+            public LayerMaker<HumanLayer> withCON() {
                 return withDoubleAbilities(STR, CON);
             }
 
@@ -43,12 +43,26 @@ public final class Races {
         private HumanVariant() {}
     }
 
-    private static LayerMaker<Layer> withDoubleAbilities(
+    private static LayerMaker<HumanLayer> withDoubleAbilities(
             final Abilities ability1, final Abilities ability2) {
         return layers -> {
-            final Layer layer = new Layer(layers, "Variant Human");
+            final HumanLayer layer = new HumanLayer(layers, "Variant Human");
             layer.blend(abilityScoreIncrease(ability1, ability2));
             return layer;
         };
+    }
+
+    public static final class HumanLayer
+            extends RaceLayer<HumanLayer> {
+        private HumanLayer(final LayerSurface layers, final String name) {
+            super(layers, name);
+        }
+    }
+
+    public static abstract class RaceLayer<L extends RaceLayer<L>>
+            extends Layer<L> {
+        protected RaceLayer(final LayerSurface layers, final String name) {
+            super(layers, name);
+        }
     }
 }
