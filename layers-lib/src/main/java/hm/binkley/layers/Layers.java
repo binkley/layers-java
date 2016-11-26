@@ -1,7 +1,9 @@
 package hm.binkley.layers;
 
 import hm.binkley.layers.rules.Rule;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -129,9 +131,11 @@ public final class Layers {
         }
     }
 
+    @Accessors(fluent = true)
     @RequiredArgsConstructor(access = PRIVATE)
     public final class RuleSurface<L extends Layer<L>, T, R> {
         private final L layer;
+        @Getter
         private final Object key;
 
         public Stream<T> values(final Object key) {
@@ -142,10 +146,6 @@ public final class Layers {
             final int size = layers.size();
             return allValues(rangeClosed(1, size).
                     mapToObj(i -> layers.get(size - i)), key);
-        }
-
-        public Object key() {
-            return key;
         }
 
         @SuppressWarnings("TypeParameterUnusedInFormals")
