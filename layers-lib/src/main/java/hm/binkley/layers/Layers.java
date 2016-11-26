@@ -148,7 +148,8 @@ public final class Layers {
             return key;
         }
 
-        public R get(final Object key) {
+        @SuppressWarnings("TypeParameterUnusedInFormals")
+        public <S> S get(final Object key) {
             return Layers.this.get(key);
         }
 
