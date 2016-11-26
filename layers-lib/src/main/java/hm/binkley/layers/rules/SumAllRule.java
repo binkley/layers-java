@@ -11,7 +11,7 @@ public class SumAllRule<L extends Layer<L>>
 
     @Override
     public Integer apply(final RuleSurface<L, Integer, Integer> layers) {
-        return layers.<Integer>values(layers.key()).
+        return layers.<Integer>values().
                 mapToInt(Integer::intValue).
                 sum();
     }

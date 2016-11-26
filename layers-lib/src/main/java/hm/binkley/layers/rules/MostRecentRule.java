@@ -14,8 +14,7 @@ public class MostRecentRule<L extends Layer<L>, T>
 
     @Override
     public T apply(final RuleSurface<L, T, T> layers) {
-        final Object key = layers.key();
-        return layers.reverseValues(key).
+        return layers.reverseValues().
                 findFirst().
                 orElse(defaultValue);
     }
