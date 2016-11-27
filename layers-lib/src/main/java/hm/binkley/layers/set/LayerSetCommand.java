@@ -23,6 +23,10 @@ public final class LayerSetCommand<L extends Layer<L>>
         return new LayerSetCommand<>(name, LayerSet::add, layer);
     }
 
+    public static <L extends Layer<L>> LayerSetCommand<L> add(final L layer) {
+        return add("Add: " + layer.name(), layer);
+    }
+
     public static <L extends Layer<L>> LayerSetCommand<L> remove(
             final String name, final L layer) {
         return new LayerSetCommand<>(name, (set, l) -> {
@@ -30,6 +34,11 @@ public final class LayerSetCommand<L extends Layer<L>>
                 throw new NoSuchElementException(
                         format("%s not in set: %s", l.name(), set));
         }, layer);
+    }
+
+    public static <L extends Layer<L>> LayerSetCommand<L> remove(
+            final L layer) {
+        return remove("Remove: " + layer.name(), layer);
     }
 
     private LayerSetCommand(final String name,
@@ -46,6 +55,6 @@ public final class LayerSetCommand<L extends Layer<L>>
 
     @Override
     public String toString() {
-        return name;
+        return "[" + name + "]";
     }
 }

@@ -19,12 +19,17 @@ class LayerSetCommandTest {
     }
 
     @Test
+    void shouldGenerateName() {
+        assertEquals("Add: Scratch", add(new ScratchLayer(null)).name());
+    }
+
+    @Test
     void shouldAdd() {
         final LayerSet<ScratchLayer> set = new LayerSet<>(
                 new NamedFullnessFunction<ScratchLayer>((s, layer) -> false,
                         "Bounded"));
         final ScratchLayer layer = new ScratchLayer(null);
-        add("Add Bob", layer).accept(set);
+        add(layer).accept(set);
 
         assertEquals(singleton(layer), set);
     }
@@ -35,8 +40,8 @@ class LayerSetCommandTest {
                 new NamedFullnessFunction<ScratchLayer>((s, layer) -> false,
                         "Bounded"));
         final ScratchLayer layer = new ScratchLayer(null);
-        add("Add Bob", layer).accept(set);
-        remove("Remove Bob", layer).accept(set);
+        add(layer).accept(set);
+        remove(layer).accept(set);
 
         assertEquals(emptySet(), set);
     }
