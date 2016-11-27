@@ -33,34 +33,39 @@ public class Layer<L extends Layer<L>>
     protected final LayerSurface layers;
     private final String name;
 
+    @SuppressWarnings("unchecked")
+    public final L asThis() {
+        return (L) this;
+    }
+
     @Override
-    public String name() {
+    public final String name() {
         return name;
     }
 
     @Override
-    public boolean isEmpty() {
+    public final boolean isEmpty() {
         return values.isEmpty();
     }
 
     @Override
-    public int size() {
+    public final int size() {
         return values.size();
     }
 
     @Override
-    public Set<Object> keys() {
+    public final Set<Object> keys() {
         return values.keySet();
     }
 
     @Override
-    public boolean containsKey(final Object key) {
+    public final boolean containsKey(final Object key) {
         return values.containsKey(key);
     }
 
     @Override
     @SuppressWarnings({"unchecked", "TypeParameterUnusedInFormals"})
-    public <T> T get(final Object key) {
+    public final <T> T get(final Object key) {
         return (T) values.get(key);
     }
 
@@ -70,7 +75,7 @@ public class Layer<L extends Layer<L>>
         return (L) this;
     }
 
-    public <T, R> L put(final Object key,
+    public final <T, R> L put(final Object key,
             final Function<Object, Rule<L, T, R>> ctor) {
         return put(key, ctor.apply(key));
     }
@@ -81,7 +86,7 @@ public class Layer<L extends Layer<L>>
     }
 
     @SuppressWarnings({"WeakerAccess", "unchecked"})
-    public L blend(final Layer<?> that) {
+    public final L blend(final Layer<?> that) {
         that.values.forEach(
                 (key, value) -> values.compute(key, (k, existing) -> {
                     if (null == existing)
@@ -91,12 +96,12 @@ public class Layer<L extends Layer<L>>
         return (L) this;
     }
 
-    public <K extends Layer<K>> L blend(final LayerMaker<K> that) {
+    public final <K extends Layer<K>> L blend(final LayerMaker<K> that) {
         return blend(that.apply(layers));
     }
 
     @Override
-    public Stream<Entry<Object, Object>> stream() {
+    public final Stream<Entry<Object, Object>> stream() {
         return values.entrySet().stream().
                 filter(pair -> !(pair.getValue() instanceof Rule)).
                 map(pair -> new SimpleImmutableEntry<>(pair.getKey(),
@@ -104,29 +109,29 @@ public class Layer<L extends Layer<L>>
     }
 
     @Override
-    public Map<Object, Object> toMap() {
+    public final Map<Object, Object> toMap() {
         return stream().
                 collect(Collectors.toMap(Entry::getKey, Entry::getValue,
                         throwingMerger(), LinkedHashMap::new));
     }
 
     @Override
-    public Map<Object, Object> details() {
+    public final Map<Object, Object> details() {
         return unmodifiableMap(details);
     }
 
     @SuppressWarnings("unchecked")
-    public L putDetail(final Object key, final Object value) {
+    public final L putDetail(final Object key, final Object value) {
         details.put(key, value);
         return (L) this;
     }
 
-    public <K extends Layer<K>> K saveAndNext(final LayerMaker<K> ctor) {
+    public final <K extends Layer<K>> K saveAndNext(final LayerMaker<K> ctor) {
         return layers.saveAndNext(this, ctor);
     }
 
     @SuppressWarnings("WeakerAccess")
-    public LayerView view() {
+    public final LayerView view() {
         return this;
     }
 

@@ -206,8 +206,9 @@ class MagicItemsTest {
 
     @Test
     void shouldBeAbleToDetuneAttunedItem() {
-        final AmuletOfHealth amuletOfHealth = firstLayer.
-                saveAndNext(AmuletOfHealth::new);
+        final MagicItem<?> amuletOfHealth = firstLayer.
+                saveAndNext(AmuletOfHealth::new).
+                asThis();
 
         amuletOfHealth.attuneAndNext(ScratchLayer::new);
         amuletOfHealth.detuneAndNext(ScratchLayer::new);

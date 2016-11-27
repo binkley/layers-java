@@ -82,11 +82,12 @@ class GiantGirdleTest {
     @Test
     @Disabled("Pending issue #9")
     void shouldHaveNetStrengthAfterRemovingBelt() {
-        final BeltOfFrostGiantStrength girdle = firstLayer.
+        final GiantBelt<?> girdle = firstLayer.
                 saveAndNext(BaseRule::baseRules).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
-                saveAndNext(BeltOfFrostGiantStrength::new);
+                saveAndNext(BeltOfFrostGiantStrength::new).
+                asThis();
         girdle.saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(ScratchLayer::new);
 

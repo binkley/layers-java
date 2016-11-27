@@ -167,20 +167,21 @@ class LayersTest {
 
     @Test
     void shouldGetValueFromSurface() {
-        final EgLayer egLayer = firstLayer.
+        final SubLayer<?> egLayer = firstLayer.
                 put("Other OK", mostRecent(true)).
                 saveAndNext(ScratchLayer::new).
-                put("OK", new EgRule()).
-                saveAndNext(EgLayer::new);
+                put("OK", new SubRule<>()).
+                saveAndNext(EgLayer::new).
+                asThis();
         egLayer.saveAndNext(ScratchLayer::new);
 
         assertTrue(egLayer.isOk());
     }
 
-    private static final class EgLayer
-            extends Layer<EgLayer> {
-        private EgLayer(final LayerSurface layers) {
-            super(layers, "Eg");
+    private static abstract class SubLayer<L extends SubLayer<L>>
+            extends Layer<L> {
+        private SubLayer(final LayerSurface layers, final String name) {
+            super(layers, name);
         }
 
         boolean isOk() {
@@ -188,13 +189,19 @@ class LayersTest {
         }
     }
 
-    private static final class EgRule
-            extends Rule<EgLayer, Boolean, Boolean> {
-        private EgRule() {super("Fake OK");}
+    private static final class EgLayer
+            extends SubLayer<EgLayer> {
+        private EgLayer(final LayerSurface layers) {
+            super(layers, "Eg");
+        }
+    }
+
+    private static final class SubRule<L extends SubLayer<L>>
+            extends Rule<L, Boolean, Boolean> {
+        private SubRule() {super("Fake OK");}
 
         @Override
-        public Boolean apply(
-                final RuleSurface<EgLayer, Boolean, Boolean> layers) {
+        public Boolean apply(final RuleSurface<L, Boolean, Boolean> layers) {
             return layers.get("Other OK");
         }
     }
