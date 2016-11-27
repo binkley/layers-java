@@ -121,7 +121,7 @@ public class Layer<L extends Layer<L>>
         return (L) this;
     }
 
-    public <L extends Layer<L>> L saveAndNext(final LayerMaker<L> ctor) {
+    public <K extends Layer<K>> K saveAndNext(final LayerMaker<K> ctor) {
         return layers.saveAndNext(this, ctor);
     }
 
