@@ -10,13 +10,13 @@ import static hm.binkley.layers.set.LayerSetCommand.remove;
 
 public class Attuned<L extends MagicItem<L>>
         extends Layer<Attuned<L>> {
-    public static <L extends MagicItem<L>> LayerMaker<Attuned<L>> attune(
+    public static <L extends AttunableItem<L>> LayerMaker<Attuned<L>> attune(
             final L layer) {
         return layers -> new Attuned<>(layers,
                 add("Attune " + layer.name(), layer));
     }
 
-    public static <L extends MagicItem<L>> LayerMaker<Attuned<L>> detune(
+    public static <L extends AttunableItem<L>> LayerMaker<Attuned<L>> detune(
             final L layer) {
         return layers -> new Attuned<>(layers,
                 remove("Detune " + layer.name(), layer));

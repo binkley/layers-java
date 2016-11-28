@@ -14,6 +14,6 @@ class AdamantineArmor
                         + "the hardest substances in existence. While "
                         + "you're wearing it, any critical hit against you "
                         + "becomes a normal hit.", ARMOR, UNCOMMON, UNATTUNED,
-                "medium or heavy, but not hide");
+                "Medium or heavy, but not hide");
     }
 }

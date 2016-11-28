@@ -3,7 +3,6 @@ package hm.binkley.layers.dnd.item;
 import hm.binkley.layers.Layers.LayerSurface;
 
 import static hm.binkley.layers.dnd.Abilities.STR;
-import static hm.binkley.layers.dnd.item.Attunement.ATTUNED;
 import static hm.binkley.layers.dnd.item.Type.WONDROUS_ITEM;
 import static hm.binkley.layers.rules.Rule.floor;
 
@@ -14,7 +13,7 @@ import static hm.binkley.layers.rules.Rule.floor;
  * @todo Needs documentation.
  */
 public abstract class GiantBelt<L extends GiantBelt<L>>
-        extends MagicItem<L> {
+        extends AttunableItem<L> {
     protected GiantBelt(final LayerSurface layers, final String giantKind,
             final Rarity rarity, final int strength) {
         super(layers, "Belt of " + giantKind + " Giant Strength",
@@ -27,7 +26,7 @@ public abstract class GiantBelt<L extends GiantBelt<L>>
                         + "kinds of true giants. The belt of stone giant "
                         + "strength and the belt of frost giant strength "
                         + "look different, but they have the same effect.",
-                WONDROUS_ITEM, rarity, ATTUNED);
+                WONDROUS_ITEM, rarity);
         put(STR, key -> floor(strength));
     }
 }
