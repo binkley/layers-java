@@ -35,39 +35,30 @@ public class Abilities
     public static LayerMaker<AbilitiesLayer> abilityScores(final int strength,
             final int dexterity, final int constitution,
             final int intelligence, final int wisdom, final int charisma) {
-        return layers -> {
-            final AbilitiesLayer layer = new AbilitiesLayer(layers,
-                    "Base ability " + "scores");
-            layer.put(STR, strength);
-            layer.put(DEX, dexterity);
-            layer.put(CON, constitution);
-            layer.put(INT, intelligence);
-            layer.put(WIS, wisdom);
-            layer.put(CHA, charisma);
-            return layer;
-        };
+        return layers -> new AbilitiesLayer(layers,
+                "Base ability " + "scores").
+                put(STR, strength).
+                put(DEX, dexterity).
+                put(CON, constitution).
+                put(INT, intelligence).
+                put(WIS, wisdom).
+                put(CHA, charisma);
     }
 
     public static LayerMaker<AbilitiesLayer> abilityScoreIncrease(
             final Abilities doubleAbility) {
-        return layers -> {
-            final AbilitiesLayer layer = new AbilitiesLayer(layers,
-                    "Ability (" + doubleAbility + ") score increase");
-            layer.put(doubleAbility, 2);
-            return layer;
-        };
+        return layers -> new AbilitiesLayer(layers,
+                "Ability (" + doubleAbility + ") score increase").
+                put(doubleAbility, 2);
     }
 
     public static LayerMaker<AbilitiesLayer> abilityScoreIncrease(
             final Abilities firstAbility, final Abilities secondAbility) {
-        return layers -> {
-            final AbilitiesLayer layer = new AbilitiesLayer(layers,
-                    "Ability (" + firstAbility + "," + secondAbility
-                            + ") score increases");
-            layer.put(firstAbility, 1);
-            layer.put(secondAbility, 1);
-            return layer;
-        };
+        return layers -> new AbilitiesLayer(layers,
+                "Ability (" + firstAbility + "," + secondAbility
+                        + ") score increases").
+                put(firstAbility, 1).
+                put(secondAbility, 1);
     }
 
     public static final class AbilitiesLayer

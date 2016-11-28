@@ -29,11 +29,8 @@ public class Characters
 
     public static LayerMaker<CharactersLayer> characterDescription(
             final String name) {
-        return layers -> {
-            final CharactersLayer layer = new CharactersLayer(layers);
-            layer.put(NAME, name);
-            return layer;
-        };
+        return layers -> new CharactersLayer(layers).
+                put(NAME, name);
     }
 
     public static final class CharactersLayer

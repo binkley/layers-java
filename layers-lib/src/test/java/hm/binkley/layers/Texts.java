@@ -28,11 +28,8 @@ public class Texts
     }
 
     public static LayerMaker<TextsLayer> texts(final String name) {
-        return layers -> {
-            final TextsLayer layer = new TextsLayer(layers);
-            layer.put(NAME, name);
-            return layer;
-        };
+        return layers -> new TextsLayer(layers).
+                put(NAME, name);
     }
 
     public static final class TextsLayer

@@ -30,12 +30,9 @@ public class Numbers
     /** @todo Builder */
     public static LayerMaker<NumbersLayer> numbers(final int first,
             final int second) {
-        return layers -> {
-            final NumbersLayer layer = new NumbersLayer(layers);
-            layer.put(FIRST, first);
-            layer.put(SECOND, second);
-            return layer;
-        };
+        return layers -> new NumbersLayer(layers).
+                put(FIRST, first).
+                put(SECOND, second);
     }
 
     public static final class NumbersLayer

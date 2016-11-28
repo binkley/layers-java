@@ -13,9 +13,8 @@ class DisplayStyleTest {
     @Test
     void shouldNotExpandLayerAsKey() {
         final Map<?, ?> map = new LinkedHashMap<Object, Object>() {{
-            final Layer<?> layer = new ScratchLayer(null);
-            layer.put("Bob", "Fred");
-            put(layer, 3);
+            put(new ScratchLayer(null).
+                    put("Bob", "Fred"), 3);
         }};
 
         assertFalse(BRACES.display(map).contains("Bob"));

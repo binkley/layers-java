@@ -13,9 +13,8 @@ public final class MagicItemsBaseRules
         implements BaseRule {
     @Override
     public BaseRulesLayer apply(final LayerSurface layers) {
-        final BaseRulesLayer layer = new BaseRulesLayer(layers);
-        layer.put(Attuned.class, attunedMagicItems());
-        return layer;
+        return new BaseRulesLayer(layers).
+                put(Attuned.class, attunedMagicItems());
     }
 
     private static <L extends MagicItem<L>> LayerSetRule<L>

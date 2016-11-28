@@ -18,9 +18,9 @@ class LayerTest {
 
     @BeforeEach
     void setUpLayer() {
-        layer = new Layer<>(null, "Eg");
-        layer.put("A", "P");
-        layer.put("B", 4);
+        layer = new Layer<>(null, "Eg").
+                put("A", "P").
+                put("B", 4);
     }
 
     @Test
@@ -44,28 +44,24 @@ class LayerTest {
 
     @Test
     void shouldBlendLayer() {
-        final Layer<?> other = new ScratchLayer(null);
-        other.put("C", 42);
-        layer.blend(other);
+        layer.blend(new ScratchLayer(null).
+                put("C", 42));
 
         assertEquals((Integer) 42, layer.get("C"));
     }
 
     @Test
     void shouldCryIfBlendingDuplicateKey() {
-        final Layer<?> other = new ScratchLayer(null);
-        other.put("A", 42);
-
-        assertThrows(IllegalStateException.class, () -> layer.blend(other));
+        assertThrows(IllegalStateException.class,
+                () -> layer.blend(new ScratchLayer(null).
+                        put("A", 42)));
     }
 
     @Test
     void shouldCryIfBlendingDuplicateKeyTheOtherWay() {
-        final ScratchLayer other = new ScratchLayer(null);
-        other.put("A", 42);
-
         assertThrows(IllegalStateException.class, () -> layer.
-                blend(layers -> other));
+                blend(layers -> new ScratchLayer(null).
+                        put("A", 42)));
     }
 
     @Test
@@ -79,9 +75,9 @@ class LayerTest {
 
     @Test
     void shouldPrintClassKeysNicelyForDetails() {
-        layer.putDetail(String.class, "FOO");
-
-        final String display = layer.toString();
+        final String display = layer.
+                putDetail(String.class, "FOO").
+                toString();
         assertAll(() -> assertTrue(display.contains("String")),
                 () -> assertFalse(display.contains("java.lang.String")));
     }
