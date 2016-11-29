@@ -1,5 +1,7 @@
 package hm.binkley.layers;
 
+import hm.binkley.layers.rules.Rule;
+
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
@@ -35,7 +37,7 @@ public enum DisplayStyle {
             final Object key = e.getKey();
             final String k;
             if (key instanceof Class)
-                k = ((Class) key).getSimpleName();
+                k = "[" + ((Class) key).getSimpleName() + "]";
             else if (key instanceof Layer)
                 k = ((Layer) key).name();
             else

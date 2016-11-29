@@ -8,29 +8,29 @@ import hm.binkley.layers.set.LayerSetCommand;
 import static hm.binkley.layers.set.LayerSetCommand.add;
 import static hm.binkley.layers.set.LayerSetCommand.remove;
 
-public class Attuned<L extends MagicItem<L>>
-        extends Layer<Attuned<L>> {
-    public static <L extends AttunableItem<L>> LayerMaker<Attuned<L>> attune(
-            final L layer) {
-        return layers -> new Attuned<>(layers,
-                add("Attune " + layer.name(), layer));
-    }
+@SuppressWarnings({"unchecked", "rawtypes"})
+public final class Attuned
+        extends Layer<Attuned> {
+    private final LayerSetCommand command;
 
-    public static <L extends AttunableItem<L>> LayerMaker<Attuned<L>> detune(
-            final L layer) {
-        return layers -> new Attuned<>(layers,
-                remove("Detune " + layer.name(), layer));
-    }
-
-    public Attuned(final LayerSurface layers,
-            final LayerSetCommand<L> command) {
-        super(layers, "Attuned");
+    Attuned(final LayerSurface layers, final LayerSetCommand command) {
+        super(layers, command.name());
         put(Attuned.class, command);
+        this.command = command;
     }
 
     @Override
     public String toString() {
-        return name() + ": " + this.<LayerSetCommand<?>>get(Attuned.class).
-                name();
+        return command.name();
+    }
+
+    public static LayerMaker<Attuned> attune(final AttunableItem layer) {
+        return layers -> new Attuned(layers,
+                add("Attune: " + layer.name(), layer));
+    }
+
+    public static LayerMaker<Attuned> detune(final AttunableItem layer) {
+        return layers -> new Attuned(layers,
+                remove("Detune: " + layer.name(), layer));
     }
 }

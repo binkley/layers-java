@@ -3,6 +3,7 @@ package hm.binkley.layers.dnd;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.dnd.item.AmuletOfHealth;
+import hm.binkley.layers.dnd.item.Attuned;
 import hm.binkley.layers.dnd.item.BeltOfHillGiantStrength;
 import hm.binkley.layers.dnd.item.MagicItem;
 import hm.binkley.layers.rules.BaseRule;
@@ -20,6 +21,8 @@ import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
 import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
 import static hm.binkley.layers.dnd.Proficiencies.proficiencyBonus;
 import static hm.binkley.layers.dnd.Races.humanVariant;
+import static hm.binkley.layers.dnd.item.Attuned.attune;
+import static hm.binkley.layers.dnd.item.Attuned.detune;
 import static java.lang.System.out;
 
 /**
@@ -42,13 +45,17 @@ public final class DndMain {
                 saveAndNext(doubleProficiency(ACROBATICS)).
                 saveAndNext(BeltOfHillGiantStrength::new);
         final AmuletOfHealth amuletOfHealth = beltOfHillGiantStrength.
+                saveAndNext(attune(beltOfHillGiantStrength)).
                 saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(abilityScoreIncrease(CON, WIS)).
                 saveAndNext(AmuletOfHealth::new);
-        amuletOfHealth.saveAndNext(ScratchLayer::new);
-        amuletOfHealth.attuneAndNext(ScratchLayer::new);
-        beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
-        amuletOfHealth.detuneAndNext(ScratchLayer::new);
+        final Attuned detuneAmuletOfHealth = amuletOfHealth.
+                saveAndNext(attune(amuletOfHealth)).
+                saveAndNext(detune(amuletOfHealth));
+
+        out.println("attuned CON = " + layers.get(CON));
+        detuneAmuletOfHealth.saveAndNext(ScratchLayer::new);
+        out.println("detuned CON = " + layers.get(CON));
 
         for (final Characters description : Characters.values())
             out.println(description + " = " + layers.get(description));

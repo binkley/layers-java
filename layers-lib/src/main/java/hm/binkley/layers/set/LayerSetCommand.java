@@ -1,18 +1,21 @@
 package hm.binkley.layers.set;
 
 import hm.binkley.layers.Layer;
+import hm.binkley.layers.Layers.RuleSurface;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import static java.lang.String.format;
+import static lombok.AccessLevel.PRIVATE;
 
 @Accessors(fluent = true)
+@RequiredArgsConstructor(access = PRIVATE)
 public final class LayerSetCommand<L extends Layer<L>>
-        implements Consumer<LayerSet<L>> {
+        implements BiConsumer<RuleSurface<L, ?, ?>, LayerSet<L>> {
     @Getter
     private final String name;
     private final BiConsumer<LayerSet<L>, L> command;
@@ -41,16 +44,11 @@ public final class LayerSetCommand<L extends Layer<L>>
         return remove("Remove: " + layer.name(), layer);
     }
 
-    private LayerSetCommand(final String name,
-            final BiConsumer<LayerSet<L>, L> command, final L layer) {
-        this.name = name;
-        this.command = command;
-        this.layer = layer;
-    }
-
     @Override
-    public void accept(final LayerSet<L> set) {
-        command.accept(set, layer);
+    public void accept(final RuleSurface<L, ?, ?> layers,
+            final LayerSet<L> set) {
+        if (layers.contains(layer))
+            command.accept(set, layer);
     }
 
     @Override

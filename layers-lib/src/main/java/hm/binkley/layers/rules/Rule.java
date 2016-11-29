@@ -3,16 +3,20 @@ package hm.binkley.layers.rules;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.set.FullnessFunction;
 import hm.binkley.layers.set.LayerSetRule;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
+@Accessors(fluent = true)
+@Getter
 @RequiredArgsConstructor
 public abstract class Rule<L extends Layer<L>, T, R>
         implements RuleFunction<L, T, R> {
     private final String name;
 
     @Override
-    public final String toString() {
-        return "Rule: " + name;
+    public String toString() {
+        return "[Rule: " + name() + "]";
     }
 
     public static <L extends Layer<L>, T> MostRecentRule<L, T> mostRecent(

@@ -3,11 +3,11 @@ package hm.binkley.layers.dnd.item;
 import hm.binkley.layers.Layer;
 import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.LayerSurface;
+import hm.binkley.layers.rules.Rule;
 import hm.binkley.layers.set.LayerSet;
 
+import static hm.binkley.layers.dnd.item.Attuned.attune;
 import static hm.binkley.layers.dnd.item.Attunement.ATTUNED;
-import static hm.binkley.layers.set.LayerSetCommand.add;
-import static hm.binkley.layers.set.LayerSetCommand.remove;
 
 /** @todo Real values for weight/volume */
 public class AttunableItem<L extends AttunableItem<L>>
@@ -25,21 +25,21 @@ public class AttunableItem<L extends AttunableItem<L>>
         this(layers, name, description, type, rarity, "");
     }
 
-    public boolean isAttuned() {
+    public <K extends Layer<K>> K attuneSaveAndNext(final LayerMaker<K> next) {
+        return saveAndNext(attune(this)).
+                saveAndNext(next);
+    }
+
+    final boolean isAttuned() {
         return layers.<LayerSet<?>>get(Attuned.class).contains(this);
     }
 
     @SuppressWarnings("unchecked")
-    public <K extends Layer<K>> K attuneAndNext(final LayerMaker<K> next) {
-        return layers.saveAndNext(
-                new Attuned<>(layers, add("Attune " + name(), (L) this)),
-                next);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <K extends Layer<K>> K detuneAndNext(final LayerMaker<K> next) {
-        return layers.saveAndNext(
-                new Attuned<>(layers, remove("Detune " + name(), (L) this)),
-                next);
+    @Override
+    public L put(final Object key, final Object value) {
+        return value instanceof Rule ? super.put(key,
+                new AttunableItemRule<>((L) this,
+                        (Rule<L, Object, Object>) value))
+                : super.put(key, value);
     }
 }

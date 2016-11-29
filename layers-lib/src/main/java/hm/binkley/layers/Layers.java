@@ -5,19 +5,18 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static hm.binkley.layers.DisplayStyle.BRACES;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
-import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.IntStream.range;
 import static java.util.stream.IntStream.rangeClosed;
@@ -34,14 +33,15 @@ public final class Layers {
 
     @SuppressWarnings("unchecked")
     private void updateCache() {
-        final Map<Object, Object> updated = layers.stream().
+        final Set<Object> updated = new HashSet<>();
+        layers.stream().
                 map(Layer::keys).
                 flatMap(Collection::stream).
                 distinct().
-                collect(Collectors.toMap(identity(), this::value));
-        cache.clear();
-        // Do not inline updated: fully compute updates before clearing cache
-        cache.putAll(updated);
+                sorted(Layers::classTokensFirst).
+                peek(updated::add).
+                forEach(key -> cache.put(key, value(key)));
+        cache.keySet().retainAll(updated);
     }
 
     public static <L extends Layer<L>> L firstLayer(final LayerMaker<L> ctor,
@@ -152,6 +152,10 @@ public final class Layers {
         public R getWithout() {
             return whatIfWithout(layer).get(key);
         }
+
+        public boolean contains(final L layer) {
+            return layers.contains(layer);
+        }
     }
 
     @Override
@@ -163,6 +167,17 @@ public final class Layers {
                 collect(joining("\n"));
     }
 
+    private static int classTokensFirst(final Object a, final Object b) {
+        if (a instanceof Class)
+            return b instanceof Class
+                    ? a.toString().compareTo(b.toString())
+                    : -1;
+        else
+            return b instanceof Class
+                    ? 1
+                    : a.toString().compareTo(b.toString());
+    }
+
     @SuppressWarnings("TypeParameterUnusedInFormals")
     private <L extends Layer<L>> L ruleLayer(final Object key) {
         return this.<L>allRuleLayers(key).
@@ -171,9 +186,9 @@ public final class Layers {
                         "No rule for key: " + key));
     }
 
-    private <L extends Layer<L>, T, R> Object value(final Object key) {
+    private <L extends Layer<L>> Object value(final Object key) {
         final L layer = ruleLayer(key);
-        return layer.<Rule<L, T, R>>get(key).
+        return layer.<Rule<L, ?, ?>>get(key).
                 apply(new RuleSurface<>(layer, key));
     }
 

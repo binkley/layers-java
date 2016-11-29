@@ -12,6 +12,7 @@ import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.item.Attuned.attune;
+import static hm.binkley.layers.dnd.item.Attuned.detune;
 import static hm.binkley.layers.dnd.item.Attunement.ATTUNED;
 import static hm.binkley.layers.dnd.item.Attunement.UNATTUNED;
 import static hm.binkley.layers.dnd.item.Rarity.LEGENDARY;
@@ -37,56 +38,63 @@ class MagicItemsTest {
 
     @Test
     void shouldGrant19ConstitutionFromAmuletOfHealth() {
-        firstLayer.saveAndNext(AmuletOfHealth::new).
-                saveAndNext(ScratchLayer::new);
+        firstLayer.
+                saveAndNext(AmuletOfHealth::new).
+                attuneSaveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 19, layers.get(CON));
     }
 
     @Test
     void shouldGrant21StrengthFromHillGiantGirdle() {
-        firstLayer.saveAndNext(BeltOfHillGiantStrength::new).
-                saveAndNext(ScratchLayer::new);
+        firstLayer.
+                saveAndNext(BeltOfHillGiantStrength::new).
+                attuneSaveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 21, layers.get(STR));
     }
 
     @Test
     void shouldGrant23StrengthFromStoneGiantGirdle() {
-        firstLayer.saveAndNext(BeltOfStoneGiantStrength::new).
-                saveAndNext(ScratchLayer::new);
+        firstLayer.
+                saveAndNext(BeltOfStoneGiantStrength::new).
+                attuneSaveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 23, layers.get(STR));
     }
 
     @Test
     void shouldGrant23StrengthFromFrostGiantGirdle() {
-        firstLayer.saveAndNext(BeltOfFrostGiantStrength::new).
-                saveAndNext(ScratchLayer::new);
+        firstLayer.
+                saveAndNext(BeltOfFrostGiantStrength::new).
+                attuneSaveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 23, layers.get(STR));
     }
 
     @Test
     void shouldGrant25StrengthFromFireGiantGirdle() {
-        firstLayer.saveAndNext(BeltOfFireGiantStrength::new).
-                saveAndNext(ScratchLayer::new);
+        firstLayer.
+                saveAndNext(BeltOfFireGiantStrength::new).
+                attuneSaveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 25, layers.get(STR));
     }
 
     @Test
     void shouldGrant27StrengthFromCloudGiantGirdle() {
-        firstLayer.saveAndNext(BeltOfCloudGiantStrength::new).
-                saveAndNext(ScratchLayer::new);
+        firstLayer.
+                saveAndNext(BeltOfCloudGiantStrength::new).
+                attuneSaveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 27, layers.get(STR));
     }
 
     @Test
     void shouldGrant29StrengthFromStormGiantGirdle() {
-        firstLayer.saveAndNext(BeltOfStormGiantStrength::new).
-                saveAndNext(ScratchLayer::new);
+        firstLayer.
+                saveAndNext(BeltOfStormGiantStrength::new).
+                attuneSaveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 29, layers.get(STR));
     }
@@ -141,7 +149,7 @@ class MagicItemsTest {
     void shouldDisplayAttunementBriefly() {
         final AmuletOfHealth amuletOfHealth = firstLayer.
                 saveAndNext(AmuletOfHealth::new);
-        final Attuned<AmuletOfHealth> attunement = amuletOfHealth.
+        final Attuned attunement = amuletOfHealth.
                 saveAndNext(attune(amuletOfHealth));
         attunement.
                 saveAndNext(ScratchLayer::new);
@@ -154,7 +162,7 @@ class MagicItemsTest {
     void shouldNotDisplayAttunementVerbosely() {
         final AmuletOfHealth amuletOfHealth = firstLayer.
                 saveAndNext(AmuletOfHealth::new);
-        final Attuned<AmuletOfHealth> attunement = amuletOfHealth.
+        final Attuned attunement = amuletOfHealth.
                 saveAndNext(attune(amuletOfHealth));
         attunement.
                 saveAndNext(ScratchLayer::new);
@@ -167,41 +175,27 @@ class MagicItemsTest {
 
     @Test
     void shouldBeAbleToAttune3Items() { // TODO: Distinct items
-        final AmuletOfHealth amuletOfHealth = firstLayer.
-                saveAndNext(AmuletOfHealth::new);
-        final BeltOfHillGiantStrength beltOfHillGiantStrength =
-                amuletOfHealth.
-                saveAndNext(attune(amuletOfHealth)).
-                saveAndNext(BeltOfHillGiantStrength::new);
-        final BeltOfStoneGiantStrength beltOfStoneGiantStrength = beltOfHillGiantStrength.
-                saveAndNext(BeltOfStoneGiantStrength::new);
-        beltOfStoneGiantStrength.
-                saveAndNext(BeltOfFrostGiantStrength::new);
-
-        beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
-        beltOfStoneGiantStrength.attuneAndNext(ScratchLayer::new);
+        firstLayer.
+                saveAndNext(AmuletOfHealth::new).
+                attuneSaveAndNext(BeltOfHillGiantStrength::new).
+                attuneSaveAndNext(BeltOfStoneGiantStrength::new).
+                attuneSaveAndNext(BeltOfFrostGiantStrength::new);
 
         assertEquals(3, layers.<LayerSet<?>>get(Attuned.class).size());
     }
 
     @Test
     void shouldLimitAttunementTo3Items() { // TODO: Distinct items
-        final AmuletOfHealth amuletOfHealth = firstLayer.
-                saveAndNext(AmuletOfHealth::new);
-        final BeltOfHillGiantStrength beltOfHillGiantStrength = amuletOfHealth.
-                saveAndNext(attune(amuletOfHealth)).
-                saveAndNext(BeltOfHillGiantStrength::new);
-        final BeltOfStoneGiantStrength beltOfStoneGiantStrength = beltOfHillGiantStrength.
-                saveAndNext(BeltOfStoneGiantStrength::new);
-        final BeltOfFrostGiantStrength beltOfFrostGiantStrength = beltOfStoneGiantStrength.
-                saveAndNext(BeltOfFrostGiantStrength::new);
-
-        beltOfHillGiantStrength.attuneAndNext(ScratchLayer::new);
-        beltOfStoneGiantStrength.attuneAndNext(ScratchLayer::new);
+        final AttunableItem<?> beltOfFrostGiantStrength = firstLayer.
+                saveAndNext(AmuletOfHealth::new).
+                attuneSaveAndNext(BeltOfHillGiantStrength::new).
+                attuneSaveAndNext(BeltOfStoneGiantStrength::new).
+                attuneSaveAndNext(BeltOfFrostGiantStrength::new).
+                asThis();
 
         assertThrows(IllegalStateException.class,
                 () -> beltOfFrostGiantStrength.
-                        attuneAndNext(ScratchLayer::new));
+                        attuneSaveAndNext(ScratchLayer::new));
     }
 
     @Test
@@ -210,9 +204,10 @@ class MagicItemsTest {
                 saveAndNext(AmuletOfHealth::new).
                 asThis();
 
-        amuletOfHealth.attuneAndNext(ScratchLayer::new);
-        amuletOfHealth.detuneAndNext(ScratchLayer::new);
+        amuletOfHealth.
+                attuneSaveAndNext(detune(amuletOfHealth)).
+                saveAndNext(ScratchLayer::new);
 
-        assertTrue(layers.<LayerSet<?>>get(Attuned.class).isEmpty());
+        assertFalse(amuletOfHealth.isAttuned());
     }
 }

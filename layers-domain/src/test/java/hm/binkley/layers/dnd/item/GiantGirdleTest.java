@@ -1,5 +1,6 @@
 package hm.binkley.layers.dnd.item;
 
+import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.rules.BaseRule;
@@ -11,11 +12,12 @@ import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
+import static hm.binkley.layers.dnd.item.Attuned.detune;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GiantGirdleTest {
     private Layers layers;
-    private ScratchLayer firstLayer;
+    private Layer<?> firstLayer;
 
     @BeforeEach
     void setUpLayers() {
@@ -29,7 +31,7 @@ class GiantGirdleTest {
                 saveAndNext(BaseRule::baseRules).
                 saveAndNext(abilityScores(23, 8, 8, 8, 8, 8)).
                 saveAndNext(BeltOfHillGiantStrength::new).
-                saveAndNext(ScratchLayer::new);
+                attuneSaveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 23, layers.get(STR));
     }
@@ -61,7 +63,7 @@ class GiantGirdleTest {
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(BeltOfHillGiantStrength::new).
-                saveAndNext(ScratchLayer::new);
+                attuneSaveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 21, layers.get(STR));
     }
@@ -73,7 +75,7 @@ class GiantGirdleTest {
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(BeltOfStoneGiantStrength::new).
-                saveAndNext(abilityScoreIncrease(STR)).
+                attuneSaveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 23, layers.get(STR));
@@ -88,7 +90,8 @@ class GiantGirdleTest {
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(BeltOfFrostGiantStrength::new).
                 asThis();
-        girdle.saveAndNext(abilityScoreIncrease(STR)).
+        girdle.attuneSaveAndNext(abilityScoreIncrease(STR)).
+                saveAndNext(detune(girdle)).
                 saveAndNext(ScratchLayer::new);
 
         assertEquals((Integer) 11, layers.get(STR));

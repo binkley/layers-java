@@ -18,7 +18,7 @@ public final class LayerSetRule<L extends Layer<L>>
             final RuleSurface<L, LayerSetCommand<L>, LayerSet<L>> layers) {
         final LayerSet<L> set = new LayerSet<>(full);
         layers.<LayerSetCommand<L>>values().
-                forEach(command -> command.accept(set));
+                forEach(command -> command.accept(layers, set));
         return set;
     }
 }
