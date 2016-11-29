@@ -48,15 +48,15 @@ public class Abilities
     public static LayerMaker<AbilitiesLayer> abilityScoreIncrease(
             final Abilities doubleAbility) {
         return layers -> new AbilitiesLayer(layers,
-                "Ability (" + doubleAbility + ") score increase").
+                "Ability Score (" + doubleAbility + ") double increase").
                 put(doubleAbility, 2);
     }
 
     public static LayerMaker<AbilitiesLayer> abilityScoreIncrease(
             final Abilities firstAbility, final Abilities secondAbility) {
         return layers -> new AbilitiesLayer(layers,
-                "Ability (" + firstAbility + "," + secondAbility
-                        + ") score increases").
+                "Ability Score (" + firstAbility + ", " + secondAbility
+                        + ") increases").
                 put(firstAbility, 1).
                 put(secondAbility, 1);
     }
