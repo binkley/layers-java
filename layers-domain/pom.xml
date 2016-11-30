@@ -17,6 +17,8 @@
         <version>0-SNAPSHOT</version>
     </parent>
 
+    <name>Layers Domain</name>
+
     <artifactId>layers-domain</artifactId>
 
     <dependencies>
