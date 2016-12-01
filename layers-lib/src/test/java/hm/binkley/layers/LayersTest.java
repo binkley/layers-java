@@ -70,6 +70,14 @@ class LayersTest {
     }
 
     @Test
+    void shouldMarkLayerDetailsUnmodifiableAfterSave() {
+        firstLayer.saveAndNext(ScratchLayer::new);
+
+        assertThrows(UnsupportedOperationException.class,
+                () -> firstLayer.putDetail("B", "I should throw"));
+    }
+
+    @Test
     void shouldNotContainKey() {
         assertFalse(layers.containsKey("FOO"));
     }
