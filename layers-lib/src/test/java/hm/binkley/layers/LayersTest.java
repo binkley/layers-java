@@ -56,10 +56,17 @@ class LayersTest {
 
     @Test
     void shouldStayAtSizeZeroAfterAddingEmptyLayer() {
-        firstLayer.
-                saveAndNext(ScratchLayer::new);
+        firstLayer.saveAndNext(ScratchLayer::new);
 
         assertEquals(0, layers.size());
+    }
+
+    @Test
+    void shouldMarkLayerUnmodifiableAfterSave() {
+        firstLayer.saveAndNext(ScratchLayer::new);
+
+        assertThrows(UnsupportedOperationException.class,
+                () -> firstLayer.put("B", "I should throw"));
     }
 
     @Test

@@ -28,7 +28,7 @@ import static java.util.Collections.unmodifiableMap;
 @RequiredArgsConstructor
 public class Layer<L extends Layer<L>>
         implements LayerView {
-    private final Map<Object, Object> values = new LinkedHashMap<>();
+    private Map<Object, Object> values = new LinkedHashMap<>();
     private final Map<Object, Object> details = new LinkedHashMap<>();
     protected final LayerSurface layers;
     private final String name;
@@ -127,6 +127,7 @@ public class Layer<L extends Layer<L>>
     }
 
     public final <K extends Layer<K>> K saveAndNext(final LayerMaker<K> ctor) {
+        values = unmodifiableMap(values);
         return layers.saveAndNext(this, ctor);
     }
 
