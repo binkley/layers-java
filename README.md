@@ -1,6 +1,9 @@
 # Layers
 
-_An experiment in style and technique_.
+_An experiment in style and technique in Java_.
+
+(See [Layers KT](https://github.com/binkley/layers-kt) for an equivalent in
+Kotlin.)
 
 This software is in the Public Domain.  Please see [LICENSE.md](LICENSE.md).
 
