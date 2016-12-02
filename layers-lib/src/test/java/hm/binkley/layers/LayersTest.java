@@ -212,11 +212,11 @@ class LayersTest {
     }
 
     private static final class SubRule<L extends SubLayer<L>>
-            extends Rule<L, Boolean, Boolean> {
+            extends Rule<Boolean> {
         private SubRule() {super("Fake OK");}
 
         @Override
-        public Boolean apply(final RuleSurface<L, Boolean, Boolean> layers) {
+        public Boolean apply(final RuleSurface layers) {
             return layers.get("Other OK");
         }
     }

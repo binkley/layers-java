@@ -1,12 +1,11 @@
 package hm.binkley.layers.rules;
 
-import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers.RuleSurface;
 
 import static java.lang.Integer.max;
 
-public class FloorRule<L extends Layer<L>>
-        extends Rule<L, Integer, Integer> {
+public class FloorRule
+        extends Rule<Integer> {
     private final int floor;
 
     FloorRule(final int floor) {
@@ -15,7 +14,7 @@ public class FloorRule<L extends Layer<L>>
     }
 
     @Override
-    public Integer apply(final RuleSurface<L, Integer, Integer> layers) {
+    public Integer apply(final RuleSurface layers) {
         return max(floor, layers.getWithout());
     }
 }

@@ -130,15 +130,15 @@ public final class Layers {
     }
 
     @RequiredArgsConstructor(access = PRIVATE)
-    public final class RuleSurface<L extends Layer<L>, T, R> {
-        private final L layer;
+    public final class RuleSurface {
+        private final Layer<?> layer;
         private final Object key;
 
-        public Stream<T> values() {
+        public <T> Stream<T> values() {
             return allValues(layers.stream(), key);
         }
 
-        public Stream<T> reverseValues() {
+        public <T> Stream<T> reverseValues() {
             final int size = layers.size();
             return allValues(rangeClosed(1, size).
                     mapToObj(i -> layers.get(size - i)), key);
@@ -149,11 +149,12 @@ public final class Layers {
             return Layers.this.get(key);
         }
 
-        public R getWithout() {
+        @SuppressWarnings("TypeParameterUnusedInFormals")
+        public <R> R getWithout() {
             return whatIfWithout(layer).get(key);
         }
 
-        public boolean contains(final L layer) {
+        public boolean contains(final Layer<?> layer) {
             return layers.contains(layer);
         }
     }
@@ -169,12 +170,10 @@ public final class Layers {
 
     private static int classTokensFirst(final Object a, final Object b) {
         if (a instanceof Class)
-            return b instanceof Class
-                    ? a.toString().compareTo(b.toString())
+            return b instanceof Class ? a.toString().compareTo(b.toString())
                     : -1;
         else
-            return b instanceof Class
-                    ? 1
+            return b instanceof Class ? 1
                     : a.toString().compareTo(b.toString());
     }
 
@@ -188,8 +187,8 @@ public final class Layers {
 
     private <L extends Layer<L>> Object value(final Object key) {
         final L layer = ruleLayer(key);
-        return layer.<Rule<L, ?, ?>>get(key).
-                apply(new RuleSurface<>(layer, key));
+        return layer.<Rule<?>>get(key).
+                apply(new RuleSurface(layer, key));
     }
 
     @SuppressWarnings("unchecked")

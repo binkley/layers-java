@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Accessors(fluent = true)
 @RequiredArgsConstructor(access = PRIVATE)
 public final class LayerSetCommand<L extends Layer<L>>
-        implements BiConsumer<RuleSurface<L, ?, ?>, LayerSet<L>> {
+        implements BiConsumer<RuleSurface, LayerSet<L>> {
     @Getter
     private final String name;
     private final BiConsumer<LayerSet<L>, L> command;
@@ -45,7 +45,7 @@ public final class LayerSetCommand<L extends Layer<L>>
     }
 
     @Override
-    public void accept(final RuleSurface<L, ?, ?> layers,
+    public void accept(final RuleSurface layers,
             final LayerSet<L> set) {
         if (layers.contains(layer))
             command.accept(set, layer);

@@ -10,8 +10,8 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @Getter
 @RequiredArgsConstructor
-public abstract class Rule<L extends Layer<L>, T, R>
-        implements RuleFunction<L, T, R> {
+public abstract class Rule<R>
+        implements RuleFunction<R> {
     private final String name;
 
     @Override
@@ -19,21 +19,20 @@ public abstract class Rule<L extends Layer<L>, T, R>
         return "[Rule: " + name() + "]";
     }
 
-    public static <L extends Layer<L>, T> MostRecentRule<L, T> mostRecent(
-            final T defaultValue) {
+    public static <T> MostRecentRule<T> mostRecent(final T defaultValue) {
         return new MostRecentRule<>(defaultValue);
     }
 
-    public static <L extends Layer<L>> SumAllRule<L> sumAll() {
-        return new SumAllRule<>();
+    public static SumAllRule sumAll() {
+        return new SumAllRule();
     }
 
-    public static <L extends Layer<L>> DoublingRule<L> doubling() {
-        return new DoublingRule<>();
+    public static DoublingRule doubling() {
+        return new DoublingRule();
     }
 
-    public static <L extends Layer<L>> FloorRule<L> floor(final int floor) {
-        return new FloorRule<>(floor);
+    public static FloorRule floor(final int floor) {
+        return new FloorRule(floor);
     }
 
     public static <L extends Layer<L>> LayerSetRule<L> layerSet(

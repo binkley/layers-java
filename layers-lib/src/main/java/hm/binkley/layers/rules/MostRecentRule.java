@@ -1,10 +1,9 @@
 package hm.binkley.layers.rules;
 
-import hm.binkley.layers.Layer;
 import hm.binkley.layers.Layers.RuleSurface;
 
-public class MostRecentRule<L extends Layer<L>, T>
-        extends Rule<L, T, T> {
+public class MostRecentRule<T>
+        extends Rule<T> {
     private final T defaultValue;
 
     MostRecentRule(final T defaultValue) {
@@ -13,8 +12,8 @@ public class MostRecentRule<L extends Layer<L>, T>
     }
 
     @Override
-    public T apply(final RuleSurface<L, T, T> layers) {
-        return layers.reverseValues().
+    public T apply(final RuleSurface layers) {
+        return layers.<T>reverseValues().
                 findFirst().
                 orElse(defaultValue);
     }

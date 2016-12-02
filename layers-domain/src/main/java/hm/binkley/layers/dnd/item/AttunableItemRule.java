@@ -4,18 +4,18 @@ import hm.binkley.layers.Layers.RuleSurface;
 import hm.binkley.layers.rules.Rule;
 
 final class AttunableItemRule<L extends AttunableItem<L>, T, R>
-        extends Rule<L, T, R> {
+        extends Rule<R> {
     private final L layer;
-    private final Rule<L, T, R> rule;
+    private final Rule<R> rule;
 
-    AttunableItemRule(final L layer, final Rule<L, T, R> rule) {
+    AttunableItemRule(final L layer, final Rule<R> rule) {
         super("Attunable item");
         this.layer = layer;
         this.rule = rule;
     }
 
     @Override
-    public R apply(final RuleSurface<L, T, R> layers) {
+    public R apply(final RuleSurface layers) {
         return layer.isAttuned() ? rule.apply(layers) : layers.getWithout();
     }
 

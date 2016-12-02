@@ -1,6 +1,5 @@
 package hm.binkley.layers.dnd.item;
 
-import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.rules.BaseRule;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,13 +9,11 @@ import static hm.binkley.layers.Layers.firstLayer;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AttunableItemRuleTest {
-    private Layers layers;
     private AttunableItem<?> firstLayer;
 
     @BeforeEach
     void setUpLayers() {
-        firstLayer = firstLayer(BaseRule::baseRules,
-                layers -> this.layers = layers).
+        firstLayer = firstLayer(BaseRule::baseRules, layers -> {}).
                 saveAndNext(AmuletOfHealth::new).
                 asThis();
     }

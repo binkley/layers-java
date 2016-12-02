@@ -39,7 +39,7 @@ public class AttunableItem<L extends AttunableItem<L>>
     public L put(final Object key, final Object value) {
         return value instanceof Rule ? super.put(key,
                 new AttunableItemRule<>((L) this,
-                        (Rule<L, Object, Object>) value))
+                        (Rule<Object>) value))
                 : super.put(key, value);
     }
 }
