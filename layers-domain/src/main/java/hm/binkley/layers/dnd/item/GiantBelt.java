@@ -26,7 +26,7 @@ public abstract class GiantBelt<L extends GiantBelt<L>>
                         + "kinds of true giants. The belt of stone giant "
                         + "strength and the belt of frost giant strength "
                         + "look different, but they have the same effect.",
-                WONDROUS_ITEM, rarity);
+                WONDROUS_ITEM, rarity, Weight.inPounds(0), Volume.inCuft(0));
         put(STR, key -> floor(strength));
     }
 }

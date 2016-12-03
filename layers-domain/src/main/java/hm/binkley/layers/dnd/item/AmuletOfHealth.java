@@ -13,7 +13,8 @@ public final class AmuletOfHealth
         super(layers, "Amulet of Health",
                 "Your Constitution score is 19 while you wear this amulet. "
                         + "It has no effect on you if your Constitution is "
-                        + "already 19 or higher.", WONDROUS_ITEM, RARE);
+                        + "already 19 or higher.", WONDROUS_ITEM, RARE,
+                Weight.inPounds(1), Volume.inCuft(0));
         put(CON, key -> floor(19));
     }
 }

@@ -33,7 +33,10 @@ class AttunedTest {
     void shouldDisplayNicely() {
         final String display = new Attuned(null, add("Attune Bob",
                 new MagicItem(null, "Bob", "Cool bob", WONDROUS_ITEM,
-                        LEGENDARY, ATTUNED, "Some notes about Bob"))).
+                        LEGENDARY, Weight.inPounds(0), Volume.inCuft(0),
+                        ATTUNED, "Some notes about Bob"
+
+                ))).
                 toString();
 
         assertTrue(display.contains("Attune"));

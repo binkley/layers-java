@@ -14,15 +14,17 @@ public class AttunableItem<L extends AttunableItem<L>>
         extends MagicItem<L> {
     public AttunableItem(final LayerSurface layers, final String name,
             final String description, final Type type, final Rarity rarity,
-            final String notes) {
+            final Weight weight, final Volume volume, final String notes) {
         // TODO: Why is static method imports not compiling here?
-        super(layers, name, description, type, rarity, ATTUNED, notes);
+        super(layers, name, description, type, rarity, weight, volume,
+                ATTUNED, notes);
         putDetail(Attuned.class, ATTUNED);
     }
 
     public AttunableItem(final LayerSurface layers, final String name,
-            final String description, final Type type, final Rarity rarity) {
-        this(layers, name, description, type, rarity, "");
+            final String description, final Type type, final Rarity rarity,
+            final Weight weight, final Volume volume) {
+        this(layers, name, description, type, rarity, weight, volume, "");
     }
 
     public <K extends Layer<K>> K attuneSaveAndNext(

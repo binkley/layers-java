@@ -100,12 +100,6 @@ class MagicItemsTest {
     }
 
     @Test
-    void shouldCreateAdamantineArmor() {
-        assertEquals("Adamantine Armor",
-                firstLayer.saveAndNext(AdamantineArmor::new).name());
-    }
-
-    @Test
     void shouldDisplayRarityForUncommon() {
         assertEquals("Uncommon", UNCOMMON.toString());
     }
