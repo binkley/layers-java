@@ -2,7 +2,10 @@ package hm.binkley.layers.dnd.item;
 
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
+
 import static java.lang.Math.abs;
+import static java.math.RoundingMode.FLOOR;
 
 @EqualsAndHashCode(of = {"numerator", "denominator"})
 abstract class Fraction<F extends Fraction<F>> {
@@ -30,6 +33,13 @@ abstract class Fraction<F extends Fraction<F>> {
                 + that.numerator * this.denominator;
         final int denominator = this.denominator * that.denominator;
         return ctor.apply(numerator, denominator);
+    }
+
+    @Override
+    public String toString() {
+        return BigDecimal.valueOf(numerator).
+                divide(BigDecimal.valueOf(denominator), 1, FLOOR).
+                toString();
     }
 
     private static int gcm(final int numerator, final int denominator) {

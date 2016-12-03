@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class WeightTest {
     @Test
     void shouldDisplayNicely() {
-        assertEquals("11/10#", asFraction(11, 10).toString());
+        assertEquals("1.1#", asFraction(11, 10).toString());
     }
 
     @Test

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class VolumeTest {
     @Test
     void shouldDisplayNicely() {
-        assertEquals("11/10 cuft", asFraction(11, 10).toString());
+        assertEquals("1.1 cu.ft.", asFraction(11, 10).toString());
     }
 
     @Test

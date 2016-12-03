@@ -20,7 +20,6 @@ public final class Volume
 
     @Override
     public String toString() {
-        return 1 == denominator ? (numerator + " cuft")
-                : (numerator + "/" + denominator + " cuft");
+        return super.toString() + " cu.ft.";
     }
 }

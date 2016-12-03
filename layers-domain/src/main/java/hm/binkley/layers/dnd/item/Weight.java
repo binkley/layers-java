@@ -20,7 +20,6 @@ public final class Weight
 
     @Override
     public String toString() {
-        return 1 == denominator ? (numerator + "#")
-                : (numerator + "/" + denominator + "#");
+        return super.toString() + "#";
     }
 }
