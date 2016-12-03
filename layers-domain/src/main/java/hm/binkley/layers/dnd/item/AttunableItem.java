@@ -25,7 +25,8 @@ public class AttunableItem<L extends AttunableItem<L>>
         this(layers, name, description, type, rarity, "");
     }
 
-    public <K extends Layer<K>> K attuneSaveAndNext(final LayerMaker<K> next) {
+    public <K extends Layer<K>> K attuneSaveAndNext(
+            final LayerMaker<K> next) {
         return saveAndNext(attune(this)).
                 saveAndNext(next);
     }
@@ -34,12 +35,10 @@ public class AttunableItem<L extends AttunableItem<L>>
         return layers.<LayerSet<?>>get(Attuned.class).contains(this);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public L put(final Object key, final Object value) {
-        return value instanceof Rule ? super.put(key,
-                new AttunableItemRule<>((L) this,
-                        (Rule<Object>) value))
+        return value instanceof Rule ? super
+                .put(key, new AttunableItemRule<>(this, (Rule<?>) value))
                 : super.put(key, value);
     }
 }

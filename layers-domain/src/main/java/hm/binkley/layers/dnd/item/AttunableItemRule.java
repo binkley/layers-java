@@ -3,12 +3,12 @@ package hm.binkley.layers.dnd.item;
 import hm.binkley.layers.Layers.RuleSurface;
 import hm.binkley.layers.rules.Rule;
 
-final class AttunableItemRule<L extends AttunableItem<L>, T, R>
+final class AttunableItemRule<R>
         extends Rule<R> {
-    private final L layer;
+    private final AttunableItem<?> layer;
     private final Rule<R> rule;
 
-    AttunableItemRule(final L layer, final Rule<R> rule) {
+    AttunableItemRule(final AttunableItem<?> layer, final Rule<R> rule) {
         super("Attunable item");
         this.layer = layer;
         this.rule = rule;
