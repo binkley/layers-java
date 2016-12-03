@@ -4,6 +4,7 @@ import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.dnd.item.Abacus;
 import hm.binkley.layers.dnd.item.AmuletOfHealth;
+import hm.binkley.layers.dnd.item.AttunableItem;
 import hm.binkley.layers.dnd.item.Attuned;
 import hm.binkley.layers.dnd.item.BeltOfHillGiantStrength;
 import hm.binkley.layers.dnd.item.MagicItem;
@@ -37,7 +38,7 @@ public final class DndMain {
                 layers -> layersHolder[0] = layers);
         final Layers layers = layersHolder[0];
 
-        final BeltOfHillGiantStrength beltOfHillGiantStrength = firstLayer.
+        final AttunableItem<?> beltOfHillGiantStrength = firstLayer.
                 saveAndNext(characterDescription("Bob")).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(humanVariant().withSTR().withDEX()).
@@ -45,7 +46,8 @@ public final class DndMain {
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
                 saveAndNext(doubleProficiency(ACROBATICS)).
                 saveAndNext(Abacus::new).
-                saveAndNext(BeltOfHillGiantStrength::new);
+                saveAndNext(BeltOfHillGiantStrength::new).
+                asThis();
         final AmuletOfHealth amuletOfHealth = beltOfHillGiantStrength.
                 saveAndNext(attune(beltOfHillGiantStrength)).
                 saveAndNext(abilityScoreIncrease(STR)).
