@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static hm.binkley.layers.dnd.item.Rarity.COMMON;
 import static hm.binkley.layers.dnd.item.Type.EQUIPMENT;
-import static hm.binkley.layers.dnd.item.Volume.inCuft;
+import static hm.binkley.layers.dnd.item.Volume.ONE_CUBIC_FOOT;
 import static hm.binkley.layers.dnd.item.Weight.ONE_POUND;
 import static hm.binkley.layers.dnd.item.Weight.WEIGHTLESS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,13 +15,13 @@ class ItemTest {
     void shouldHaveWeight() {
         assertEquals(ONE_POUND,
                 new Item(null, "Bob", "Yer Unkel", EQUIPMENT, COMMON,
-                        ONE_POUND, inCuft(2.2f), "").weight());
+                        ONE_POUND, ONE_CUBIC_FOOT, "").weight());
     }
 
     @Test
     void shouldHaveVolume() {
-        assertEquals(inCuft(2.2f),
+        assertEquals(ONE_CUBIC_FOOT,
                 new Item(null, "Bob", "Yer Unkel", EQUIPMENT, COMMON,
-                        WEIGHTLESS, inCuft(2.2f), "").volume());
+                        WEIGHTLESS, ONE_CUBIC_FOOT, "").volume());
     }
 }

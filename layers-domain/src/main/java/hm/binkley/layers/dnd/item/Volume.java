@@ -1,24 +1,26 @@
 package hm.binkley.layers.dnd.item;
 
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-
-@EqualsAndHashCode
-@RequiredArgsConstructor(staticName = "inCuft")
 public final class Volume
-        implements Comparable<Volume> {
-    private final float cuft;
+        extends Fraction<Volume> {
+    public static final Volume SPACELESS = inCuft(0);
+    public static final Volume ONE_CUBIC_FOOT = inCuft(1);
 
-    /** @todo Use our friend, Lombok */
-    public float feet() {return cuft;}
+    public static Volume inCuft(final int cuft) {
+        return asFraction(cuft, 1);
+    }
 
-    @Override
-    public String toString() {
-        return cuft + " cuft";
+    public static Volume asFraction(final int numerator,
+            final int denominator) {
+        return new Volume(numerator, denominator);
+    }
+
+    private Volume(final int numerator, final int denominator) {
+        super(Volume::new, numerator, denominator);
     }
 
     @Override
-    public int compareTo(final Volume that) {
-        return Float.compare(cuft, that.cuft);
+    public String toString() {
+        return 1 == denominator ? (numerator + " cuft")
+                : (numerator + "/" + denominator + " cuft");
     }
 }

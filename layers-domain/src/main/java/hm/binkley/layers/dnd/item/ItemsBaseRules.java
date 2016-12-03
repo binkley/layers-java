@@ -15,6 +15,7 @@ public final class ItemsBaseRules
     public BaseRulesLayer apply(final LayerSurface layers) {
         return new BaseRulesLayer(layers).
                 put(Weight.class, new SumWeightRule()).
+                put(Volume.class, new SumVolumeRule()).
                 put(Attuned.class, attunedMagicItems());
     }
 

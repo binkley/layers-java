@@ -10,19 +10,19 @@ public class Item<L extends Item<L>>
             final String description, final Type type, final Rarity rarity,
             final Weight weight, final Volume volume, final String notes) {
         super(layers, name);
-        putDetail("Description", description);
-        putDetail(Type.class, type);
-        putDetail(Rarity.class, rarity);
-        putDetail(Weight.class, weight);
-        putDetail(Volume.class, volume);
-        putDetail("Notes", notes);
+        putDetail("Description", description).
+                putDetail(Type.class, type).
+                putDetail(Rarity.class, rarity).
+                put(Weight.class, weight).
+                put(Volume.class, volume).
+                putDetail("Notes", notes);
     }
 
     public Weight weight() {
-        return (Weight) details().get(Weight.class);
+        return get(Weight.class);
     }
 
     public Volume volume() {
-        return (Volume) details().get(Volume.class);
+        return get(Volume.class);
     }
 }
