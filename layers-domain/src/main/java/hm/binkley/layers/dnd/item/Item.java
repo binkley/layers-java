@@ -7,12 +7,11 @@ import hm.binkley.layers.Layers.LayerSurface;
 public class Item<L extends Item<L>>
         extends Layer<L> {
     public Item(final LayerSurface layers, final String name,
-            final String description, final Type type, final Rarity rarity,
-            final Weight weight, final Volume volume, final String notes) {
+            final String description, final Type type, final Weight weight,
+            final Volume volume, final String notes) {
         super(layers, name);
         putDetail("Description", description).
                 putDetail(Type.class, type).
-                putDetail(Rarity.class, rarity).
                 put(Weight.class, weight).
                 put(Volume.class, volume).
                 putDetail("Notes", notes);

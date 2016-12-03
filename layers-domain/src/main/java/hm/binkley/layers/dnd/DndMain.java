@@ -2,6 +2,7 @@ package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
+import hm.binkley.layers.dnd.item.Abacus;
 import hm.binkley.layers.dnd.item.AmuletOfHealth;
 import hm.binkley.layers.dnd.item.Attuned;
 import hm.binkley.layers.dnd.item.BeltOfHillGiantStrength;
@@ -43,6 +44,7 @@ public final class DndMain {
                 saveAndNext(proficiencyBonus(ACROBATICS, 1)).
                 saveAndNext(proficiencyBonus(ATHLETICS, 1)).
                 saveAndNext(doubleProficiency(ACROBATICS)).
+                saveAndNext(Abacus::new).
                 saveAndNext(BeltOfHillGiantStrength::new);
         final AmuletOfHealth amuletOfHealth = beltOfHillGiantStrength.
                 saveAndNext(attune(beltOfHillGiantStrength)).

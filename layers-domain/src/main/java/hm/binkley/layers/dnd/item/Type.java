@@ -1,5 +1,6 @@
 package hm.binkley.layers.dnd.item;
 
+/** @todo Figure out the right organization */
 public enum Type {
     EQUIPMENT("Equipment"),
     ARMOR("Armor"),

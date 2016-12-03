@@ -10,7 +10,8 @@ public class MagicItem<L extends MagicItem<L>>
             final Weight weight, final Volume volume,
             final Attunement attunement, final String notes) {
         // TODO: Why is static method imports not compiling here?s
-        super(layers, name, description, type, rarity, weight, volume, notes);
-        putDetail(Attuned.class, attunement);
+        super(layers, name, description, type, weight, volume, notes);
+        putDetail(Attuned.class, attunement).
+                putDetail(Rarity.class, rarity);
     }
 }
