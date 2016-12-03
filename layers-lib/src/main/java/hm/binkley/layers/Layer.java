@@ -126,7 +126,8 @@ public class Layer<L extends Layer<L>>
         return (L) this;
     }
 
-    public final <K extends Layer<K>> K saveAndNext(final LayerMaker<K> ctor) {
+    public final <K extends Layer<K>> K saveAndNext(
+            final LayerMaker<K> ctor) {
         values = unmodifiableMap(values);
         details = unmodifiableMap(details);
         return layers.saveAndNext(this, ctor);
