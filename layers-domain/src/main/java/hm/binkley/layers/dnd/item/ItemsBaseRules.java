@@ -6,6 +6,9 @@ import hm.binkley.layers.set.FullnessFunction;
 import hm.binkley.layers.set.LayerSetRule;
 import org.kohsuke.MetaInfServices;
 
+import static hm.binkley.layers.dnd.item.SumFractionsRule.sumFractions;
+import static hm.binkley.layers.dnd.item.Volume.SPACELESS;
+import static hm.binkley.layers.dnd.item.Weight.WEIGHTLESS;
 import static hm.binkley.layers.rules.Rule.layerSet;
 
 @MetaInfServices
@@ -14,8 +17,8 @@ public final class ItemsBaseRules
     @Override
     public BaseRulesLayer apply(final LayerSurface layers) {
         return new BaseRulesLayer(layers).
-                put(Weight.class, new SumWeightRule()).
-                put(Volume.class, new SumVolumeRule()).
+                put(Weight.class, sumFractions("Sum weight", WEIGHTLESS)).
+                put(Volume.class, sumFractions("Sum volume", SPACELESS)).
                 put(Attuned.class, attunedMagicItems());
     }
 
