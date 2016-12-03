@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 
 import static java.lang.Math.abs;
-import static java.math.RoundingMode.FLOOR;
+import static java.math.RoundingMode.HALF_UP;
 
 @EqualsAndHashCode(of = {"numerator", "denominator"})
 abstract class Fraction<F extends Fraction<F>> {
@@ -38,7 +38,8 @@ abstract class Fraction<F extends Fraction<F>> {
     @Override
     public String toString() {
         return BigDecimal.valueOf(numerator).
-                divide(BigDecimal.valueOf(denominator), 1, FLOOR).
+                divide(BigDecimal.valueOf(denominator), 1, HALF_UP).
+                stripTrailingZeros().
                 toString();
     }
 
