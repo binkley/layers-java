@@ -30,7 +30,7 @@ abstract class Fraction<F extends Fraction<F>> {
 
     public F add(final F that) {
         final int numerator = this.numerator * that.denominator
-                + that.numerator * this.denominator;
+                + that.numerator * denominator;
         final int denominator = this.denominator * that.denominator;
         return ctor.apply(numerator, denominator);
     }
