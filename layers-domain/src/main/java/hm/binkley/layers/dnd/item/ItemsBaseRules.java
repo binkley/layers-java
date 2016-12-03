@@ -9,11 +9,12 @@ import org.kohsuke.MetaInfServices;
 import static hm.binkley.layers.rules.Rule.layerSet;
 
 @MetaInfServices
-public final class MagicItemsBaseRules
+public final class ItemsBaseRules
         implements BaseRule {
     @Override
     public BaseRulesLayer apply(final LayerSurface layers) {
         return new BaseRulesLayer(layers).
+                put(Weight.class, new SumWeightRule()).
                 put(Attuned.class, attunedMagicItems());
     }
 
