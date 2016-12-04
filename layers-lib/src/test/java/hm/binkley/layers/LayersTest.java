@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LayersTest
         extends LayersTestSupport<ScratchLayer> {
-    public LayersTest() {
+    LayersTest() {
         super(ScratchLayer::new);
     }
 

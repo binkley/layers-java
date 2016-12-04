@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BaseRuleTest
         extends LayersTestSupport<BaseRulesLayer> {
-    public BaseRuleTest() {
+    BaseRuleTest() {
         super(BaseRule::baseRules);
     }
 

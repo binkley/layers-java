@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MostRecentRuleTest
         extends LayersTestSupport<ScratchLayer> {
-    public MostRecentRuleTest() {
+    MostRecentRuleTest() {
         super(ScratchLayer::new);
     }
 

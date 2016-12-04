@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SumAllRuleTest
         extends LayersTestSupport<ScratchLayer> {
-    public SumAllRuleTest() {
+    SumAllRuleTest() {
         super(ScratchLayer::new);
     }
 

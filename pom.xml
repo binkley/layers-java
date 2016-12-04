@@ -82,6 +82,12 @@
                 <artifactId>layers-lib</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>layers-lib</artifactId>
+                <version>${project.version}</version>
+                <type>test-jar</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -246,6 +252,14 @@ Error Prone with the latest version -->
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${maven-jar-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <!-- TODO: javadoc:javadoc fails with missing classes -->

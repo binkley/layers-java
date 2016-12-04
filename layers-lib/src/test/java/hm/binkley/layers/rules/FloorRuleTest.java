@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FloorRuleTest
         extends LayersTestSupport<ScratchLayer> {
-    public FloorRuleTest() {
+    FloorRuleTest() {
         super(ScratchLayer::new);
     }
 
