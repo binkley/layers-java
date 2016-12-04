@@ -38,7 +38,7 @@ public class AttunementItem<L extends AttunementItem<L>>
     @Override
     public L put(final Object key, final Object value) {
         return value instanceof Rule ? super
-                .put(key, new AttunableItemRule<>(this, (Rule<?>) value))
+                .put(key, new AttunementItemRule<>(this, (Rule<?>) value))
                 : super.put(key, value);
     }
 }
