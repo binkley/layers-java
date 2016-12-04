@@ -3,7 +3,6 @@ package hm.binkley.layers;
 import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.Layers.RuleSurface;
 import hm.binkley.layers.rules.Rule;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
-import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.rules.Rule.mostRecent;
 import static hm.binkley.layers.rules.Rule.sumAll;
 import static java.util.Arrays.asList;
@@ -26,89 +24,85 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class LayersTest {
-    private Layers layers;
-    private Layer<?> firstLayer;
-
-    @BeforeEach
-    void setUpLayers() {
-        firstLayer = firstLayer(ScratchLayer::new,
-                layers -> this.layers = layers);
+class LayersTest
+        extends LayersTestSupport<ScratchLayer> {
+    public LayersTest() {
+        super(ScratchLayer::new);
     }
 
     @Test
     void shouldStartEmpty() {
-        assertTrue(layers.isEmpty());
+        assertTrue(layers().isEmpty());
     }
 
     @Test
     void shouldStayEmptyAfterAddingEmptyLayer() {
-        firstLayer.
+        firstLayer().
                 saveAndNext(ScratchLayer::new);
 
-        assertTrue(layers.isEmpty());
+        assertTrue(layers().isEmpty());
     }
 
     @Test
     void shouldStartAtSizeZero() {
-        assertEquals(0, layers.size());
+        assertEquals(0, layers().size());
     }
 
     @Test
     void shouldStayAtSizeZeroAfterAddingEmptyLayer() {
-        firstLayer.saveAndNext(ScratchLayer::new);
+        firstLayer().saveAndNext(ScratchLayer::new);
 
-        assertEquals(0, layers.size());
+        assertEquals(0, layers().size());
     }
 
     @Test
     void shouldMarkLayerUnmodifiableAfterSave() {
-        firstLayer.saveAndNext(ScratchLayer::new);
+        firstLayer().saveAndNext(ScratchLayer::new);
 
         assertThrows(UnsupportedOperationException.class,
-                () -> firstLayer.put("B", "I should throw"));
+                () -> firstLayer().put("B", "I should throw"));
     }
 
     @Test
     void shouldMarkLayerDetailsUnmodifiableAfterSave() {
-        firstLayer.saveAndNext(ScratchLayer::new);
+        firstLayer().saveAndNext(ScratchLayer::new);
 
         assertThrows(UnsupportedOperationException.class,
-                () -> firstLayer.putDetail("B", "I should throw"));
+                () -> firstLayer().putDetail("B", "I should throw"));
     }
 
     @Test
     void shouldNotContainKey() {
-        assertFalse(layers.containsKey("FOO"));
+        assertFalse(layers().containsKey("FOO"));
     }
 
     @Test
     void shouldContainKey() {
-        firstLayer.
+        firstLayer().
                 put("FOO", key -> mostRecent("")).
                 saveAndNext(ScratchLayer::new);
 
-        assertTrue(layers.containsKey("FOO"));
+        assertTrue(layers().containsKey("FOO"));
     }
 
     @Test
     void shouldHaveKeys() {
-        firstLayer.
+        firstLayer().
                 put("FOO", key -> sumAll()).
                 saveAndNext(ScratchLayer::new);
 
-        assertEquals(singleton("FOO"), layers.keys());
+        assertEquals(singleton("FOO"), layers().keys());
     }
 
     @Test
     void shouldHaveView() {
-        firstLayer.
+        firstLayer().
                 put("BOB", key -> mostRecent(17)).
                 saveAndNext(ScratchLayer::new).
                 put("BOB", 18).
                 saveAndNext(ScratchLayer::new);
 
-        final List<Map<Object, Object>> view = layers.
+        final List<Map<Object, Object>> view = layers().
                 view().
                 map(layer -> layer.stream().
                         collect(toMap(Entry::getKey, Entry::getValue))).
@@ -119,13 +113,13 @@ class LayersTest {
 
     @Test
     void shouldHaveFilteredView() {
-        firstLayer.
+        firstLayer().
                 put("BOB", key -> mostRecent(17)).
                 saveAndNext(EgLayer::new).
                 put("BOB", 18).
                 saveAndNext(ScratchLayer::new);
 
-        final List<Map<Object, Object>> view = layers.
+        final List<Map<Object, Object>> view = layers().
                 view(layer -> layer instanceof EgLayer).
                 map(layer -> layer.stream().
                         collect(toMap(Entry::getKey, Entry::getValue))).
@@ -136,56 +130,56 @@ class LayersTest {
 
     @Test
     void shouldHaveWhatIfWithLayer() {
-        firstLayer.
+        firstLayer().
                 put("BOB", key -> mostRecent(32));
 
-        assertTrue(layers.whatIfWith(firstLayer).containsKey("BOB"));
+        assertTrue(layers().whatIfWith(firstLayer()).containsKey("BOB"));
     }
 
     @Test
     void shouldHaveWhatIfWithoutLayer() {
-        firstLayer.
+        firstLayer().
                 put("BOB", key -> sumAll()).
                 saveAndNext(ScratchLayer::new);
 
-        assertFalse(layers.whatIfWithout(firstLayer).containsKey("BOB"));
+        assertFalse(layers().whatIfWithout(firstLayer()).containsKey("BOB"));
     }
 
     @Test
     void shouldProjectToMap() {
-        firstLayer.
+        firstLayer().
                 put("FOO", sumAll()).
                 saveAndNext(ScratchLayer::new).
                 put("FOO", 3).
                 saveAndNext(ScratchLayer::new);
 
-        assertEquals(singletonMap("FOO", 3), layers.toMap());
+        assertEquals(singletonMap("FOO", 3), layers().toMap());
     }
 
     @Test
     void shouldHaveSaneToString() {
-        firstLayer.saveAndNext(ScratchLayer::new);
+        firstLayer().saveAndNext(ScratchLayer::new);
 
-        assertTrue(layers.toString().contains("Scratch"));
+        assertTrue(layers().toString().contains("Scratch"));
     }
 
     @Test
     void shouldComplainIfKeyNull() {
-        assertThrows(NullPointerException.class, () -> layers.get(null));
+        assertThrows(NullPointerException.class, () -> layers().get(null));
     }
 
     @Test
     void shouldComplainIfKeyMissing() {
         assertThrows(NoSuchElementException.class,
-                () -> layers.get("No such key"));
+                () -> layers().get("No such key"));
     }
 
     @Test
     void shouldGetValueFromSurface() {
-        final SubLayer<?> egLayer = firstLayer.
+        final SubLayer<?> egLayer = firstLayer().
                 put("Other OK", mostRecent(true)).
                 saveAndNext(ScratchLayer::new).
-                put("OK", new SubRule<>()).
+                put("OK", new SubRule()).
                 saveAndNext(EgLayer::new).
                 asThis();
         egLayer.saveAndNext(ScratchLayer::new);
@@ -211,7 +205,7 @@ class LayersTest {
         }
     }
 
-    private static final class SubRule<L extends SubLayer<L>>
+    private static final class SubRule
             extends Rule<Boolean> {
         private SubRule() {super("Fake OK");}
 
