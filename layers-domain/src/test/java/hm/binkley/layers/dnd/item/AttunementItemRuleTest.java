@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import static hm.binkley.layers.Layers.firstLayer;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AttunableItemRuleTest {
-    private AttunableItem<?> firstLayer;
+class AttunementItemRuleTest {
+    private AttunementItem<?> firstLayer;
 
     @BeforeEach
     void setUpLayers() {

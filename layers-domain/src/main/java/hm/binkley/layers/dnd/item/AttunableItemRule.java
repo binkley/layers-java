@@ -5,10 +5,10 @@ import hm.binkley.layers.rules.Rule;
 
 final class AttunableItemRule<R>
         extends Rule<R> {
-    private final AttunableItem<?> layer;
+    private final AttunementItem<?> layer;
     private final Rule<R> rule;
 
-    AttunableItemRule(final AttunableItem<?> layer, final Rule<R> rule) {
+    AttunableItemRule(final AttunementItem<?> layer, final Rule<R> rule) {
         super("Attunable item");
         this.layer = layer;
         this.rule = rule;

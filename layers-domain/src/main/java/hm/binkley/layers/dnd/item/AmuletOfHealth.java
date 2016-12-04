@@ -8,7 +8,7 @@ import static hm.binkley.layers.dnd.item.Type.WONDROUS_ITEM;
 import static hm.binkley.layers.rules.Rule.floor;
 
 public final class AmuletOfHealth
-        extends AttunableItem<AmuletOfHealth> {
+        extends AttunementItem<AmuletOfHealth> {
     public AmuletOfHealth(final LayerSurface layers) {
         super(layers, "Amulet of Health",
                 "Your Constitution score is 19 while you wear this amulet. "

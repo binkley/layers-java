@@ -9,16 +9,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static hm.binkley.layers.Layers.firstLayer;
-import static hm.binkley.layers.dnd.item.Attuned.attune;
-import static hm.binkley.layers.dnd.item.Attuned.detune;
-import static hm.binkley.layers.dnd.item.Attunement.ATTUNED;
+import static hm.binkley.layers.dnd.item.Attunement.attune;
+import static hm.binkley.layers.dnd.item.Attunement.detune;
 import static hm.binkley.layers.dnd.item.Rarity.LEGENDARY;
 import static hm.binkley.layers.dnd.item.Type.WONDROUS_ITEM;
 import static hm.binkley.layers.set.LayerSetCommand.add;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AttunedTest {
+class AttunementTest {
     private Layers layers;
     private BaseRulesLayer firstLayer;
 
@@ -31,10 +30,10 @@ class AttunedTest {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     void shouldDisplayNicely() {
-        final String display = new Attuned(null, add("Attune Bob",
+        final String display = new Attunement(null, add("Attune Bob",
                 new MagicItem(null, "Bob", "Cool bob", WONDROUS_ITEM,
                         LEGENDARY, Weight.inPounds(0), Volume.inCuft(0),
-                        ATTUNED, "Some notes about Bob"
+                        true, "Some notes about Bob"
 
                 ))).
                 toString();
@@ -79,6 +78,6 @@ class AttunedTest {
                 saveAndNext(detune(amuletOfHealth)).
                 saveAndNext(ScratchLayer::new);
 
-        assertTrue(layers.<LayerSet<?>>get(Attuned.class).isEmpty());
+        assertTrue(layers.<LayerSet<?>>get(Attunement.class).isEmpty());
     }
 }

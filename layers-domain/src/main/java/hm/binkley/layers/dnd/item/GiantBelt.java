@@ -13,7 +13,7 @@ import static hm.binkley.layers.rules.Rule.floor;
  * @todo Needs documentation.
  */
 public abstract class GiantBelt<L extends GiantBelt<L>>
-        extends AttunableItem<L> {
+        extends AttunementItem<L> {
     protected GiantBelt(final LayerSurface layers, final String giantKind,
             final Rarity rarity, final int strength) {
         super(layers, "Belt of " + giantKind + " Giant Strength",

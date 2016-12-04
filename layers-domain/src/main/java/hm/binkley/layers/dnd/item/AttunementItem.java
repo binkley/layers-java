@@ -6,22 +6,20 @@ import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.rules.Rule;
 import hm.binkley.layers.set.LayerSet;
 
-import static hm.binkley.layers.dnd.item.Attuned.attune;
-import static hm.binkley.layers.dnd.item.Attunement.ATTUNED;
+import static hm.binkley.layers.dnd.item.Attunement.attune;
 
 /** @todo Real values for weight/volume */
-public class AttunableItem<L extends AttunableItem<L>>
+public class AttunementItem<L extends AttunementItem<L>>
         extends MagicItem<L> {
-    public AttunableItem(final LayerSurface layers, final String name,
+    public AttunementItem(final LayerSurface layers, final String name,
             final String description, final Type type, final Rarity rarity,
             final Weight weight, final Volume volume, final String notes) {
         // TODO: Why is static method imports not compiling here?
-        super(layers, name, description, type, rarity, weight, volume,
-                ATTUNED, notes);
-        putDetail(Attuned.class, ATTUNED);
+        super(layers, name, description, type, rarity, weight, volume, true,
+                notes);
     }
 
-    public AttunableItem(final LayerSurface layers, final String name,
+    public AttunementItem(final LayerSurface layers, final String name,
             final String description, final Type type, final Rarity rarity,
             final Weight weight, final Volume volume) {
         this(layers, name, description, type, rarity, weight, volume, "");
@@ -34,7 +32,7 @@ public class AttunableItem<L extends AttunableItem<L>>
     }
 
     final boolean isAttuned() {
-        return layers.<LayerSet<?>>get(Attuned.class).contains(this);
+        return layers.<LayerSet<?>>get(Attunement.class).contains(this);
     }
 
     @Override

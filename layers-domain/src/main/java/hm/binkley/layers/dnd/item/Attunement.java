@@ -1,17 +1,36 @@
 package hm.binkley.layers.dnd.item;
 
-public enum Attunement {
-    UNATTUNED(""),
-    ATTUNED("yes");
+import hm.binkley.layers.Layer;
+import hm.binkley.layers.LayerMaker;
+import hm.binkley.layers.Layers.LayerSurface;
+import hm.binkley.layers.set.LayerSetCommand;
 
-    private final String display;
+import static hm.binkley.layers.set.LayerSetCommand.add;
+import static hm.binkley.layers.set.LayerSetCommand.remove;
 
-    Attunement(final String display) {
-        this.display = display;
+@SuppressWarnings({"unchecked", "rawtypes"})
+public final class Attunement
+        extends Layer<Attunement> {
+    private final LayerSetCommand command;
+
+    Attunement(final LayerSurface layers, final LayerSetCommand command) {
+        super(layers, command.name());
+        put(Attunement.class, command);
+        this.command = command;
     }
 
     @Override
-    public final String toString() {
-        return display;
+    public String toString() {
+        return command.name();
+    }
+
+    public static LayerMaker<Attunement> attune(final AttunementItem layer) {
+        return layers -> new Attunement(layers,
+                add("Attune: " + layer.name(), layer));
+    }
+
+    public static LayerMaker<Attunement> detune(final AttunementItem layer) {
+        return layers -> new Attunement(layers,
+                remove("Detune: " + layer.name(), layer));
     }
 }

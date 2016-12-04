@@ -19,7 +19,7 @@ public final class ItemsBaseRules
         return new BaseRulesLayer(layers).
                 put(Weight.class, sumFractions("Sum weight", WEIGHTLESS)).
                 put(Volume.class, sumFractions("Sum volume", SPACELESS)).
-                put(Attuned.class, attunedMagicItems());
+                put(Attunement.class, attunedMagicItems());
     }
 
     private static <L extends MagicItem<L>> LayerSetRule<L>

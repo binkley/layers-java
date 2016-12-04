@@ -4,8 +4,8 @@ import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.dnd.item.Abacus;
 import hm.binkley.layers.dnd.item.AmuletOfHealth;
-import hm.binkley.layers.dnd.item.AttunableItem;
-import hm.binkley.layers.dnd.item.Attuned;
+import hm.binkley.layers.dnd.item.AttunementItem;
+import hm.binkley.layers.dnd.item.Attunement;
 import hm.binkley.layers.dnd.item.BeltOfHillGiantStrength;
 import hm.binkley.layers.dnd.item.MagicItem;
 import hm.binkley.layers.rules.BaseRule;
@@ -23,8 +23,8 @@ import static hm.binkley.layers.dnd.Proficiencies.ATHLETICS;
 import static hm.binkley.layers.dnd.Proficiencies.doubleProficiency;
 import static hm.binkley.layers.dnd.Proficiencies.proficiencyBonus;
 import static hm.binkley.layers.dnd.Races.humanVariant;
-import static hm.binkley.layers.dnd.item.Attuned.attune;
-import static hm.binkley.layers.dnd.item.Attuned.detune;
+import static hm.binkley.layers.dnd.item.Attunement.attune;
+import static hm.binkley.layers.dnd.item.Attunement.detune;
 import static java.lang.System.out;
 
 /**
@@ -38,7 +38,7 @@ public final class DndMain {
                 layers -> layersHolder[0] = layers);
         final Layers layers = layersHolder[0];
 
-        final AttunableItem<?> beltOfHillGiantStrength = firstLayer.
+        final AttunementItem<?> beltOfHillGiantStrength = firstLayer.
                 saveAndNext(characterDescription("Bob")).
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(humanVariant().withSTR().withDEX()).
@@ -53,7 +53,7 @@ public final class DndMain {
                 saveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(abilityScoreIncrease(CON, WIS)).
                 saveAndNext(AmuletOfHealth::new);
-        final Attuned detuneAmuletOfHealth = amuletOfHealth.
+        final Attunement detuneAmuletOfHealth = amuletOfHealth.
                 saveAndNext(attune(amuletOfHealth)).
                 saveAndNext(detune(amuletOfHealth));
 

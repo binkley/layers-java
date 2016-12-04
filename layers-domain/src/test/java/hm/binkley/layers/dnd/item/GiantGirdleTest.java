@@ -12,7 +12,7 @@ import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.STR;
 import static hm.binkley.layers.dnd.Abilities.abilityScoreIncrease;
 import static hm.binkley.layers.dnd.Abilities.abilityScores;
-import static hm.binkley.layers.dnd.item.Attuned.detune;
+import static hm.binkley.layers.dnd.item.Attunement.detune;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GiantGirdleTest {

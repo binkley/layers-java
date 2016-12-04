@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Test;
 import static hm.binkley.layers.Layers.firstLayer;
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.STR;
-import static hm.binkley.layers.dnd.item.Attuned.attune;
-import static hm.binkley.layers.dnd.item.Attuned.detune;
-import static hm.binkley.layers.dnd.item.Attunement.ATTUNED;
-import static hm.binkley.layers.dnd.item.Attunement.UNATTUNED;
+import static hm.binkley.layers.dnd.item.Attunement.attune;
+import static hm.binkley.layers.dnd.item.Attunement.detune;
 import static hm.binkley.layers.dnd.item.Rarity.LEGENDARY;
 import static hm.binkley.layers.dnd.item.Rarity.RARE;
 import static hm.binkley.layers.dnd.item.Rarity.UNCOMMON;
@@ -120,16 +118,6 @@ class MagicItemsTest {
     }
 
     @Test
-    void shouldDisplayAttunementForYes() {
-        assertEquals("yes", ATTUNED.toString());
-    }
-
-    @Test
-    void shouldDisplayAttunementForNo() {
-        assertEquals("", UNATTUNED.toString());
-    }
-
-    @Test
     void shouldDisplayTypeForArmor() {
         assertEquals("Armor", ARMOR.toString());
     }
@@ -143,7 +131,7 @@ class MagicItemsTest {
     void shouldDisplayAttunementBriefly() {
         final AmuletOfHealth amuletOfHealth = firstLayer.
                 saveAndNext(AmuletOfHealth::new);
-        final Attuned attunement = amuletOfHealth.
+        final Attunement attunement = amuletOfHealth.
                 saveAndNext(attune(amuletOfHealth));
         attunement.
                 saveAndNext(ScratchLayer::new);
@@ -156,7 +144,7 @@ class MagicItemsTest {
     void shouldNotDisplayAttunementVerbosely() {
         final AmuletOfHealth amuletOfHealth = firstLayer.
                 saveAndNext(AmuletOfHealth::new);
-        final Attuned attunement = amuletOfHealth.
+        final Attunement attunement = amuletOfHealth.
                 saveAndNext(attune(amuletOfHealth));
         attunement.
                 saveAndNext(ScratchLayer::new);
@@ -175,12 +163,12 @@ class MagicItemsTest {
                 attuneSaveAndNext(BeltOfStoneGiantStrength::new).
                 attuneSaveAndNext(BeltOfFrostGiantStrength::new);
 
-        assertEquals(3, layers.<LayerSet<?>>get(Attuned.class).size());
+        assertEquals(3, layers.<LayerSet<?>>get(Attunement.class).size());
     }
 
     @Test
     void shouldLimitAttunementTo3Items() { // TODO: Distinct items
-        final AttunableItem<?> beltOfFrostGiantStrength = firstLayer.
+        final AttunementItem<?> beltOfFrostGiantStrength = firstLayer.
                 saveAndNext(AmuletOfHealth::new).
                 attuneSaveAndNext(BeltOfHillGiantStrength::new).
                 attuneSaveAndNext(BeltOfStoneGiantStrength::new).
@@ -194,7 +182,7 @@ class MagicItemsTest {
 
     @Test
     void shouldBeAbleToDetuneAttunedItem() {
-        final AttunableItem<?> amuletOfHealth = firstLayer.
+        final AttunementItem<?> amuletOfHealth = firstLayer.
                 saveAndNext(AmuletOfHealth::new).
                 asThis();
 
