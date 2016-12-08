@@ -57,11 +57,10 @@
         <junit.jupiter.version>5.0.0-M3</junit.jupiter.version>
         <junit.platform.version>1.0.0-M3</junit.platform.version>
         <lombok.version>1.16.12</lombok.version>
-        <maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
-        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+        <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
+        <maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
-        <maven-jar-plugin.version>2.6</maven-jar-plugin.version>
-        <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
         <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
         <metainf-services.version>1.7</metainf-services.version>
         <minimum-coverage-ratio>0.90</minimum-coverage-ratio>
@@ -255,31 +254,10 @@ Error Prone with the latest version -->
                 <executions>
                     <execution>
                         <goals>
-                            <goal>jar</goal>
                             <goal>test-jar</goal>
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <!-- TODO: javadoc:javadoc fails with missing classes -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
-                <configuration>
-                    <detectLinks>true</detectLinks>
-                    <keywords>true</keywords>
-                    <linksource>true</linksource>
-                    <!-- TODO: Can this be made a property or debug only? -->
-                    <quiet>true</quiet>
-                    <tags>
-                        <tag>
-                            <name>todo</name>
-                            <placement>a</placement>
-                            <head>TODOs:</head>
-                        </tag>
-                    </tags>
-                </configuration>
             </plugin>
         </plugins>
     </build>
