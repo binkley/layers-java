@@ -5,7 +5,6 @@ import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import hm.binkley.layers.rules.BaseRule;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static hm.binkley.layers.Layers.firstLayer;
@@ -82,7 +81,6 @@ class GiantGirdleTest {
     }
 
     @Test
-    @Disabled("Pending issue #9")
     void shouldHaveNetStrengthAfterRemovingBelt() {
         final GiantBelt<?> girdle = firstLayer.
                 saveAndNext(BaseRule::baseRules).

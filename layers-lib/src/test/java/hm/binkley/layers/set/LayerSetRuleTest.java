@@ -3,7 +3,6 @@ package hm.binkley.layers.set;
 import hm.binkley.layers.Layers;
 import hm.binkley.layers.ScratchLayer;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
@@ -55,7 +54,6 @@ class LayerSetRuleTest {
                 () -> secondLayer.saveAndNext(ScratchLayer::new));
     }
 
-    @Disabled("WIP")
     @Test
     void shouldRemoveMembers() {
         firstLayer.
