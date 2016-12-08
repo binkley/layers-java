@@ -1,13 +1,13 @@
 package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.XEnum;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import static hm.binkley.layers.rules.Rule.doubling;
 import static java.util.Collections.unmodifiableList;
@@ -38,14 +38,15 @@ public class Proficiencies
         return display;
     }
 
-    public static LayerMaker<ProficienciesLayer> proficiencyBonus(
+    public static Function<LayerSurface, ProficienciesLayer> proficiencyBonus(
             final Proficiencies proficiency, final int bonus) {
         return layers -> new ProficienciesLayer(layers,
                 "Proficiency bonus(es)").
                 put(proficiency, bonus);
     }
 
-    public static LayerMaker<ProficienciesLayer> doubleProficiency(
+    public static Function<LayerSurface, ProficienciesLayer>
+    doubleProficiency(
             final Proficiencies proficiency) {
         return layers -> new ProficienciesLayer(layers,
                 "Proficiency bonus doubling").

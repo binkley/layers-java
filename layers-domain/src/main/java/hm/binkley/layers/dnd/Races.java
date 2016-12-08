@@ -1,8 +1,9 @@
 package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.LayerSurface;
+
+import java.util.function.Function;
 
 import static hm.binkley.layers.dnd.Abilities.CON;
 import static hm.binkley.layers.dnd.Abilities.DEX;
@@ -29,11 +30,11 @@ public final class Races {
         }
 
         public static final class WithSTR {
-            public LayerMaker<HumanLayer> withDEX() {
+            public Function<LayerSurface, HumanLayer> withDEX() {
                 return withDoubleAbilities(STR, DEX);
             }
 
-            public LayerMaker<HumanLayer> withCON() {
+            public Function<LayerSurface, HumanLayer> withCON() {
                 return withDoubleAbilities(STR, CON);
             }
 
@@ -43,7 +44,7 @@ public final class Races {
         private HumanVariant() {}
     }
 
-    private static LayerMaker<HumanLayer> withDoubleAbilities(
+    private static Function<LayerSurface, HumanLayer> withDoubleAbilities(
             final Abilities ability1, final Abilities ability2) {
         return layers -> {
             final HumanLayer layer = new HumanLayer(layers, "Variant Human");

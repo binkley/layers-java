@@ -1,13 +1,13 @@
 package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.XEnum;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -27,7 +27,8 @@ public class Characters
         values.add(this);
     }
 
-    public static LayerMaker<CharactersLayer> characterDescription(
+    public static Function<LayerSurface, CharactersLayer>
+    characterDescription(
             final String name) {
         return layers -> new CharactersLayer(layers).
                 put(NAME, name);

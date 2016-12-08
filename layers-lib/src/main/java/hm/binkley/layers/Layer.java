@@ -96,7 +96,8 @@ public class Layer<L extends Layer<L>>
         return (L) this;
     }
 
-    public final <K extends Layer<K>> L blend(final LayerMaker<K> that) {
+    public final <K extends Layer<K>> L blend(
+            final Function<LayerSurface, K> that) {
         return blend(that.apply(layers));
     }
 
@@ -127,7 +128,7 @@ public class Layer<L extends Layer<L>>
     }
 
     public final <K extends Layer<K>> K saveAndNext(
-            final LayerMaker<K> ctor) {
+            final Function<LayerSurface, K> ctor) {
         values = unmodifiableMap(values);
         details = unmodifiableMap(details);
         return layers.saveAndNext(this, ctor);

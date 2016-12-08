@@ -1,10 +1,11 @@
 package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.rules.Rule;
 import hm.binkley.layers.set.LayerSet;
+
+import java.util.function.Function;
 
 import static hm.binkley.layers.dnd.item.Attunement.attune;
 
@@ -26,7 +27,7 @@ public class AttunementItem<L extends AttunementItem<L>>
     }
 
     public <K extends Layer<K>> K attuneSaveAndNext(
-            final LayerMaker<K> next) {
+            final Function<LayerSurface, K> next) {
         return saveAndNext(attune(this)).
                 saveAndNext(next);
     }

@@ -1,13 +1,13 @@
 package hm.binkley.layers.dnd;
 
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.XEnum;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -32,8 +32,8 @@ public class Abilities
     }
 
     /** @todo Builder */
-    public static LayerMaker<AbilitiesLayer> abilityScores(final int strength,
-            final int dexterity, final int constitution,
+    public static Function<LayerSurface, AbilitiesLayer> abilityScores(
+            final int strength, final int dexterity, final int constitution,
             final int intelligence, final int wisdom, final int charisma) {
         return layers -> new AbilitiesLayer(layers,
                 "Base ability " + "scores").
@@ -45,14 +45,14 @@ public class Abilities
                 put(CHA, charisma);
     }
 
-    public static LayerMaker<AbilitiesLayer> abilityScoreIncrease(
+    public static Function<LayerSurface, AbilitiesLayer> abilityScoreIncrease(
             final Abilities doubleAbility) {
         return layers -> new AbilitiesLayer(layers,
                 "Ability Score (" + doubleAbility + ") double increase").
                 put(doubleAbility, 2);
     }
 
-    public static LayerMaker<AbilitiesLayer> abilityScoreIncrease(
+    public static Function<LayerSurface, AbilitiesLayer> abilityScoreIncrease(
             final Abilities firstAbility, final Abilities secondAbility) {
         return layers -> new AbilitiesLayer(layers,
                 "Ability Score (" + firstAbility + ", " + secondAbility

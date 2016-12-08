@@ -1,9 +1,10 @@
 package hm.binkley.layers.dnd.item;
 
 import hm.binkley.layers.Layer;
-import hm.binkley.layers.LayerMaker;
 import hm.binkley.layers.Layers.LayerSurface;
 import hm.binkley.layers.set.LayerSetCommand;
+
+import java.util.function.Function;
 
 import static hm.binkley.layers.set.LayerSetCommand.add;
 import static hm.binkley.layers.set.LayerSetCommand.remove;
@@ -24,12 +25,14 @@ public final class Attunement
         return command.name();
     }
 
-    public static LayerMaker<Attunement> attune(final AttunementItem layer) {
+    public static Function<LayerSurface, Attunement> attune(
+            final AttunementItem layer) {
         return layers -> new Attunement(layers,
                 add("Attune: " + layer.name(), layer));
     }
 
-    public static LayerMaker<Attunement> detune(final AttunementItem layer) {
+    public static Function<LayerSurface, Attunement> detune(
+            final AttunementItem layer) {
         return layers -> new Attunement(layers,
                 remove("Detune: " + layer.name(), layer));
     }

@@ -7,6 +7,7 @@ import org.kohsuke.MetaInfServices;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import static hm.binkley.layers.rules.Rule.sumAll;
 import static java.util.Collections.unmodifiableList;
@@ -28,8 +29,8 @@ public class Numbers
     }
 
     /** @todo Builder */
-    public static LayerMaker<NumbersLayer> numbers(final int first,
-            final int second) {
+    public static Function<LayerSurface, NumbersLayer> numbers(
+            final int first, final int second) {
         return layers -> new NumbersLayer(layers).
                 put(FIRST, first).
                 put(SECOND, second);

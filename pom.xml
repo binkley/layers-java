@@ -56,7 +56,7 @@
         <java.version>8</java.version>
         <junit.jupiter.version>5.0.0-M3</junit.jupiter.version>
         <junit.platform.version>1.0.0-M3</junit.platform.version>
-        <lombok.version>1.16.10</lombok.version>
+        <lombok.version>1.16.12</lombok.version>
         <maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>

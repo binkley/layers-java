@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static hm.binkley.layers.DisplayStyle.BRACES;
@@ -44,7 +45,8 @@ public final class Layers {
         cache.keySet().retainAll(updated);
     }
 
-    public static <L extends Layer<L>> L firstLayer(final LayerMaker<L> ctor,
+    public static <L extends Layer<L>> L firstLayer(
+            final Function<LayerSurface, L> ctor,
             final Consumer<Layers> layersHolder) {
         final Layers layers = new Layers(new ArrayList<>());
         layersHolder.accept(layers);
@@ -117,7 +119,7 @@ public final class Layers {
     @RequiredArgsConstructor(access = PRIVATE)
     public final class LayerSurface {
         public <L extends Layer<L>> L saveAndNext(final Layer<?> layer,
-                final LayerMaker<L> next) {
+                final Function<LayerSurface, L> next) {
             layers.add(layer);
             updateCache();
             return next.apply(this);

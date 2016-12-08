@@ -7,6 +7,7 @@ import org.kohsuke.MetaInfServices;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import static hm.binkley.layers.rules.Rule.mostRecent;
 import static java.util.Collections.unmodifiableList;
@@ -27,7 +28,8 @@ public class Texts
         values.add(this);
     }
 
-    public static LayerMaker<TextsLayer> texts(final String name) {
+    public static Function<LayerSurface, TextsLayer> texts(
+            final String name) {
         return layers -> new TextsLayer(layers).
                 put(NAME, name);
     }
