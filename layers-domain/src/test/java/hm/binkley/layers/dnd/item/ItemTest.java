@@ -6,6 +6,7 @@ import static hm.binkley.layers.dnd.item.Type.EQUIPMENT;
 import static hm.binkley.layers.dnd.item.Volume.ONE_CUBIC_FOOT;
 import static hm.binkley.layers.dnd.item.Weight.ONE_POUND;
 import static hm.binkley.layers.dnd.item.Weight.WEIGHTLESS;
+import static hm.binkley.layers.dnd.item.Weight.inPounds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings("rawtypes")
@@ -22,5 +23,15 @@ class ItemTest {
         assertEquals(ONE_CUBIC_FOOT,
                 new Item(null, "Bob", "Yer Unkel", EQUIPMENT, WEIGHTLESS,
                         ONE_CUBIC_FOOT, "").volume());
+    }
+
+    @Test
+    void shouldBeOneCubicFootForBackpack() {
+        assertEquals(ONE_CUBIC_FOOT, new Backpack(null).volume());
+    }
+
+    @Test
+    void shouldWeightFivePoundsEmptyForBackpack() {
+        assertEquals(inPounds(5), new Backpack(null).weight());
     }
 }
