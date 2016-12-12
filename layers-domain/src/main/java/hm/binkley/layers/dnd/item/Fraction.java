@@ -8,7 +8,8 @@ import static java.lang.Math.abs;
 import static java.math.RoundingMode.HALF_UP;
 
 @EqualsAndHashCode(of = {"numerator", "denominator"})
-abstract class Fraction<F extends Fraction<F>> {
+abstract class Fraction<F extends Fraction<F>>
+        implements Comparable<F> {
     private final FractionMaker<F> ctor;
     protected final int numerator;
     protected final int denominator;
@@ -20,7 +21,7 @@ abstract class Fraction<F extends Fraction<F>> {
 
     protected Fraction(final FractionMaker<F> ctor, final int numerator,
             final int denominator) {
-        if (numerator < 0 || denominator < 1)
+        if (0 > numerator || 1 > denominator)
             throw new IllegalArgumentException();
         final int gcm = gcm(numerator, denominator);
         this.ctor = ctor;
@@ -28,11 +29,17 @@ abstract class Fraction<F extends Fraction<F>> {
         this.denominator = abs(denominator / gcm);
     }
 
-    public F add(final F that) {
+    public final F add(final F that) {
         final int numerator = this.numerator * that.denominator
                 + that.numerator * denominator;
         final int denominator = this.denominator * that.denominator;
         return ctor.apply(numerator, denominator);
+    }
+
+    @Override
+    public final int compareTo(final F that) {
+        return Integer.compare(numerator * that.denominator,
+                that.numerator * denominator);
     }
 
     @Override

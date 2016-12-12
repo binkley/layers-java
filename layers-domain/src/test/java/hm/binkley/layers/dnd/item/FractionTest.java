@@ -3,6 +3,7 @@ package hm.binkley.layers.dnd.item;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FractionTest {
     @Test
@@ -19,6 +20,21 @@ class FractionTest {
     void shouldAdd() {
         assertEquals(new EgFraction(3, 2), new EgFraction(5, 6).
                 add(new EgFraction(2, 3)));
+    }
+
+    @Test
+    void shouldCompareLessThan() {
+        assertTrue(0 > new EgFraction(2, 3).compareTo(new EgFraction(4, 3)));
+    }
+
+    @Test
+    void shouldCompareEqualTo() {
+        assertTrue(0 == new EgFraction(2, 3).compareTo(new EgFraction(2, 3)));
+    }
+
+    @Test
+    void shouldCompareGreaterThan() {
+        assertTrue(0 < new EgFraction(4, 3).compareTo(new EgFraction(2, 3)));
     }
 
     private static final class EgFraction
