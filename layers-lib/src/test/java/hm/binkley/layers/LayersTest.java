@@ -37,8 +37,7 @@ class LayersTest
 
     @Test
     void shouldStayEmptyAfterAddingEmptyLayer() {
-        firstLayer().
-                saveAndNext(ScratchLayer::new);
+        firstLayer().saveAndNext(ScratchLayer::new);
 
         assertTrue(layers().isEmpty());
     }

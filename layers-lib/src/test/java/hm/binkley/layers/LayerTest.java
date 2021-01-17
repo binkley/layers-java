@@ -3,6 +3,7 @@ package hm.binkley.layers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -38,8 +39,8 @@ class LayerTest {
         expected.put("A", "P");
         expected.put("B", 4);
 
-        assertEquals(expected.entrySet().stream().collect(toList()),
-                layer.toMap().entrySet().stream().collect(toList()));
+        assertEquals(new ArrayList<>(expected.entrySet()),
+                new ArrayList<>(layer.toMap().entrySet()));
     }
 
     @Test
@@ -94,7 +95,7 @@ class LayerTest {
 
     @Test
     void shouldDelegateGetToLayerFromLayerMap() {
-        assertEquals(layer.get("A"), layer.view().get("A"));
+        assertEquals(layer.<String>get("A"), layer.view().get("A"));
     }
 
     @Test

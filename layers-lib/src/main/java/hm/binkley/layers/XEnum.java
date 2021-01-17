@@ -70,7 +70,4 @@ public abstract class XEnum<E extends XEnum<E>>
                         + name);
     }
     */
-
-    @Override
-    protected final void finalize() { }
 }
