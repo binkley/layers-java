@@ -9,7 +9,7 @@ import static lombok.AccessLevel.PACKAGE;
 
 @RequiredArgsConstructor(access = PACKAGE)
 class NamedFullnessFunction<L extends Layer<L>>
-        extends FullnessFunction<L> {
+        implements FullnessFunction<L> {
     private final BiFunction<LayerSet<L>, L, Boolean> full;
     private final String name;
 

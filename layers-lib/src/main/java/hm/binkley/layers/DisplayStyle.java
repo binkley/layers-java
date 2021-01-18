@@ -16,7 +16,7 @@ public enum DisplayStyle {
     private final String suffix;
 
     DisplayStyle(final String delimiter, final String prefix,
-            final String suffix) {
+                 final String suffix) {
         this.delimiter = delimiter;
         this.prefix = prefix;
         this.suffix = suffix;
@@ -35,9 +35,9 @@ public enum DisplayStyle {
             final Object key = e.getKey();
             final String k;
             if (key instanceof Class)
-                k = "[" + ((Class) key).getSimpleName() + "]";
+                k = "[" + ((Class<?>) key).getSimpleName() + "]";
             else if (key instanceof Layer)
-                k = ((Layer) key).name();
+                k = ((Layer<?>) key).name();
             else
                 k = key.toString();
             final Object value = e.getValue();

@@ -29,7 +29,7 @@ class FractionTest {
 
     @Test
     void shouldCompareEqualTo() {
-        assertTrue(0 == new EgFraction(2, 3).compareTo(new EgFraction(2, 3)));
+        assertEquals(new EgFraction(2, 3).compareTo(new EgFraction(2, 3)), 0);
     }
 
     @Test

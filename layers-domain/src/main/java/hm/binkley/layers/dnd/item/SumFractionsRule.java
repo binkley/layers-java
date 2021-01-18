@@ -18,7 +18,6 @@ final class SumFractionsRule<F extends Fraction<F>>
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public F apply(final RuleSurface layers) {
         return layers.<F>values().
                 reduce(initialValue, Fraction::add);

@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DisplayStyleTest {
     @Test
     void shouldNotExpandLayerAsKey() {
-        final Map<?, ?> map = new LinkedHashMap<Object, Object>() {{
+        final Map<?, ?> map = new LinkedHashMap<>() {{
             put(new ScratchLayer(null).
                     put("Bob", "Fred"), 3);
         }};
@@ -22,7 +22,7 @@ class DisplayStyleTest {
 
     @Test
     void shouldQuoteStringValues() {
-        final Map<?, ?> map = new LinkedHashMap<Object, Object>() {{
+        final Map<?, ?> map = new LinkedHashMap<>() {{
             put(3, "ABC");
         }};
 

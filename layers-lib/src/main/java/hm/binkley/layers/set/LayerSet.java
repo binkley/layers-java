@@ -20,7 +20,6 @@ public class LayerSet<L extends Layer<L>>
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public final String toString() {
         return stream().
                 map(Layer::name).

@@ -32,7 +32,6 @@ public final class Layers {
         updateCache();
     }
 
-    @SuppressWarnings("unchecked")
     private void updateCache() {
         final Set<Object> updated = new HashSet<>();
         layers.stream().
@@ -102,16 +101,14 @@ public final class Layers {
 
     @SuppressWarnings("WeakerAccess")
     public Layers whatIfWith(final Layer<?> layer) {
-        final List<Layer<?>> scenario = new ArrayList<>();
-        scenario.addAll(layers);
+        final List<Layer<?>> scenario = new ArrayList<>(layers);
         scenario.add(layer);
         return new Layers(scenario);
     }
 
     @SuppressWarnings("WeakerAccess")
     public Layers whatIfWithout(final Layer<?> layer) {
-        final List<Layer<?>> scenario = new ArrayList<>();
-        scenario.addAll(layers);
+        final List<Layer<?>> scenario = new ArrayList<>(layers);
         scenario.remove(layer);
         return new Layers(scenario);
     }
