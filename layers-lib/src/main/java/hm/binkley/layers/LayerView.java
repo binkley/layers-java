@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Stream;
 
-/** @todo Unable to specifiy unmodifiable with plain JDK. */
+/** @todo Unable to specify unmodifiable with plain JDK. */
 public interface LayerView {
     String name();
 
