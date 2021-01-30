@@ -15,7 +15,7 @@ class AttunementItemRuleTest {
     void setUpLayers() {
         firstLayer = firstLayer(BaseRule::baseRules, layers -> {}).
                 saveAndNext(AmuletOfHealth::new).
-                asThis();
+                self();
     }
 
     @Test

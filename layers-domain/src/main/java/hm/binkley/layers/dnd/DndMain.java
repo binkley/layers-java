@@ -47,7 +47,7 @@ public final class DndMain {
                 saveAndNext(doubleProficiency(ACROBATICS)).
                 saveAndNext(Abacus::new).
                 saveAndNext(BeltOfHillGiantStrength::new).
-                asThis();
+                self();
         final AmuletOfHealth amuletOfHealth = beltOfHillGiantStrength.
                 saveAndNext(attune(beltOfHillGiantStrength)).
                 saveAndNext(abilityScoreIncrease(STR)).

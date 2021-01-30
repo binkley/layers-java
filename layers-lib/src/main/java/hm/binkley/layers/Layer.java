@@ -34,7 +34,7 @@ public class Layer<L extends Layer<L>>
     private final String name;
 
     @SuppressWarnings("unchecked")
-    public final L asThis() {
+    public final L self() {
         return (L) this;
     }
 
@@ -69,10 +69,9 @@ public class Layer<L extends Layer<L>>
         return (T) values.get(key);
     }
 
-    @SuppressWarnings("unchecked")
     public <T> L put(final Object key, final T value) {
         values.put(key, value);
-        return (L) this;
+        return self();
     }
 
     public final <R> L put(final Object key,
@@ -85,15 +84,14 @@ public class Layer<L extends Layer<L>>
         return put(key, layerSet(full));
     }
 
-    @SuppressWarnings({"WeakerAccess", "unchecked"})
     public final L blend(final Layer<?> that) {
-        that.values.forEach(
-                (key, value) -> values.compute(key, (k, existing) -> {
+        that.values.forEach((key, value) ->
+                values.compute(key, (k, existing) -> {
                     if (null == existing)
                         return value;
                     throw new IllegalStateException("Duplicate key " + k);
                 }));
-        return (L) this;
+        return self();
     }
 
     public final <K extends Layer<K>> L blend(
@@ -121,10 +119,9 @@ public class Layer<L extends Layer<L>>
         return unmodifiableMap(details);
     }
 
-    @SuppressWarnings("unchecked")
     public final L putDetail(final Object key, final Object value) {
         details.put(key, value);
-        return (L) this;
+        return self();
     }
 
     public final <K extends Layer<K>> K saveAndNext(

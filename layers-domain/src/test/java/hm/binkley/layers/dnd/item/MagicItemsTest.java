@@ -173,7 +173,7 @@ class MagicItemsTest {
                 attuneSaveAndNext(BeltOfHillGiantStrength::new).
                 attuneSaveAndNext(BeltOfStoneGiantStrength::new).
                 attuneSaveAndNext(BeltOfFrostGiantStrength::new).
-                asThis();
+                self();
 
         assertThrows(IllegalStateException.class,
                 () -> beltOfFrostGiantStrength.
@@ -184,7 +184,7 @@ class MagicItemsTest {
     void shouldBeAbleToDetuneAttunedItem() {
         final AttunementItem<?> amuletOfHealth = firstLayer.
                 saveAndNext(AmuletOfHealth::new).
-                asThis();
+                self();
 
         amuletOfHealth.
                 attuneSaveAndNext(detune(amuletOfHealth)).

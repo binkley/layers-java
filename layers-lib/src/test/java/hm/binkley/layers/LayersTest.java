@@ -180,7 +180,7 @@ class LayersTest
                 saveAndNext(ScratchLayer::new).
                 put("OK", new SubRule()).
                 saveAndNext(EgLayer::new).
-                asThis();
+                self();
         egLayer.saveAndNext(ScratchLayer::new);
 
         assertTrue(egLayer.isOk());

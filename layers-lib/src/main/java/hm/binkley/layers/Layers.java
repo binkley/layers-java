@@ -198,7 +198,7 @@ public final class Layers {
                 mapToObj(layers::get).
                 filter(layer -> layer.containsKey(key)).
                 filter(layer -> layer.get(key) instanceof Rule).
-                map(layer -> (L) layer);
+                map(layer -> (L) layer.self());
     }
 
     @SuppressWarnings("unchecked")

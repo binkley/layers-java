@@ -87,7 +87,7 @@ class GiantGirdleTest {
                 saveAndNext(abilityScores(8, 15, 14, 10, 13, 12)).
                 saveAndNext(abilityScores(1, 0, 0, 0, 0, 0)).
                 saveAndNext(BeltOfFrostGiantStrength::new).
-                asThis();
+                self();
         girdle.attuneSaveAndNext(abilityScoreIncrease(STR)).
                 saveAndNext(detune(girdle)).
                 saveAndNext(ScratchLayer::new);
