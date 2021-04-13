@@ -94,6 +94,7 @@ public class Layer<L extends Layer<L>>
         return self();
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public final <K extends Layer<K>> L blend(
             final Function<LayerSurface, K> that) {
         return blend(that.apply(layers));
